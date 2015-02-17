@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------
--- This module is used to implement the ALU
+-- This module is used to implement a 2x1MUX
 -- 
 -- Inputs:
 --	- A			32-bit operand
@@ -12,49 +12,39 @@
 -- 	- Op		choose between operations
 -- 	- clk		clock
 -- 
--- The results of this module is stored in Data Memory
---
 ----------------------------------------------------------------------------------------
-
 
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity ALU is
+entity MUX is
 	port (
 		clk : in std_logic;
 		rst : in std_logic;
 		A, B: in signed(31 downto 0);
-		Op	: in unsigned(4 downto 0);
+		Op	: in std_logic;
 		R	: out signed(31 downto 0)
 	);
-end entity ALU;
+end entity MUX;
 
-architecture RTL of ALU is
+architecture RTL of MUX is
 
-begin process(clk)
+begin process (clk)
 	
 begin
-	
-	if(rising_edge(clk)) then
+
+	if (rising_edge(clk)) then
 		case Op is
-			when "00000" => 		-- 00000	add
-				R  <= A+B;
-			
-			when "00001" => 
-				R <= A-B;
-				
-			when "00010" => 
-				R <= A*B;
-			
-				
+			when "0"  => 
+				R <= A;
+			when "1" => 
+				R <= B;
 			when others => 
 				NULL;
-			
 		end case;
-		
 	end if;
-		
+
 end process;
+
 end architecture RTL;
