@@ -21,7 +21,7 @@
 --	- WB		writing data to register
 --	- R_type	the inputs should be interpreted differently depending on the type of instruction
 --	- I_type		ie, dismiss Rd if I-Type and dismiss all if J-type (not accessing registers)
---	- J_type
+--	- J_type    Helton: The type should not be handled by this reg unit but the controller, this controller will only take R type.
 --
 -- The results of this module is sent to the ALU
 --
@@ -38,27 +38,30 @@ entity REG is
 	port (
 		clk 						: in std_logic;
 		rst 						: in std_logic;
-		Rs, Rt, Rd					: in unsigned(4 downto 0);
-		WB_data						: in signed(31 downto 0);
-		WB, R_type, I_type, J_type	: in std_logic;
-		A,B							: out signed(31 downto 0)
+		Rs, Rt, Rd					: in std_ulogic_vector(4 downto 0);
+		WB_data						: in std_ulogic_vector(31 downto 0);
+		WB							: in std_logic;
+		A,B							: out std_ulogic_vector(31 downto 0)
 	);
 end entity REG;
 
 architecture RTL of REG is
-
-begin process(clk)
-	
+TYPE StorageT IS ARRAY(0 TO 4) OF std_ulogic_vector(31 DOWNTO 0); --Array for register storage
+SIGNAL registerfile : StorageT; --Register file
 begin
-
-	if(rising_edge(clk)) then		-- WRITE on rising edge!
-		
-		
-	end if;
-	
-	if(falling_edge(clk)) then 		-- READ on falling edge!
-		
-	end if;
-
-end process;
+	process(rst,clk)
+	begin
+		IF rst = '1' THEN
+			FOR i IN 0 TO 31 LOOP
+				registerfile(i) <= (OTHERS => '0');
+			END LOOP;
+		ELSIF rising_edge(clk) THEN			-- WRITE on rising edge!
+			IF WB = '1' THEN
+				registerfile(to_integer(unsigned(Rd))) <= WB_data;
+			END IF;
+		END IF;
+	end process;
+	registerfile(0)<= (OTHERS => '0');
+	A <= registerfile(to_integer(unsigned(Rs)));
+	B <= registerfile(to_integer(unsigned(Rt)));
 end architecture RTL;
