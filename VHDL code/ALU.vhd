@@ -78,8 +78,7 @@ begin
 			when "01010" => 
 				R <= B (15 downto 0);
 				
-			when "01011" => 
-				R <= B (30 downto 0);
+
 			
 			when "01100" => 
 				
