@@ -3,10 +3,10 @@
 -- 
 -- Inputs:
 --	- Funct	5-bit operand
-—-	- ALUOp 2-bit contol
+--	- ALUOp 2-bit contol
 --
 -- Outputs:
-—-				
+--				
 -- 	- Op		5-bit control	(for ALU)
 --		
 -- Control:
