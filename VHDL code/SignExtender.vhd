@@ -10,7 +10,7 @@
 -- Control:
 -- 	- clk		clock
 -- 
--- The results of this module is passed to the BranchMux
+-- The results of this module is passe
 --
 ----------------------------------------------------------------------------------------
 
@@ -18,16 +18,16 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity BranchAdder is
+entity SignExtender is
   port (
 		clk         : in std_logic;
 		rst		      : in std_logic;
 		Immediate   : in signed(15 downto 0);
 		Extended    : out signed(31 downto 0)
 	);
-end entity BranchAdder;
+end entity SignExtender;
 
-architecture RTL of BranchAdder is
+architecture RTL of SignExtender is
 
 begin 
 
