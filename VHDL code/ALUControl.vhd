@@ -28,7 +28,7 @@ entity ALUControl is
 		rst 					: in std_logic;
 		ALUOp					: in unsigned(3 downto 0);
 		Funct					: in unsigned(5 downto 0);
-		Op					: out unsigned(5 downto 0);
+		Op					: out unsigned(5 downto 0)
 	);
 end entity ALUControl;
 
