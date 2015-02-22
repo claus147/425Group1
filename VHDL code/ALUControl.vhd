@@ -2,7 +2,7 @@
 -- This module is implements the ALUControl
 -- 
 -- Inputs:
---	- Funct	5-bit operand
+--	- Funct	6-bit operand
 --	- ALUOp 2-bit contol
 --
 -- Outputs:
@@ -27,7 +27,7 @@ entity ALUControl is
 		clk 					: in std_logic;
 		rst 					: in std_logic;
 		ALUOp					: in unsigned(1 downto 0);
-		Funct					: in unsigned(4 downto 0);
+		Funct					: in unsigned(5 downto 0);
 		Op					: out unsigned(4 downto 0);
 	);
 end entity ALUControl;
