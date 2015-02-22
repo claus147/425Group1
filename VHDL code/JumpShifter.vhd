@@ -20,14 +20,16 @@ use ieee.numeric_std.all;
 
 entity JumpShifter is
   port (
-		clk         : in std_logic;
-		rst		      : in std_logic;
-		Immediate   : in signed(15 downto 0);
-		Extended    : out signed(31 downto 0)
+		clk         	: in std_logic;
+		rst		: in std_logic;
+		Unshifted   	: in signed(25 downto 0);
+		Shifted    	: out signed(27 downto 0)
 	);
 end entity JumpShifter;
 
 architecture RTL of JumpShifter is
+
+signal tmp: signed(27 downto 0);
 
 begin 
 
@@ -37,7 +39,8 @@ begin
 
 	   	if(rising_edge(clk)) then
        
-			Extended <= resize(Immediate,32);
+			tmp <= resize(Unshifted,28);
+			Shifted <= shift_left(tmp,2);
 		
 	   	end if;
 
