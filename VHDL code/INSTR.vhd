@@ -44,7 +44,15 @@ begin process(clk)
 
 begin
 	if(rising_edge(clk)) then
-		
+		Op_code <= Ins(31 downto 26);
+		Rs <= Ins(25 downto 21);
+		Rt <= Ins(20 downto 16);
+		Rd <= Ins(15 downto 11);
+		Shamt <= Ins(10 downto 6);
+		Funct <= Ins(5 downto 0);
+		Imm <= Ins(15 downto 0);
+		Addr <= Ins(25 downto 0); 
+
 	end if;
 	
 end process;
