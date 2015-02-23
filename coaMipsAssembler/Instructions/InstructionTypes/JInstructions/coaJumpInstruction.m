@@ -6,9 +6,9 @@ classdef coaJumpInstruction < coaJInstruction
             
             opcode = hex2dec('2');
             
-            address = str2double(location) + 1 + str2double(offset);
+            address = location + 1 + str2double(offset);
             
-            obj@coaJInstruction(location,opcode,rs,address,label);
+            obj@coaJInstruction(location,opcode,address,label);
             
         end
         

@@ -16,8 +16,16 @@ function list = coaParseAssembly(filename)
     
     while ischar(tline)
         
-        tmp = textscan(tline,'%c');
-        line_str = tmp{1}';
+        if isempty(tline)
+            
+            line_str = [];
+            
+        else
+           tmp = textscan(tline,'%c');
+           line_str = tmp{1}'; 
+            
+        end
+        
         if isempty(line_str)
         
             % Do nothing
