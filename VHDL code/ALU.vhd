@@ -35,6 +35,10 @@ end entity ALU;
 
 architecture RTL of ALU is
 signal B_int : integer;
+signal A_int: integer;
+signal MD_temp : signed (63 downto 0); -- temp signal for multiplication and division
+signal hi, lo: signed (31 downto 0);
+
 begin process(clk)
 	
 begin
@@ -48,11 +52,15 @@ begin
 				R <= A-B;
 				
 			when "00010" => 		-- 00010	MULT
-				R <= A*B;
-			
-			when "00011" =>
-				R <= A / B;
-			
+				MD_temp <= A*B;
+				lo <= MD_temp(31 downto 0);
+				hi <= MD_temp(63 downto 32);
+				
+			when "00011" =>			-- 00011	DIV
+				MD_temp <= A / B;
+				lo <= MD_temp(31 downto 0);
+				hi <= MD_temp(63 downto 32);
+				
 			when "00100" => 
 				if (A<B) then
 					R <= "00000000000000000000000000000001";
@@ -72,13 +80,11 @@ begin
 			when "01000" => 
 				R <= A xor B;
 			
-			when "01001" => 
-				R <= B (31 downto 16);
+			when "01001" => 	-- move from high
+				R <= hi;
 			
-			when "01010" => 
-				R <= B (15 downto 0);
-				
-
+			when "01010" => 	-- move from low
+				R <= lo;
 			
 			when "01100" => 
 				
