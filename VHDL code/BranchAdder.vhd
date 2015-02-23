@@ -21,8 +21,8 @@ use ieee.numeric_std.all;
 
 entity BranchAdder is
 	port (
-		clk       	: in std_logic;
-		rst		: in std_logic;
+		--clk       	: in std_logic;
+		--rst		: in std_logic;
 		PC	      	: in signed(31 downto 0);
         	Offset    	: in signed(31 downto 0);
 		NPC       	: out signed(31 downto 0)
@@ -34,18 +34,8 @@ architecture RTL of BranchAdder is
     	signal offsetShifted : signed(31 downto 0);
 
 begin 
-
-	process(clk)
-	
-    	begin
-
-	   	if(rising_edge(clk)) then
        
-          		offsetShifted <= shift_left(Offset,2);
-			NPC <= PC + offsetShifted;
-		
-	   	end if;
-
-    	end process;
+        offsetShifted <= shift_left(Offset,2);
+	NPC <= PC + offsetShifted;
     
 end architecture RTL;
