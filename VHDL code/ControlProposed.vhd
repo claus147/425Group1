@@ -41,7 +41,7 @@ entity Control is
         Branch                  : out std_logic;
         MemRead                 : out std_logic;
         MemToReg                : out std_logic;
-        ALUOp			: out std_logic_vector(3 downto 0);
+        ALUOp			: out std_ulogic_vector(3 downto 0);
         MemWrite                : out std_logic;
         ALUSrc                  : out std_logic;
 	RegWrite                : out std_logic
