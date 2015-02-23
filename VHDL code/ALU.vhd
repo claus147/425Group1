@@ -39,7 +39,8 @@ signal A_int: integer;
 signal MD_temp : signed (63 downto 0); -- temp signal for multiplication and division
 signal hi, lo: signed (31 downto 0);
 
-begin process(clk)
+begin 
+process(clk)
 	
 begin
 	
