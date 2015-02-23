@@ -57,9 +57,8 @@ begin
 				hi <= MD_temp(63 downto 32);
 				
 			when "00011" =>			-- 00011	DIV
-				MD_temp <= A / B;
-				lo <= MD_temp(31 downto 0);
-				hi <= MD_temp(63 downto 32);
+				lo <= A / B;
+				hi <= mod(A,B);
 				
 			when "00100" => 
 				if (A<B) then
