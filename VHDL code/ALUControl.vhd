@@ -26,9 +26,9 @@ entity ALUControl is
 	port (
 		clk 					: in std_logic;
 		rst 					: in std_logic;
-		ALUOp					: in unsigned(3 downto 0);
-		Funct					: in unsigned(5 downto 0);
-		Op					: out unsigned(5 downto 0)
+		ALUOp					: in std_ulogic_vector(3 downto 0);
+		Funct					: in std_ulogic_vector(5 downto 0);
+		Op					: out std_ulogic_vector(5 downto 0)
 	);
 end entity ALUControl;
 
@@ -72,7 +72,7 @@ begin
 				
 			when "0111" => -- lui (do lui in ALU)
 			
-				--Op <= "foo"; define lui in ALU
+				Op <= "111111";
 				
 			when "1000" => -- jal
 			
