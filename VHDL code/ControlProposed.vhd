@@ -50,7 +50,7 @@ end entity Control;
 
 architecture RTL of Control is
 
-signal out_vec; std_logic_vector(11 downto 0);
+signal out_vec: std_logic_vector(11 downto 0);
 
 begin 
 
