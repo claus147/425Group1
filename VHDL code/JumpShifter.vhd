@@ -33,17 +33,7 @@ signal tmp: signed(27 downto 0);
 
 begin 
 
-	process(clk)
-	
-    	begin
-
-	   	if(rising_edge(clk)) then
-       
-			tmp <= resize(Unshifted,28);
-			Shifted <= shift_left(tmp,2);
-		
-	   	end if;
-
-    	end process;
+	tmp <= resize(Unshifted,28);
+	Shifted <= shift_left(tmp,2);
     
 end architecture RTL;
