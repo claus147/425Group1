@@ -4,8 +4,6 @@
 -- This implementation allows "simultaneous" read-write 
 --
 --
--- We need a register file!!!
---
 -- Inputs:
 --	- Rs 		5-bit operand
 --	- Rt		5-bit operand 
@@ -19,9 +17,7 @@
 -- Control:
 -- 	- clk		clock
 --	- WB		writing data to register
---	- R_type	the inputs should be interpreted differently depending on the type of instruction
---	- I_type		ie, dismiss Rd if I-Type and dismiss all if J-type (not accessing registers)
---	- J_type    Helton: The type should not be handled by this reg unit but the controller, this controller will only take R type.
+--  - rst       reset
 --
 -- The results of this module is sent to the ALU
 --
@@ -51,17 +47,17 @@ SIGNAL registerfile : StorageT; --Register file
 begin
 	process(rst,clk)
 	begin
-		IF rst = '1' THEN
+		IF rst = '1' THEN 
 			FOR i IN 0 TO 31 LOOP
-				registerfile(i) <= (OTHERS => '0');
+				registerfile(i) <= (OTHERS => '0');-- Reset all the registers to 0 when rst is high
 			END LOOP;
 		ELSIF rising_edge(clk) THEN			-- WRITE on rising edge!
 			IF WB = '1' THEN
-				registerfile(to_integer(unsigned(Rd))) <= WB_data;
+				registerfile(to_integer(unsigned(Rd))) <= WB_data; -- Write the WB_data into the Rd register
 			END IF;
 		END IF;
 	end process;
-	registerfile(0)<= (OTHERS => '0');
-	A <= registerfile(to_integer(unsigned(Rs)));
+	registerfile(0)<= (OTHERS => '0'); --Hard wire the register 0 to be 0
+	A <= registerfile(to_integer(unsigned(Rs))); -- output the data in the register address Rs and Rt
 	B <= registerfile(to_integer(unsigned(Rt)));
 end architecture RTL;
