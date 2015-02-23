@@ -39,14 +39,14 @@ entity REG is
 		clk 						: in std_logic;
 		rst 						: in std_logic;
 		Rs, Rt, Rd					: in std_ulogic_vector(4 downto 0);
-		WB_data						: in std_ulogic_vector(31 downto 0);
+		WB_data						: in signed(31 downto 0);
 		WB							: in std_logic;
-		A,B							: out std_ulogic_vector(31 downto 0)
+		A,B							: out signed(31 downto 0)
 	);
 end entity REG;
 
 architecture RTL of REG is
-TYPE StorageT IS ARRAY(0 TO 4) OF std_ulogic_vector(31 DOWNTO 0); --Array for register storage
+TYPE StorageT IS ARRAY(0 TO 31) OF signed(31 DOWNTO 0); --Array for register storage
 SIGNAL registerfile : StorageT; --Register file
 begin
 	process(rst,clk)
