@@ -39,7 +39,7 @@ begin
 		when "10" => 
 			R <= C;
 		when "11" => 
-			R <= B;
+			R <= D;
 		when others => 
 			NULL;
 	end case;
