@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------
--- This module is used to implement a 2x1MUX
+-- This module is used to implement a 4x1MUX
 -- 
 -- Inputs:
 --	- A			32-bit operand
@@ -18,15 +18,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity MUX is
+entity 4to1MUX is
 	port (
 		A,B,C,D: in signed(31 downto 0);
 		Op	: in std_ulogic_vector(1 downto 0);
 		R	: out signed(31 downto 0)
 	);
-end entity MUX;
+end entity 4to1MUX;
 
-architecture RTL of MUX is
+architecture RTL of 4to1MUX is
 
 begin process (clk)
 	
