@@ -24,7 +24,7 @@ use ieee.numeric_std.all;
 
 entity ALU is
 	port (
-		clk 		 in std_logic;
+		clk 		: in std_logic;
 		rst 		: in std_logic;
 		A, B		: in signed(31 downto 0);
 		Op		: in std_ulogic_vector(5 downto 0);
