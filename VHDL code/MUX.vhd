@@ -20,8 +20,6 @@ use ieee.numeric_std.all;
 
 entity MUX is
 	port (
-		clk : in std_logic;
-		rst : in std_logic;
 		A, B: in signed(31 downto 0);
 		Op	: in std_logic;
 		R	: out signed(31 downto 0)
@@ -33,17 +31,14 @@ architecture RTL of MUX is
 begin process (clk)
 	
 begin
-
-	if (rising_edge(clk)) then
-		case Op is
-			when "0"  => 
-				R <= A;
-			when "1" => 
-				R <= B;
-			when others => 
-				NULL;
-		end case;
-	end if;
+	case Op is
+		when "0"  => 
+			R <= A;
+		when "1" => 
+			R <= B;
+		when others => 
+			NULL;
+	end case;
 
 end process;
 
