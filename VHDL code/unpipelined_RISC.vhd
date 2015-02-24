@@ -21,7 +21,8 @@ use ieee.numeric_std.all;
 entity unpipelined_RISC is
 	port (
 		clk 			: in std_logic;
-		rst 			: in std_logic
+		rst 			: in std_logic;
+		PC				: in std_logic
 	);
 end entity unpipelined_RISC;
 
@@ -171,6 +172,47 @@ component Main_Memory
 	);
 end component;
 
+component Main_Memory
+	port (
+			clk : in std_logic;
+			address : in integer;
+			Word_Byte: in std_logic; -- when '1' you are interacting with the memory in word otherwise in byte
+			we : in std_logic;
+			wr_done:out std_logic; --indicates that the write operation has been done.
+			re :in std_logic;
+			rd_ready: out std_logic; --indicates that the read data is ready at the output.
+			data : inout std_logic_vector((Num_Bytes_in_Word*Num_Bits_in_Byte)-1 downto 0);        
+			initialize: in std_logic;
+			dump: in std_logic
+		 );
+end component;
+
 begin
+	
+	regist :reg
+	port map (clk => clk, 
+		rst => rst, 
+		Rs => instruction(25 downto 21), 
+		Rt => instruction(20 downto 16),
+		Rd => MUX_reg_out,
+		WB_data => MUX_data_out,
+		WB => reg_write_c,
+		A => ALU_in_A,
+		B => ALU_in_B
+			
+	);
+	
+	sign : SignExtender
+	port map (clk => clk, 
+		rst => rst, 
+		Immediate => signed(instruction(15 downto 0)),
+		Extended => signed(sign_extend_out)
+	);
+	
+	
+	
+	--convert : g35_binary_to_BCD
+	--port map ( clock => clock, bin => unsigned_bin, BCD => conversion_memory);
+	
 
 end architecture RTL;
