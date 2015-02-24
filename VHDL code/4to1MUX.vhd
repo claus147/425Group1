@@ -28,7 +28,9 @@ end entity 4to1MUX;
 
 architecture RTL of 4to1MUX is
 
-begin process (clk)
+begin 
+
+process (clk)
 	
 begin
 	case Op is
