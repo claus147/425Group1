@@ -110,7 +110,7 @@ begin
 				
 			when "001000" => 	-- jr
 			
-				-- TODO: Jump Register
+				R <= A;
 			
 			when others => 
 				NULL;
