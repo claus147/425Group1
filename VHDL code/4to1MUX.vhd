@@ -41,7 +41,7 @@ begin
 		when "11" => 
 			R <= B;
 		when others => 
-			NULL;
+			NULL
 	end case;
 
 end process;
