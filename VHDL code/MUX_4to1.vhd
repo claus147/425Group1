@@ -18,15 +18,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity 4to1MUX is
+entity MUX_4to1 is
 	port (
 		A,B,C,D: in signed(31 downto 0);
 		Op	: in std_ulogic_vector(1 downto 0);
 		R	: out signed(31 downto 0)
 	);
-end entity 4to1MUX;
+end entity MUX_4to1;
 
-architecture RTL of 4to1MUX is
+architecture RTL of MUX4to1 is
 
 begin 
 
