@@ -26,7 +26,7 @@ entity MUX_4to1 is
 	);
 end entity MUX_4to1;
 
-architecture RTL of MUX4to1 is
+architecture RTL of MUX_4to1 is
 
 begin 
 
