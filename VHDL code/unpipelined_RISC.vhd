@@ -57,9 +57,9 @@ component ALU
 		clk 			: in std_logic;
 		rst 			: in std_logic;
 		A, B			: in signed(31 downto 0);
-		Op				: in unsigned(4 downto 0);
-		R				: out signed(31 downto 0);
-		C_out			: out std_logic
+		Op			: in std_ulogic_vector(5 downto 0);
+		R			: out signed(31 downto 0);
+		zero			: out std_logic
 	);
 end component;
 
@@ -67,35 +67,35 @@ component ALUControl
 	port (
 		clk 			: in std_logic;
 		rst 			: in std_logic;
-		ALUOp			: in unsigned(3 downto 0);
-		Funct			: in unsigned(5 downto 0);
-		Op				: out unsigned(5 downto 0)
+		ALUOp			: in std_ulogic_vector(3 downto 0);
+		Funct			: in std_ulogic_vector(5 downto 0);
+		Op			: out std_ulogic_vector(5 downto 0)
 	);
 end component;	
 
 component BranchAdder
 	port (
-		clk       		: in std_logic;
-		rst				: in std_logic;
 		PC	      		: in signed(31 downto 0);
-        Offset    		: in signed(31 downto 0);
+        	Offset    		: in signed(31 downto 0);
 		NPC       		: out signed(31 downto 0)
 	);
 end component;	
 
 component Control 
 	port (
-		clk 			: in std_logic;
-		rst 			: in std_logic;
-	    Opcode          : in std_logic_vector(5 downto 0);
-	    RegDst          : out std_logic;
-	    Jump            : out std_logic;
-	    Branch          : out std_logic;
-	    MemRead         : out std_logic;
-	    MemToReg        : out std_logic;
-	    ALUOp			: out std_logic_vector(3 downto 0);
-	    MemWrite        : out std_logic;
-	    ALUSrc          : out std_logic;
+		clk 		: in std_logic;
+		rst 		: in std_logic;
+	    	Opcode          : in std_ulogic_vector(5 downto 0);
+	    	
+		RegDst          : out std_logic;
+	    	Jump            : out std_logic;
+	    	Branch          : out std_logic;
+	    	BranchN		: out std_logic;
+	    	MemRead         : out std_logic;
+	    	MemToReg        : out std_logic;
+	    	ALUOp		: out std_ulogic_vector(3 downto 0);
+	    	MemWrite        : out std_logic;
+	    	ALUSrc          : out std_logic;
 		RegWrite        : out std_logic
 	);
 end component;
@@ -114,18 +114,16 @@ end component;
 
 component JumpShifter 
   port (
-		clk         	: in std_logic;
-		rst				: in std_logic;
 		Unshifted   	: in signed(25 downto 0);
-		Shifted    		: out signed(27 downto 0)
+		Shifted    	: out signed(27 downto 0)
 	);
 end component;
 	
 component MUX 
 	port (
-		clk : in std_logic;
-		rst : in std_logic;
-		A, B: in signed(31 downto 0);
+		clk 	: in std_logic;
+		rst 	: in std_logic;
+		A, B	: in signed(31 downto 0);
 		Op	: in std_logic;
 		R	: out signed(31 downto 0)
 	);
@@ -133,10 +131,10 @@ end component;
 
 component PC_add 
 	port (
-		clk : in std_logic;
-		rst : in std_logic;
+		clk 	: in std_logic;
+		rst 	: in std_logic;
 		PC	: in unsigned(25 downto 0);
-		NPC : out unsigned(25 downto 0)
+		NPC 	: out unsigned(25 downto 0)
 	);
 end component;
 
@@ -146,17 +144,30 @@ component REG
 		rst 			: in std_logic;
 		Rs, Rt, Rd		: in std_ulogic_vector(4 downto 0);
 		WB_data			: in std_ulogic_vector(31 downto 0);
-		WB				: in std_logic;
-		A,B				: out std_ulogic_vector(31 downto 0)
+		WB			: in std_logic;
+		A,B			: out std_ulogic_vector(31 downto 0)
 	);
 end component;
 
 component SignExtender 
   	port (
-		clk         	: in std_logic;
-		rst		      	: in std_logic;
 		Immediate  	 	: in signed(15 downto 0);
-		Extended    	: out signed(31 downto 0)
+		Extended    		: out signed(31 downto 0)
+	);
+end component;
+
+component Main_Memory
+  	port (
+		clk 		: in std_logic;
+		address 	: in integer;
+		Word_Byte	: in std_logic; -- when '1' you are interacting with the memory in word otherwise in byte
+		we 		: in std_logic;
+		wr_done		: out std_logic; --indicates that the write operation has been done.
+		re 		: in std_logic;
+		rd_ready	: out std_logic; --indicates that the read data is ready at the output.
+		data 		: inout std_logic_vector((Num_Bytes_in_Word*Num_Bits_in_Byte)-1 downto 0);        
+		initialize	: in std_logic;
+		dump		: in std_logic
 	);
 end component;
 
