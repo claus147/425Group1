@@ -5,7 +5,7 @@
 --	- OP_code	6-bit operand
 -- 
 -- Outputs:						there are a few missing~ ok missing a lot
--- 	- Op		5-bit control	(for ALU)
+-- 	- funct		6-bit control	(for ALU)
 -- 	- R_type	1-bit control
 --	- I_type	1-bit control
 --	- J_type	1-bit control
