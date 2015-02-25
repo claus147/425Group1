@@ -2,16 +2,17 @@
 -- This module is used to implement the ALU
 -- 
 -- Inputs:
---	- A			32-bit operand
---	- B			32-bit operand 
+--	- A		32-bit operand
+--	- B		32-bit operand 
 -- 
 -- Output:
--- 	- R			32-bit result
--- 	- zero			1-bit result
+-- 	- R		32-bit result
+-- 	- zero		1-bit result
 --
 -- Control:
 -- 	- Op		choose between operations
 -- 	- clk		clock
+--	- rst		reset
 -- 
 ----------------------------------------------------------------------------------------
 
