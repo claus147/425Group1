@@ -1,10 +1,17 @@
 ----------------------------------------------------------------------------------------
 -- This module is used to as a register that stores one value (PC, A, B, ALUout)
 -- 
+--	Inputs:
+--	- reg_in	input of the register unsigned
+--
+--
+--	Outputs:
+--	- reg_out	output of the register unsigned
 --	
--- Control:
+--	Control:
 -- 	- clk		clock
 --	- rst		reset
+--	- write_pc	write pc control signal
 -- 
 -- The module will present its input at the output on the clock edge
 ----------------------------------------------------------------------------------------
@@ -29,7 +36,7 @@ architecture arch of SingleREG is
 	
 		begin
 			if(rising_edge(clk) and write_pc = '1') then
-				reg_out <= reg_in;
+				reg_out <= reg_in;	-- present the input at the output of the register on the clock edge and when write_pc is high
 		
 			end if;
 		
