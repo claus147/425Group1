@@ -32,9 +32,9 @@ entity INSTR is
 		rst 				: in std_logic;
 		IRwrite				: in std_logic;
 		Ins					: in unsigned(31 downto 0);
-		--Op_code, Funct		: out unsigned(5 downto 0);
+		--Op_code, Funct	: out unsigned(5 downto 0);
 		--Rs, Rt, Rd, Shamt	: out unsigned(4 downto 0);
-		--Imm					: out unsigned(15 downto 0);
+		--Imm				: out unsigned(15 downto 0);
 		--Addr				: out unsigned(25 downto 0)
 		ins_out				:out std_ulogic_vector(31 downto 0)
 	);
