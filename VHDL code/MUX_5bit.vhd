@@ -20,8 +20,8 @@ use ieee.numeric_std.all;
 
 entity MUX_5bit is
 	port (
-		A,B: in signed(4 downto 0);
-		Op	: in std_logic;
+		A,B	: in signed(4 downto 0);
+		Op	: in std_ulogic_vector(1 downto 0);
 		R	: out signed(4 downto 0)
 	);
 end entity MUX_5bit;
@@ -34,10 +34,12 @@ process (clk)
 	
 begin
 	case Op is
-		when "0"  => 
+		when "00"  => 
 			R <= A;
-		when "1" => 
+		when "01" => 
 			R <= B;
+		when "10" => 
+			R <= "11111";
 		when others => 
 			NULL;
 	end case;
