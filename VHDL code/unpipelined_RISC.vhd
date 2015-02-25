@@ -292,7 +292,19 @@ architecture RTL of unpipelined_RISC is
 			R => MUX_J_B_out	
 		);
 		
-		
+		mem : Main_memory
+		port (
+			clk => clk,
+			address => B,
+			Word_Byte => '0',
+			we => mem_write_c,
+			wr_done => '0',	
+			re => mem_read_c,
+			rd_ready => '0',
+			data => mem_out,     
+			initialize => '0',
+			dump => '0'
+		);
 		
 		controler :control --will need to change, not updated
 		port map( clk => clk,			
@@ -357,10 +369,6 @@ architecture RTL of unpipelined_RISC is
 			Extended => signed(sign_extend_out)
 		);
 		
-		
-		
-		--convert : g35_binary_to_BCD
-		--port map ( clock => clock, bin => unsigned_bin, BCD => conversion_memory);
 		
 
 end architecture RTL;
