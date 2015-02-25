@@ -7,13 +7,12 @@
 -- 
 -- Output:
 -- 	- R			32-bit result
--- 
+-- 	- zero			1-bit result
+--
 -- Control:
 -- 	- Op		choose between operations
 -- 	- clk		clock
 -- 
--- The results of this module is stored in Data Memory
---
 ----------------------------------------------------------------------------------------
 
 
@@ -51,66 +50,66 @@ begin
 	
 	if(rising_edge(clk)) then
 		case Op is
-			when "100000" => 		-- 00000	ADD, ADDI,
+			when "100000" => 			-- ADD, ADDI,
 				R  <= A+B;
 			
-			when "100010" => 		-- 00001	SUB
+			when "100010" => 			-- SUB
 				R <= A-B;
 				internal_R <=to_integer(A-B);
 				
-			when "011000" => 		-- 00010	MULT
+			when "011000" => 			-- MULT
 				MD_temp <= A*B;
 				lo <= MD_temp(31 downto 0);
 				hi <= MD_temp(63 downto 32);
 				
-			when "011010" =>			-- 00011	DIV
+			when "011010" =>			-- DIV
 				lo <= A / B;
 				hi <= A mod B;
 				
-			when "101010" =>  	-- slt
+			when "101010" =>  			-- SLT
 				if (A<B) then
 					R <= "00000000000000000000000000000001";
 				else
 					R <= "00000000000000000000000000000000";  
 				end if;
 				
-			when "100100" => 	-- and
+			when "100100" => 			-- AND
 				R <= A and B;
 			
-			when "100101" =>	-- or 
+			when "100101" =>			-- OR
 				R <= A or B;
 			
-			when "100111" =>	-- nor 
+			when "100111" =>			-- NOR
 				R <= A nor B;
 			
-			when "100110" =>	-- xor 
+			when "100110" =>			-- XOR
 				R <= A xor B;
 			
-			when "010000" => 	-- move from high
+			when "010000" => 			-- MFHI
 				R <= hi;
 			
-			when "010010" => 	-- move from low
+			when "010010" => 			-- MFLO
 				R <= lo;
 			
-			when "000000" => 	-- sll
+			when "000000" => 			-- SLL
 				
 				B_int <= to_integer(B);
 				R <= A sll B_int;
 				
-			when "000010" =>	-- srl
+			when "000010" =>			-- SRL
 				
 				B_int <= to_integer(B);
 				R <= A srl B_int;
 			
-			when "000011" =>  	-- sra
+			when "000011" =>  			-- SRA
 				B_int <= to_integer(B);
 				R <= A +Shift_right(A, B_int);
 				
-			when "111111" => 	-- lui
+			when "111111" => 			-- LUI
 			
 				R <= resize(B(31 downto 16),32);
 				
-			when "001000" => 	-- jr
+			when "001000" => 			-- JR
 			
 				R <= A;
 			
