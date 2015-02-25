@@ -80,6 +80,7 @@ begin
 						next_state  <=  SB;
 						
 					when "101011" =>			--sw
+
 						
 						next_state  <=  F;
 						
