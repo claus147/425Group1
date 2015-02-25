@@ -20,9 +20,9 @@ use ieee.numeric_std.all;
 
 entity JumpShifter is
   port (
-		--clk         	: in std_logic;
+		--clk       : in std_logic;
 		--rst		: in std_logic;
-		Unshifted   	: in unsigned(25 downto 0);
+		Unshifted   : in unsigned(25 downto 0);
 		Shifted    	: out unsigned(27 downto 0)
 	);
 end entity JumpShifter;
@@ -33,7 +33,7 @@ signal tmp: unsigned(27 downto 0);
 
 begin 
 
-	tmp <= resize(Unshifted,28);
-	Shifted <= shift_left(tmp,2);
+	tmp <= resize(Unshifted,28);	--resize from 26 to 28
+	Shifted <= shift_left(tmp,2);	--shift left by 2
     
 end architecture RTL;
