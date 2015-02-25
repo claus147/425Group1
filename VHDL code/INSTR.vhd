@@ -30,11 +30,13 @@ entity INSTR is
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
+		IRwrite				: in std_logic;
 		Ins					: in unsigned(31 downto 0);
-		Op_code, Funct		: out unsigned(5 downto 0);
-		Rs, Rt, Rd, Shamt	: out unsigned(4 downto 0);
-		Imm					: out unsigned(15 downto 0);
-		Addr				: out unsigned(25 downto 0)
+		--Op_code, Funct		: out unsigned(5 downto 0);
+		--Rs, Rt, Rd, Shamt	: out unsigned(4 downto 0);
+		--Imm					: out unsigned(15 downto 0);
+		--Addr				: out unsigned(25 downto 0)
+		ins_out				:out unsigned(31 downto 0)
 	);
 end entity INSTR;
 
@@ -44,14 +46,15 @@ begin process(clk)
 
 begin
 	if(rising_edge(clk)) then
-		Op_code <= Ins(31 downto 26);
-		Rs <= Ins(25 downto 21);
-		Rt <= Ins(20 downto 16);
-		Rd <= Ins(15 downto 11);
-		Shamt <= Ins(10 downto 6);
-		Funct <= Ins(5 downto 0);
-		Imm <= Ins(15 downto 0);
-		Addr <= Ins(25 downto 0); 
+		ins_out <= ins;
+		--Op_code <= Ins(31 downto 26);
+		--Rs <= Ins(25 downto 21);
+		--Rt <= Ins(20 downto 16);
+		--Rd <= Ins(15 downto 11);
+		--Shamt <= Ins(10 downto 6);
+		--Funct <= Ins(5 downto 0);
+		--Imm <= Ins(15 downto 0);
+		--Addr <= Ins(25 downto 0); 
 
 	end if;
 	
