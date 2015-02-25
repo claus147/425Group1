@@ -3,12 +3,24 @@
 -- This module takes as input a series of instructions stored in the Instruction Memory
 -- The unpipelined RISC processor is composed of:
 -- 		- PC					26-bit address initialized to 0x0		
---		- 32-bit registers		R0 wired to 0x0000						SETUP need a table that maps address to data
---		- IR					breakdown the instruction				SETUP
---		- ALU															IN PROGRESS
---		- Multiplexers			4 32-bit MUX							DONE!
---		- Adder					increment PC							DONE!
---		- Control module		translate opcode to control bits		SETUP
+--		- 32-bit registers		R0 wired to 0x0000						
+--		- IR					breakdown the instruction															
+--		- ALU					arithmetic logic unit
+--		- ALUControl			translate ALU opcode and funct for ALU
+--		- BranchAdder			adder for branch
+--		- FSM_control			translate opcode to control bits
+--		- INSTR					breakdown the instruction	
+--		- JumpShifter			to shift and concatenate the address for jump address
+--		- MUX_unsigned			unsigned 2 to 1 mux
+--		- MUX					signed 2 to 1 mux
+--		- MUX_3to1				unsigned 3 to 1 mux
+--		- MUX_4to1				signed 4 to 1 mux
+--		- MUX_5bit				std_ulogic_vector 2 to 1 mux (5 bit)
+--		- PC_add				increment PC
+--		- REG					32-bit registers (R0 wired to 0x0000)	
+--		- SignExtender			extends the value from 16 bit to 32 bit with the sign
+--		- Main_Memory			Main memory module that stores the 
+--		- SingleREG				register to hold a single value
 --
 -- The results of this module is stored in Data Memory
 --
@@ -235,6 +247,7 @@ architecture RTL of unpipelined_RISC is
 			reg_out				: out unsigned(31 downto 0)
 		);
 	end component;
+	
 	-----------------------------------------BEGIN--------------------------------------------
 	begin
 		write_pc <= PC_write_c or ((pc_write_cond_c and not PC_write_cond_N_c and ALU_zero) or (not PC_write_cond_C and PC_write_cond_N_c and not ALU_zero));
