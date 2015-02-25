@@ -187,23 +187,27 @@ with current_state select
 	MemRead <= 	'1' when A,
 			'0' when B,
 			'1' when D,
-			'1' when LB;
+			'1' when LB,
+			'0' when others;
 					
 with current_state select
 	IorD <= 	'0' when A,
 			'1' when D,
 			'1' when F,
 			'1' when LB,
-			'1' when SB;				
+			'1' when SB,
+			'0' when others;				
 
 with current_state select
 	MemWrite <= 	'0' when A,
 			'1' when F,
-			'1' when SB;
+			'1' when SB,
+			'0' when others;
 
 with current_state select
 	IRWrite <= 	'1' when A,
-			'0' when B;					
+			'0' when B,
+			'0' when others;					
 
 with current_state select
 	ALUSrcA <= 	'0' when A,
@@ -218,7 +222,8 @@ with current_state select
 			'1' when Ori,
 			'1' when Xori,
 			'1' when Slti,
-			'1' when Lui;
+			'1' when Lui,
+			'0' when others;
 				
 with current_state select
 	ALUSrcB <= 	"01" when A,
@@ -233,7 +238,8 @@ with current_state select
 			"10" when Ori,
 			"10" when Xori,
 			"10" when Slti,
-			"10" when Lui;
+			"10" when Lui,
+			"00" when others;
 
 with current_state select
 	ALUOp <= 	"0001" when A,
@@ -250,59 +256,71 @@ with current_state select
 			"0101" when Ori,
 			"0110" when Xori,
 			"0011" when Slti,
-			"0111" when Lui;
+			"0111" when Lui,
+			"0000" when others;
 
 with current_state select
 	PCWrite <= 	'1' when A,
 			'0' when B,
-			'1' when J;
+			'1' when J,
+			'0' when others;
 
 with current_state select
 	PCSource <= 	"00" when A,
 			"01" when I,
 			"10" when J,
-			"01" when K;
+			"01" when K,
+			"00" when others;
 
 with current_state select
 	PCWriteCond <= 	'0' when A,
 			'1' when I,
-			'0' when K;
+			'0' when K,
+			'0' when others;
 
 with current_state select
 	PCWriteCondN <= '0' when I,
-			'1' when K;
+			'1' when K,
+			'0' when others;
 
 with current_state select
 	RegDst <= 	"00" when E,
 			"01" when H,
-			"10" when JALCMP;
+			"10" when JALCMP,
+			"00" when others;
 
 with current_state select
 	RegWrite <= 	'0' when A,
 			'1' when E,
 			'1' when H,
-			'1' when JALCMP;
+			'1' when JALCMP,
+			'0' when others;
 					
 with current_state select
 	MemtoReg <= 	'1' when E,
 			'0' when H,
-			'0' when JALCMP;
+			'0' when JALCMP,
+			'0' when others;
 
 with current_state select
 	Dump <= 	'0' when A,
-			'1' when FIN;	
+			'1' when FIN,
+			'0' when others;	
 
 with current_state select
 	Reset <= 	'0' when A,
-			'1' when INIT;	
+			'1' when INIT,
+			'0' when others;	
 
 with current_state select
 	InitMem <= 	'0' when A,
-			'1' when INIT;
+			'1' when INIT,
+			'0' when others;
 			
 with current_state select
 	WordByte <= 	'1' when A,
 			'0' when LB,
-			'0' when SB;
+			'0' when SB,
+			'0' when others;
 				
 end architecture RTL;

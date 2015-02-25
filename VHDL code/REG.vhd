@@ -56,8 +56,8 @@ begin
 				registerfile(to_integer(unsigned(Rd))) <= WB_data; 	-- Write the WB_data into the Rd register
 			END IF;
 		END IF;
+		registerfile(0)<= (OTHERS => '0'); 						-- Hard wire the register 0 to be 0
 	end process;
-	registerfile(0)<= (OTHERS => '0'); 						-- Hard wire the register 0 to be 0
 	A <= registerfile(to_integer(unsigned(Rs))); 					-- output the data in the register address Rs and Rt
 	B <= registerfile(to_integer(unsigned(Rt)));
 end architecture RTL;

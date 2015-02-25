@@ -28,7 +28,7 @@ end entity MUX_unsigned;
 
 architecture RTL of MUX_unsigned is
 
-begin process
+begin process (Op)
 	
 begin
 	case Op is

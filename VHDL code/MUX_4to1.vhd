@@ -32,7 +32,7 @@ architecture RTL of MUX_4to1 is
 
 begin 
 
-process	
+process	(Op)
 begin
 	case Op is
 		when "00"  => 

@@ -30,7 +30,7 @@ architecture RTL of MUX_5bit is
 
 begin 
 
-process
+process(Op)
 	
 begin
 	case Op is

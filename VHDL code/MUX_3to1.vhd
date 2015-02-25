@@ -31,7 +31,7 @@ architecture RTL of MUX_3to1 is
 
 begin 
 
-process
+process (Op)
 	
 begin
 	case Op is

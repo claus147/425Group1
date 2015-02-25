@@ -28,7 +28,7 @@ end entity MUX;
 
 architecture RTL of MUX is
 
-begin process
+begin process (Op)
 	
 begin
 	case Op is
