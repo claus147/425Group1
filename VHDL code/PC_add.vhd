@@ -9,8 +9,9 @@
 -- 
 -- Control:
 -- 	- clk		clock
--- 
--- The results of this module is stored in Data Memory
+-- 	- rst		reset
+--
+-- The results of this module points to the next instruction to be executed
 --
 ----------------------------------------------------------------------------------------
 
