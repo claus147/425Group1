@@ -7,19 +7,19 @@ use ieee.numeric_std.all;
 
 entity FSM_control is
 	port (
-		clk : in std_logic;
-		rst : in std_logic;
+		clk 				: in std_logic;
+		rst 				: in std_logic;
 		MemReadReady, MemWriteDone	: in std_logic;
-		op	: in std_ulogic_vector(5 downto 0);
-		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, RegDst, Dump, Reset, InitMem	: out std_logic;
-		PCSource, ALUSrcB	: out std_ulogic_vector(2 downto 0);
-		ALUOp	:	out std_ulogic_vector(3 downto 0)
+		op				: in std_ulogic_vector(5 downto 0);
+		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem	: out std_logic;
+		PCSource, ALUSrcB, RegDst	: out std_ulogic_vector(1 downto 0);
+		ALUOp				: out std_ulogic_vector(3 downto 0)
 	);
 end entity FSM_control;
 
 architecture RTL of FSM_control is
 	
-	type state_type is (A, B, C, D, E, F, G, H, I, J, K, INIT, FIN, Addi, Andi, Ori, Xori, Slti, Lui, Icomp);
+	type state_type is (A, B, C, D, E, F, G, H, I, J, K, INIT, FIN, Addi, Andi, Ori, Xori, Slti, Lui, Icomp,JAL,JALCMP);
 	signal current_state, next_state : state_type;
 	signal temp_out : std_ulogic_vector(18 downto 0);
 	
@@ -64,7 +64,7 @@ begin
 					when "000010" => 		-- j
 						next_state <= J;
 					when "000011" => 		-- jal
-						next_state <= J;
+						next_state <= JAL;
 					when others => 			-- invalid
 						null;
 				end case;
@@ -134,7 +134,13 @@ begin
 				next_state <= Icomp;
 			when Lui => 
 				next_state <= Icomp;
-			When Icomp => 
+			when Icomp => 
+				if (memReadReady='1') then
+					next_state  <=  A;
+				end if;
+			when JAL =>
+				next_state <= JALCMP;
+			when JALCMP =>
 				if (memReadReady='1') then
 					next_state  <=  A;
 				end if;
@@ -155,110 +161,116 @@ begin
 end process;
 
 with current_state select
-	MemRead <= '1' when A,
-				'0' when B,
-				'1' when D;
+	MemRead <= 	'1' when A,
+			'0' when B,
+			'1' when D;
 					
 with current_state select
-	IorD <= '0' when A,
+	IorD <= 	'0' when A,
 			'1' when D,
 			'1' when f;				
 
 with current_state select
-	MemWrite <= '0' when A,
-				'1' when F;
+	MemWrite <= 	'0' when A,
+			'1' when F;
 
 with current_state select
-	IRWrite <= '1' when A,
-				'0' when B;					
+	IRWrite <= 	'1' when A,
+			'0' when B;					
 
 with current_state select
-	ALUSrcA <= '0' when A,
-				'0' when B,
-				'1' when C,
-				'1' when G,
-				'1' when I,
-				'1' when K,
-				'1' when Addi,
-				'1' when Andi,
-				'1' when Ori,
-				'1' when Xori,
-				'1' when Slti,
-				'1' when Lui;
+	ALUSrcA <= 	'0' when A,
+			'0' when B,
+			'0' when JAL,
+			'1' when C,
+			'1' when G,
+			'1' when I,
+			'1' when K,
+			'1' when Addi,
+			'1' when Andi,
+			'1' when Ori,
+			'1' when Xori,
+			'1' when Slti,
+			'1' when Lui;
 				
 with current_state select
-	ALUSrcB <= "01" when A,
-				"11" when B,
-				"10" when C,
-				"00" when G,
-				"00" when I,
-				"00" when K,
-				"10" when Addi,
-				"10" when Andi,
-				"10" when Ori,
-				"10" when Xori,
-				"10" when Slti,
-				"10" when Lui;
+	ALUSrcB <= 	"01" when A,
+			"01" when JAL,
+			"11" when B,
+			"10" when C,
+			"00" when G,
+			"00" when I,
+			"00" when K,
+			"10" when Addi,
+			"10" when Andi,
+			"10" when Ori,
+			"10" when Xori,
+			"10" when Slti,
+			"10" when Lui;
 
 with current_state select
-	ALUOp <= "0001" when A,
-				"0001" when B,
-				"0001" when C,
-				"0000" when G,
-				"0010" when I,
-				"0010" when K,
-				"0001" when INIT,
-				"0001" when FIN,
-				"0001" when Addi,
-				"0010" when Andi,
-				"0101" when Ori,
-				"0110" when Xori,
-				"0011" when Slti,
-				"0111" when Lui;
+	ALUOp <= 	"0001" when A,
+			"0001" when B,
+			"0001" when C,
+			"0001" when JAL,
+			"0000" when G,
+			"0010" when I,
+			"0010" when K,
+			"0001" when INIT,
+			"0001" when FIN,
+			"0001" when Addi,
+			"0010" when Andi,
+			"0101" when Ori,
+			"0110" when Xori,
+			"0011" when Slti,
+			"0111" when Lui;
 
 with current_state select
-	PCWrite <= '1' when A,
-				'0' when B,
-				'1' when J;
+	PCWrite <= 	'1' when A,
+			'0' when B,
+			'1' when J;
 
 with current_state select
-	PCSource <= "00" when A,
-				"01" when I,
-				"10" when J,
-				"01" when K;
+	PCSource <= 	"00" when A,
+			"01" when I,
+			"10" when J,
+			"01" when K;
 
 with current_state select
-	PCWriteCond <= '0' when A,
-					'1' when I,
-					'0' when K;
+	PCWriteCond <= 	'0' when A,
+			'1' when I,
+			'0' when K;
 
 with current_state select
 	PCWriteCondN <= '0' when I,
-					'1' when K;
+			'1' when K;
 
 with current_state select
-	RegDst <= '0' when E,
-				'1' when H;
+	RegDst <= 	"00" when E,
+			"01" when H,
+			"10" when JALCMP;
 
 with current_state select
-	RegWrite <= '0' when A,
-					'1' when E,
-					'1' when H;
+	RegWrite <= 	'0' when A,
+			'1' when E,
+			'1' when H,
+			'1' when JALCMP;
 					
 with current_state select
-	MemtoReg <= '1' when E,
-				'0' when H;					
+	MemtoReg <= 	'1' when E,
+			'0' when H,
+			'0' when JALCMP;
 
 with current_state select
-	Dump <= '0' when A,
+	Dump <= 	'0' when A,
 			'1' when FIN;	
 
 with current_state select
-	Reset <= '0' when A,
-				'1' when INIT;	
+	Reset <= 	'0' when A,
+			'1' when INIT;	
 
 with current_state select
-	InitMem <= '0' when A,
-				'1' when INIT;
+	InitMem <= 	'0' when A,
+			'1' when INIT;
 				
 end architecture RTL;
