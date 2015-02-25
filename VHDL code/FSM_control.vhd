@@ -1,3 +1,21 @@
+----------------------------------------------------------------------------------------
+-- This module is used to implement a FSM to control the overall processor
+-- 
+-- Inputs:
+--	- op		6-bit operand used to control states
+-- 
+-- Output:
+-- 	- Series of control signals used for different modules
+--
+-- Control:
+-- 	- MemReadReady	to know when memory is ready to read
+--	- MemWriteDone	to know when memory finished writing
+-- 	- clk		clock
+--	- rst		reset
+-- 
+----------------------------------------------------------------------------------------
+
+
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
