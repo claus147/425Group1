@@ -28,13 +28,13 @@ end entity MUX;
 
 architecture RTL of MUX is
 
-begin process (clk)
+begin process
 	
 begin
 	case Op is
-		when "0"  => 
+		when '0'  => 
 			R <= A;
-		when "1" => 
+		when '1' => 
 			R <= B;
 		when others => 
 			NULL;

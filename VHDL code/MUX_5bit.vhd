@@ -20,9 +20,9 @@ use ieee.numeric_std.all;
 
 entity MUX_5bit is
 	port (
-		A,B	: in signed(4 downto 0);
+		A,B	: in std_ulogic_vector(4 downto 0);
 		Op	: in std_ulogic_vector(1 downto 0);
-		R	: out signed(4 downto 0)
+		R	: out std_ulogic_vector(4 downto 0)
 	);
 end entity MUX_5bit;
 
@@ -30,7 +30,7 @@ architecture RTL of MUX_5bit is
 
 begin 
 
-process (clk)
+process
 	
 begin
 	case Op is

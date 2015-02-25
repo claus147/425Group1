@@ -22,14 +22,14 @@ entity JumpShifter is
   port (
 		--clk         	: in std_logic;
 		--rst		: in std_logic;
-		Unshifted   	: in signed(25 downto 0);
-		Shifted    	: out signed(27 downto 0)
+		Unshifted   	: in unsigned(25 downto 0);
+		Shifted    	: out unsigned(27 downto 0)
 	);
 end entity JumpShifter;
 
 architecture RTL of JumpShifter is
 
-signal tmp: signed(27 downto 0);
+signal tmp: unsigned(27 downto 0);
 
 begin 
 

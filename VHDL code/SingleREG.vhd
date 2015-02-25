@@ -17,6 +17,7 @@ entity SingleREG is
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
+		write_pc			: in std_logic;
 		reg_in				: in unsigned(31 downto 0);
 		reg_out				: out unsigned(31 downto 0)
 	);
@@ -27,7 +28,7 @@ architecture arch of SingleREG is
 	begin process(clk)
 	
 		begin
-			if(rising_edge(clk)) then
+			if(rising_edge(clk) and write_pc = '1') then
 				reg_out <= reg_in;
 		
 			end if;

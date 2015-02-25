@@ -1,6 +1,3 @@
-
-
-
 library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
@@ -11,7 +8,7 @@ entity FSM_control is
 		rst 				: in std_logic;
 		MemReadReady, MemWriteDone	: in std_logic;
 		op				: in std_ulogic_vector(5 downto 0);
-		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem	: out std_logic;
+		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem,WordByte	: out std_logic;
 		PCSource, ALUSrcB, RegDst	: out std_ulogic_vector(1 downto 0);
 		ALUOp				: out std_ulogic_vector(3 downto 0)
 	);
@@ -19,7 +16,7 @@ end entity FSM_control;
 
 architecture RTL of FSM_control is
 	
-	type state_type is (A, B, C, D, E, F, G, H, I, J, K, INIT, FIN, Addi, Andi, Ori, Xori, Slti, Lui, Icomp,JAL,JALCMP);
+	type state_type is (A, B, C, D, E, F, G, H, I, J, K, INIT, FIN, Addi, Andi, Ori, Xori, Slti, Lui, Icomp,JAL,JALCMP,SB,LB);
 	signal current_state, next_state : state_type;
 	signal temp_out : std_ulogic_vector(18 downto 0);
 	
@@ -72,23 +69,26 @@ begin
 				case Op is 
 					when "100000" => 		-- lb
 						if (memReadReady='1') then
-							next_state  <=  D;
+							next_state  <=  LB;
 						end if;
 					when "100011" =>  		-- lw
 						if (memReadReady='1') then
 							next_state  <=  D;
 						end if;
 					when "101000" => 		-- sb
-						if (memReadReady='1') then
-							next_state  <=  F;
-						end if;
-						if (memReadReady='1') then
-							next_state  <=  F;
-						end if;
+						
+						next_state  <=  SB;
+						
+					when "101011" =>			--sw
+						
+						next_state  <=  F;
+						
 					when others => 			-- others are not affected
 						null;
 				end case;
 			when D =>
+				next_state <= E;
+			when LB =>
 				next_state <= E;
 			when E =>
 				if (memReadReady='1') then
@@ -97,6 +97,10 @@ begin
 			when F =>
 				if (memWriteDone='1') then
 					next_state <= A;
+				end if;
+			when SB =>
+				if (memReadReady='1') then
+					next_state  <=  A;
 				end if;
 			when G =>
 				next_state <= H;
@@ -163,16 +167,20 @@ end process;
 with current_state select
 	MemRead <= 	'1' when A,
 			'0' when B,
-			'1' when D;
+			'1' when D,
+			'1' when LB;
 					
 with current_state select
 	IorD <= 	'0' when A,
 			'1' when D,
-			'1' when f;				
+			'1' when F,
+			'1' when LB,
+			'1' when SB;				
 
 with current_state select
 	MemWrite <= 	'0' when A,
-			'1' when F;
+			'1' when F,
+			'1' when SB;
 
 with current_state select
 	IRWrite <= 	'1' when A,
@@ -272,5 +280,10 @@ with current_state select
 with current_state select
 	InitMem <= 	'0' when A,
 			'1' when INIT;
+			
+with current_state select
+	WordByte <= 	'1' when A,
+			'0' when LB,
+			'0' when SB;
 				
 end architecture RTL;

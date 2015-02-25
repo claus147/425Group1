@@ -39,6 +39,7 @@ signal A_int: integer;
 signal zero_int: integer;
 signal MD_temp : signed (63 downto 0); -- temp signal for multiplication and division
 signal hi, lo: signed (31 downto 0);
+signal internal_R: integer;
 
 begin 
 
@@ -55,6 +56,7 @@ begin
 			
 			when "100010" => 		-- 00001	SUB
 				R <= A-B;
+				internal_R <=to_integer(A-B);
 				
 			when "011000" => 		-- 00010	MULT
 				MD_temp <= A*B;
@@ -63,7 +65,7 @@ begin
 				
 			when "011010" =>			-- 00011	DIV
 				lo <= A / B;
-				hi <= mod(A,B);
+				hi <= A mod B;
 				
 			when "101010" =>  	-- slt
 				if (A<B) then
@@ -119,7 +121,9 @@ begin
 		
 	end if;
 	
-	zero <= R = zero_int;
+	if  (internal_R = zero_int) then
+		zero <= '1';
+	end if;
 		
 end process;
 end architecture RTL;

@@ -1,5 +1,5 @@
 ----------------------------------------------------------------------------------------
--- This module is used to implement a 3x1MUX
+-- This module is used to implement a 2x1MUX
 -- 
 -- Inputs:
 --	- A			32-bit operand
@@ -18,28 +18,24 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity MUX_3to1 is
+entity MUX_unsigned is
 	port (
-		A,B,C: in unsigned(31 downto 0);
-		Op	: in std_ulogic_vector(1 downto 0);
+		A, B: in unsigned(31 downto 0);
+		Op	: in std_logic;
 		R	: out unsigned(31 downto 0)
 	);
-end entity MUX_3to1;
+end entity MUX_unsigned;
 
-architecture RTL of MUX_3to1 is
+architecture RTL of MUX_unsigned is
 
-begin 
-
-process
+begin process
 	
 begin
 	case Op is
-		when "00"  => 
+		when '0'  => 
 			R <= A;
-		when "01" => 
+		when '1' => 
 			R <= B;
-		when "10" => 
-			R <= C;
 		when others => 
 			NULL;
 	end case;
