@@ -2,11 +2,11 @@
 -- This module is used to implement a MUX 5-bit
 -- 
 -- Inputs:
---	- A			5-bit operand
---	- B			5-bit operand 
+--	- A			5-bit std_ulogic_vector operand
+--	- B			5-bit std_ulogic_vector operand 
 -- 
 -- Output:
--- 	- R			5-bit result
+-- 	- R			5-bit std_ulogic_vector result
 -- 
 -- Control:
 -- 	- Op		choose between operations
@@ -39,7 +39,7 @@ begin
 		when "01" => 
 			R <= B;
 		when "10" => 
-			R <= "11111";
+			R <= "11111";	-- hard code register 32 for jump and link
 		when others => 
 			NULL;
 	end case;

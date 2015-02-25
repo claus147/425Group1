@@ -45,6 +45,7 @@ architecture RTL of INSTR is
 begin process(clk)
 
 begin
+	-- if the clock is on the rising edge and the IRwrite (instruction register write) control line is high, we output the instruction
 	if(rising_edge(clk) and IRwrite = '1') then
 	
 		ins_out <= std_ulogic_vector(ins);

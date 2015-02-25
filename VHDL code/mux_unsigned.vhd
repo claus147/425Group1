@@ -2,11 +2,11 @@
 -- This module is used to implement a 2x1MUX
 -- 
 -- Inputs:
---	- A			32-bit operand
---	- B			32-bit operand 
+--	- A			32-bit unsigned operand
+--	- B			32-bit unsigned operand 
 -- 
 -- Output:
--- 	- R			32-bit result
+-- 	- R			32-bit unsigned result
 -- 
 -- Control:
 -- 	- Op		choose between operations

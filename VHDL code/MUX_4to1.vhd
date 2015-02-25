@@ -2,11 +2,13 @@
 -- This module is used to implement a 4x1MUX
 -- 
 -- Inputs:
---	- A			32-bit operand
---	- B			32-bit operand 
+--	- A			32-bit operand signed
+--	- B			32-bit operand signed
+--	- C			32-bit operand signed
+--	- D			32-bit operand signed
 -- 
 -- Output:
--- 	- R			32-bit result
+-- 	- R			32-bit result signed
 -- 
 -- Control:
 -- 	- Op		choose between operations
