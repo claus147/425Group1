@@ -1,17 +1,12 @@
 ----------------------------------------------------------------------------------------
--- This module is used to implement the SignExtender
+-- This module is used to extend the instuction from 16-bit to 32-bit
 -- 
 -- Inputs:
 --	- Immediate		16-bit operand
 -- 
 -- Output:
--- 	- Extended 	  32-bit result
+-- 	- Extended 	  	32-bit result
 -- 
--- Control:
--- 	- clk		clock
--- 
--- The results of this module is passe
---
 ----------------------------------------------------------------------------------------
 
 library ieee;
@@ -20,8 +15,7 @@ use ieee.numeric_std.all;
 
 entity SignExtender is
   port (
-		--clk         : in std_logic;
-		--rst		      : in std_logic;
+
 		Immediate   : in signed(15 downto 0);
 		Extended    : out signed(31 downto 0)
 	);
