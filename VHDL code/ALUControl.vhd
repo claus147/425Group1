@@ -48,7 +48,7 @@ begin
 			
 				Op <= Funct;
 				
-			when "0001" =		 -- addi,lw,lb,sw,sb (do A + B in ALU)
+			when "0001" =>		 -- addi,lw,lb,sw,sb (do A + B in ALU)
 			
 				Op <= "100000";
 				
@@ -64,7 +64,7 @@ begin
 			
 				Op <= "100100";
 				
-			when "0101" =		-- ori (do A or B in ALU)
+			when "0101" =>		-- ori (do A or B in ALU)
 			
 				Op <= "100101";
 				
@@ -86,3 +86,4 @@ begin
 
 end process;
 end architecture RTL;
+
