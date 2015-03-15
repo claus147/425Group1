@@ -56,13 +56,14 @@ architecture RTL of unpipelined_RISC is
 	signal ALU_out			: signed (31 downto 0);
 	signal ALU_out_out		: std_ulogic_vector (31 downto 0);
 	signal MUX_mem_out		: unsigned (31 downto 0);
-	signal mem_out			: signed (31 downto 0);
+	signal mem_out			: std_logic_vector (31 downto 0);
 	signal mem_reg_out		: std_ulogic_vector (31 downto 0);
 	signal sign_extend_out	: signed (31 downto 0);
 	signal ALU_zero			: std_logic;
 	signal shift_j_out		: unsigned (27 downto 0);
 	signal MUX_J_B_in		: unsigned (31 downto 0);
 	signal MUX_PC_out		: unsigned (31 downto 0);
+	signal sign_extend_out_shifted : signed (31 downto 0);
 
 	signal PC_write_cond_c 	:std_logic;
 	signal PC_write_c 		:std_logic;
@@ -252,6 +253,7 @@ architecture RTL of unpipelined_RISC is
 	begin
 		write_pc <= PC_write_c or ((pc_write_cond_c and not PC_write_cond_N_c and ALU_zero) or (not PC_write_cond_C and PC_write_cond_N_c and not ALU_zero));
 		MUX_J_B_in <= PC_out(31 downto 28) & shift_j_out;
+		sign_extend_out_shifted <= shift_left(sign_extend_out,2);
 		PC1 : SingleREG
 		port map(
 			clk => clk,
@@ -280,7 +282,7 @@ architecture RTL of unpipelined_RISC is
 		MUX_reg_data : MUX
 		port map (
 			A => signed(ALU_out),
-			B => mem_out,
+			B => signed(mem_out),
 			Op => mem_to_reg_c,
 			R => MUX_reg_data_out	
 		);
@@ -298,7 +300,7 @@ architecture RTL of unpipelined_RISC is
 			A => signed(B),
 			B => to_signed(4,32),
 			C => signed(sign_extend_out),
-			D => signed(unsigned(sign_extend_out) sll 2),
+			D => sign_extend_out_shifted,
 			Op => ALU_src_B_c,
 			R => ALU_in_B	
 		);
@@ -321,7 +323,7 @@ architecture RTL of unpipelined_RISC is
 			wr_done => wr_done,	
 			re => mem_read_c,
 			rd_ready => rd_ready,
-			data => std_logic_vector(mem_out),     
+			data => mem_out,     
 			initialize => initialize,
 			dump => dump
 		);
@@ -411,3 +413,4 @@ architecture RTL of unpipelined_RISC is
 		
 
 end architecture RTL;
+
