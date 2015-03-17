@@ -1,0 +1,238 @@
+{P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity unpipelined_RISC
+-- Compiling architecture RTL of unpipelined_RISC
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/REG.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/REG.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity REG
+-- Compiling architecture RTL of REG
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/BranchAdder.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/BranchAdder.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity BranchAdder
+-- Compiling architecture RTL of BranchAdder
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/FSM_control.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/FSM_control.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity FSM_control
+-- Compiling architecture RTL of FSM_control
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity MUX_unsigned
+-- Compiling architecture RTL of MUX_unsigned
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/SignExtender.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/SignExtender.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity SignExtender
+-- Compiling architecture RTL of SignExtender
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/MUX_4to1.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/MUX_4to1.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity MUX_4to1
+-- Compiling architecture RTL of MUX_4to1
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/Memory/Memory_in_Byte.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/Memory/Memory_in_Byte.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity Memory_in_Byte
+-- Compiling architecture Behavioural of Memory_in_Byte
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/PC_add.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/PC_add.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity PC_add
+-- Compiling architecture RTL of PC_add
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/ALUControl.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/ALUControl.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity ALUControl
+-- Compiling architecture RTL of ALUControl
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/Memory/Main_Memory.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/Memory/Main_Memory.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity Main_Memory
+-- Compiling architecture Behavioural of Main_Memory
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/MUX_5bit.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/MUX_5bit.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity MUX_5bit
+-- Compiling architecture RTL of MUX_5bit
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/SingleREG.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/SingleREG.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity SingleREG
+-- Compiling architecture arch of SingleREG
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/INSTR.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/INSTR.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity INSTR
+-- Compiling architecture RTL of INSTR
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/MUX_3to1.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/MUX_3to1.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity MUX_3to1
+-- Compiling architecture RTL of MUX_3to1
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity JumpShifter
+-- Compiling architecture RTL of JumpShifter
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Compiling entity tb_Main_Memory
+-- Compiling architecture behavior of tb_Main_Memory
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/OPCODE.vhd} {2 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/OPCODE.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity OPCODE
+-- Compiling architecture RTL of OPCODE
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(45): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(51): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(53): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(55): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(57): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(59): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(61): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(63): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(65): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(67): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(69): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(71): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(73): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(75): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(77): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(79): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(83): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(87): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(96): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(98): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(100): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(102): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(104): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(106): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(108): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(110): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(112): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(114): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 8).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(116): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+** Warning: P:/Downloads/425Group1/VHDL code/OPCODE.vhd(118): (vcom-1083) Implicit array operator "=" always returns FALSE (left length 6 is not equal to right length 4).
+
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/ALU.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/ALU.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity ALU
+-- Compiling architecture RTL of ALU
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/MUX.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/MUX.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity MUX
+-- Compiling architecture RTL of MUX
+
+} {} {}}
