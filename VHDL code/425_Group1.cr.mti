@@ -7,15 +7,6 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity unpipelined_RISC
 -- Compiling architecture RTL of unpipelined_RISC
 
-} {} {}} {P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd}
-Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
--- Loading package STANDARD
--- Loading package TEXTIO
--- Loading package std_logic_1164
--- Loading package NUMERIC_STD
--- Compiling entity MUX_unsigned
--- Compiling architecture RTL of MUX_unsigned
-
 } {} {}} {P:/Downloads/425Group1/VHDL code/REG.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/REG.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
@@ -24,6 +15,15 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package NUMERIC_STD
 -- Compiling entity REG
 -- Compiling architecture RTL of REG
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity MUX_unsigned
+-- Compiling architecture RTL of MUX_unsigned
 
 } {} {}} {P:/Downloads/425Group1/VHDL code/BranchAdder.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/BranchAdder.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012

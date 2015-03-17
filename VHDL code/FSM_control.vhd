@@ -126,21 +126,21 @@ begin
 			when G =>
 				next_state <= H;
 			when H =>
-				if (memReadReady='1') then
+				
 					next_state  <=  A;
-				end if;
+				
 			when I =>
-				if (memReadReady='1') then
+				
 					next_state  <=  A;
-				end if;
+				
 			when J =>
-				if (memReadReady='1') then
+				
 					next_state  <=  A;
-				end if;
+				
 			when K => 
-				if (memReadReady='1') then
+				
 					next_state  <=  A;
-				end if;
+				
 			when INIT =>
 				if (memReadReady='1') then
 					next_state <= A;

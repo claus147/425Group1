@@ -45,7 +45,7 @@ architecture RTL of REG is
 TYPE StorageT IS ARRAY(0 TO 31) OF signed(31 DOWNTO 0); 				--Array for register storage
 SIGNAL registerfile : StorageT; 							--Register file
 begin
-	process(rst,clk,WB)
+	process(rst,clk)
 	begin
 		IF rst = '1' THEN 
 			FOR i IN 0 TO 31 LOOP

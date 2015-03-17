@@ -126,9 +126,9 @@ begin
 			when G =>
 				next_state <= H;
 			when H =>
-				if (memReadReady='1') then
+				
 					next_state  <=  A;
-				end if;
+				
 			when I =>
 				if (memReadReady='1') then
 					next_state  <=  A;
@@ -266,7 +266,7 @@ with current_state select
 
 with current_state select
 	PCWrite <= 	'1' when A,
-			'0' when B,
+			'1' when B,
 			'1' when J,
 			'0' when others;
 
