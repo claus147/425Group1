@@ -33,8 +33,7 @@ use ieee.numeric_std.all;
 entity unpipelined_RISC is
 	port (
 		clk 			: in std_logic;
-		rst_external 	: in std_logic;
-		PC				: in std_logic
+		rst_external 	: in std_logic
 	);
 end entity unpipelined_RISC;
 
@@ -44,7 +43,6 @@ architecture RTL of unpipelined_RISC is
 	signal instruction 		: std_ulogic_vector (31 downto 0);
 	signal PC_out			: unsigned (31 downto 0);
 	signal MUX_J_B_out		: unsigned (31 downto 0);
-	signal next_PC_out		: std_ulogic_vector (31 downto 0);
 	signal A				: signed (31 downto 0);
 	signal B				: signed (31 downto 0);
 	signal ALU_in_A			: signed(31 downto 0);
@@ -54,10 +52,7 @@ architecture RTL of unpipelined_RISC is
 	signal MUX_reg_data_out	: signed (31 downto 0);
 	signal ALU_control_out	: std_ulogic_vector (5 downto 0);
 	signal ALU_out			: signed (31 downto 0);
-	signal ALU_out_out		: std_ulogic_vector (31 downto 0);
-	signal MUX_mem_out		: unsigned (31 downto 0);
 	signal mem_out			: std_logic_vector (31 downto 0);
-	signal mem_reg_out		: std_ulogic_vector (31 downto 0);
 	signal sign_extend_out	: signed (31 downto 0);
 	signal ALU_zero			: std_logic;
 	signal shift_j_out		: unsigned (27 downto 0);
@@ -254,10 +249,11 @@ architecture RTL of unpipelined_RISC is
 		write_pc <= PC_write_c or ((pc_write_cond_c and not PC_write_cond_N_c and ALU_zero) or (not PC_write_cond_C and PC_write_cond_N_c and not ALU_zero));
 		MUX_J_B_in <= PC_out(31 downto 28) & shift_j_out;
 		sign_extend_out_shifted <= shift_left(sign_extend_out,2);
+		
 		PC1 : SingleREG
 		port map(
 			clk => clk,
-			rst =>rst,
+			rst =>rst_external,
 			write_pc => write_pc,
 			reg_in	=> MUX_J_B_out,
 			reg_out	=>PC_out
@@ -331,7 +327,7 @@ architecture RTL of unpipelined_RISC is
 		controler :FSM_control
 		port map(
 			clk =>clk,
-			rst=>rst,
+			rst=>rst_external,
 			MemReadReady =>rd_ready, 
 			MemWriteDone =>wr_done,
 			op => instruction (31 downto 26),
@@ -380,7 +376,7 @@ architecture RTL of unpipelined_RISC is
 		ALU1 : ALU
 		port map(
 			clk => clk,
-			rst => rst,
+			rst => rst_external,
 			A => ALU_in_A,
 			B => ALU_in_B,
 			Op	=> ALU_control_out,

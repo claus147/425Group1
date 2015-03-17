@@ -30,21 +30,12 @@ end entity MUX_3to1;
 architecture RTL of MUX_3to1 is
 
 begin 
+  
+with Op select 
+  R <= A when "00",
+       B when "01",
+       C when "10",
+       A when OTHERS;
 
-process (Op)
-	
-begin
-	case Op is
-		when "00"  => 
-			R <= A;
-		when "01" => 
-			R <= B;
-		when "10" => 
-			R <= C;
-		when others => 
-			NULL;
-	end case;
-
-end process;
 
 end architecture RTL;

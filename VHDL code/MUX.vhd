@@ -28,18 +28,11 @@ end entity MUX;
 
 architecture RTL of MUX is
 
-begin process (Op)
-	
-begin
-	case Op is
-		when '0'  => 
-			R <= A;
-		when '1' => 
-			R <= B;
-		when others => 
-			NULL;
-	end case;
+begin 
 
-end process;
+with Op select 
+  R <= B when '1',
+       A when others;
+  
 
 end architecture RTL;

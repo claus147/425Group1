@@ -29,21 +29,27 @@ end entity MUX_5bit;
 architecture RTL of MUX_5bit is
 
 begin 
+  
+with Op select
+    R <= A when "00",
+         B when "01",
+         "11111" when "10",
+         A when OTHERS;
 
-process(Op)
+--process(Op)
 	
-begin
-	case Op is
-		when "00"  => 
-			R <= A;
-		when "01" => 
-			R <= B;
-		when "10" => 
-			R <= "11111";	-- hard code register 32 for jump and link
-		when others => 
-			NULL;
-	end case;
+--begin
+--	case Op is
+--		when "00"  => 
+--			R <= A;
+--		when "01" => 
+--			R <= B;
+--		when "10" => 
+--			R <= "11111";	-- hard code register 32 for jump and link
+--		when others => 
+--			NULL;
+--	end case;
 
-end process;
+--end process;
 
 end architecture RTL;

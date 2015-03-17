@@ -42,7 +42,7 @@ end entity INSTR;
 
 architecture RTL of INSTR is
 
-begin process(clk)
+begin process(clk,IRwrite)
 
 begin
 	-- if the clock is on the rising edge and the IRwrite (instruction register write) control line is high, we output the instruction

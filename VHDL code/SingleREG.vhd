@@ -30,15 +30,15 @@ entity SingleREG is
 	);
 end entity SingleREG;
 
-architecture arch of SingleREG is
+architecture arch of SingleREG is  
 
-	begin process(clk)
-	
-		begin
-			if(rising_edge(clk) and write_pc = '1') then
+begin 
+	process(clk,rst,write_pc)
+	begin
+	  if(rst = '1') then
+	   reg_out <= (OTHERS => '0');
+		elsif(falling_edge(clk) and write_pc = '1') then
 				reg_out <= reg_in;	-- present the input at the output of the register on the clock edge and when write_pc is high
-		
-			end if;
-		
+		end if;	
 	end process;
 end architecture arch;

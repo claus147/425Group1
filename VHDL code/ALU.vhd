@@ -41,15 +41,19 @@ signal MD_temp : signed (63 downto 0); -- temp signal for multiplication and div
 signal hi, lo: signed (31 downto 0);
 signal internal_R: integer;
 
-begin 
+begin    
 
 zero_int <= 0;
 	
-process(clk)
+process(clk,rst)
 	
 begin
-	
-	if(rising_edge(clk)) then
+  
+  if rst = '1' then
+      
+      R <= "00000000000000000000000000000000";
+      zero <= '1';
+  elsif rising_edge(clk) then
 		case Op is
 			when "100000" => 			-- ADD, ADDI,
 				R  <= A+B;
@@ -119,10 +123,12 @@ begin
 			
 		end case;
 		
-	end if;
+	
 	
 	if  (internal_R = zero_int) then
 		zero <= '1';
+	end if;
+	
 	end if;
 		
 end process;

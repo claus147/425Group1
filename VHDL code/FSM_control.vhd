@@ -40,14 +40,16 @@ architecture RTL of FSM_control is
 	
 begin
 
-process (op, current_state)
+process (op, current_state, MemReadReady, MemWriteDone)
 
 begin
 	
 	case current_state is
 		
 			when A =>
-				next_state  <=  B;
+			  if (memReadReady='1') then
+				  next_state  <=  B;
+				end if;
 			when B =>
 				case Op is 
 					when "000000" => 		-- R-type
@@ -142,6 +144,8 @@ begin
 			when INIT =>
 				if (memReadReady='1') then
 					next_state <= A;
+				else
+					next_state <= INIT;
 				end if;
 			when FIN =>
 				next_state <= FIN;
@@ -158,9 +162,9 @@ begin
 			when Lui => 
 				next_state <= Icomp;
 			when Icomp => 
-				if (memReadReady='1') then
+				--if (memReadReady='1') then
 					next_state  <=  A;
-				end if;
+				--end if;
 			when JAL =>
 				next_state <= JALCMP;
 			when JALCMP =>
@@ -188,6 +192,7 @@ with current_state select
 			'0' when B,
 			'1' when D,
 			'1' when LB,
+			'1' when init,
 			'0' when others;
 					
 with current_state select
@@ -261,7 +266,7 @@ with current_state select
 
 with current_state select
 	PCWrite <= 	'1' when A,
-			'0' when B,
+			'1' when B,
 			'1' when J,
 			'0' when others;
 
@@ -294,6 +299,7 @@ with current_state select
 			'1' when E,
 			'1' when H,
 			'1' when JALCMP,
+			'1' when IComp,
 			'0' when others;
 					
 with current_state select
@@ -321,6 +327,6 @@ with current_state select
 	WordByte <= 	'1' when A,
 			'0' when LB,
 			'0' when SB,
-			'0' when others;
+			'1' when others;
 				
 end architecture RTL;

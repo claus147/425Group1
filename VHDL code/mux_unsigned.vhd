@@ -28,18 +28,9 @@ end entity MUX_unsigned;
 
 architecture RTL of MUX_unsigned is
 
-begin process (Op)
-	
 begin
-	case Op is
-		when '0'  => 
-			R <= A;
-		when '1' => 
-			R <= B;
-		when others => 
-			NULL;
-	end case;
-
-end process;
-
+	with Op select
+			R <= B when '1',
+			 A when Others;
+			 
 end architecture RTL;
