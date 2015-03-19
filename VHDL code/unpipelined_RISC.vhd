@@ -271,7 +271,7 @@ architecture RTL of unpipelined_RISC is
 			reg_out	=>PC_out
 		);
 		
-		IO_mux1 : IO_MUX
+		MUX_io : IO_MUX
 		port map(			
 		  rst   => rst_external,
 			dat  	=> std_logic_vector(B),

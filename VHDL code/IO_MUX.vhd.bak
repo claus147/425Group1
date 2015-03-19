@@ -19,7 +19,7 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity MUX is
+entity IO_MUX is
 	port (
 	  rst   : in std_logic;
 		dat  	: in std_logic_vector(31 downto 0);
@@ -27,10 +27,10 @@ entity MUX is
 		inst  : out std_logic_vector(31 downto 0);
 		memIO : inout std_logic_vector(31 downto 0)
 	);
-end entity MUX;
+end entity IO_MUX;
 
-architecture RTL of MUX is
-signal temp : unsigned(31 downto 0);
+architecture RTL of IO_MUX is
+--signal temp : unsigned(31 downto 0);
 begin 
 --  with sel select 
 --  inst <= dat when '1',
@@ -59,8 +59,10 @@ begin
 --    end if;
 --    
 --  end process;
-temp <= unsigned(memIO);
-memIO <= std_logic_vector(dat) when sel = '1' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
-inst <= temp when sel = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+
+--temp <= unsigned(memIO);
+--memIO <= std_logic_vector(dat) when sel = '1' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+--inst <= memIO when sel = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+inst <= "11111111111111111111111111111111";
 
 end architecture RTL;

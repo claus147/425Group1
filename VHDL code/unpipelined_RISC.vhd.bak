@@ -99,7 +99,8 @@ architecture RTL of unpipelined_RISC is
 	end component;
 	
 	component IO_MUX
-	  port ( 
+	  port (
+	    rst   : in std_logic; 
 	    dat  	: in std_logic_vector(31 downto 0);
 		  sel   : in std_logic;
 		  inst  : out std_logic_vector(31 downto 0);
@@ -272,6 +273,7 @@ architecture RTL of unpipelined_RISC is
 		
 		IO_mux1 : IO_MUX
 		port map(			
+		  rst   => rst_external,
 			dat  	=> std_logic_vector(B),
 		  sel   => mem_write_c,
 		  inst  => IO_mux_out,
