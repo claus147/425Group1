@@ -2,7 +2,7 @@
 -- This module is used to handle Early_branch_resolution
 -- 
 -- Inputs:
---	- branchD 1 bit control, is 1 when we get a branch instr
+-- - branchD 1 bit control, is 1 when we get a branch instr
 -- - isBNE 1 bit control, is 1 when the branch instr is BNE, 0 when is BEQ
 -- - A, input to ALU (top part)
 -- - B, input to ALU (bottom part)
@@ -15,11 +15,13 @@
 -- Outputs:						
 -- - branch, signal to say if we are branching or not - the resolution
 -- - targetPC, the next PC we are going to take 
---	
+-- - 	
 -- Control:
 -- 	- clk		clock
 -- 
 -- add BNE as WELL!!!!!!!!!!
+-- ***We are predicting branch not taken, so when we detect banch in ID, must flush what's in IF!
+-- ***Feed "branch" to register IF/ID to reset memWrite and regWrite!!! (ie mark as dirty)
 ----------------------------------------------------------------------------------------
 
 library ieee;
@@ -30,7 +32,7 @@ entity Early_branch_resolution is
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-		branchD : in std_logic;
+		branchD, flush : in std_logic;
 		isBNE   : in std_logic;
 		A       : in signed(31 downto 0);
 		B       : in signed(31 downto 0);
@@ -64,7 +66,7 @@ begin
             ALU_out; 
             
   branch <= '1' when (branchD = '1' and ((comp_A = comp_B and isBNE = '0')or (comp_A /= comp_B and isBNE = '1'))) else
-            '0';           
+            '0';      
 end architecture RTL;
 
 
