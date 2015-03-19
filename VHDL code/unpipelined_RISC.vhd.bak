@@ -83,6 +83,8 @@ architecture RTL of unpipelined_RISC is
 	signal dump 			:std_logic;
 	
 	signal write_pc			:std_logic;
+	signal pc_next :  unsigned (31 downto 0);
+	signal IO_mux_out  :unsigned(31 downto 0);
 
 	
 	component ALU
@@ -94,6 +96,15 @@ architecture RTL of unpipelined_RISC is
 			R				: out signed(31 downto 0);
 			zero			: out std_logic
 		);
+	end component;
+	
+	component IO_MUX
+	  port ( 
+	    dat  	: in signed(31 downto 0);
+		  sel   : in std_logic;
+		  inst  : out unsigned(31 downto 0);
+		  memIO : inout std_logic_vector(31 downto 0)
+	   );
 	end component;
 	
 	component ALUControl 
@@ -187,8 +198,8 @@ architecture RTL of unpipelined_RISC is
 		port (
 			clk 	: in std_logic;
 			rst 	: in std_logic;
-			PC		: in unsigned(25 downto 0);
-			NPC 	: out unsigned(25 downto 0)
+			PC		: in unsigned(31 downto 0);
+			NPC 	: out unsigned(31 downto 0)
 		);
 	end component;
 	
@@ -259,12 +270,28 @@ architecture RTL of unpipelined_RISC is
 			reg_out	=>PC_out
 		);
 		
+		IO_mux : IO_MUX
+		port map(			
+			dat  	=> B,
+		  sel   => mem_write_c,
+		  inst  => IO_mux_out,
+		  memIO => mem_out
+		);
+		
 		MUX_pc : MUX_unsigned
 		port map(			
 			A => PC_out,
 			B => unsigned(ALU_out),
 			Op => I_or_D_c,
 			R => MUX_pc_out	
+		);
+		
+		PC_adder : PC_add
+		port map(			
+			clk 	=> clk,
+			rst 	=> rst,
+			PC		=> PC_out,
+			NPC 	=> 	pc_next
 		);
 		
 		MUX_reg_addr : MUX_5bit
@@ -303,7 +330,7 @@ architecture RTL of unpipelined_RISC is
 		
 		MUX_J_B : MUX_3to1
 		port map(
-			A => unsigned(ALU_out),
+			A => pc_next,
 			B => unsigned(ALU_out),
 			C => unsigned(MUX_J_B_in),
 			Op => PC_source_c,
@@ -356,7 +383,7 @@ architecture RTL of unpipelined_RISC is
 			clk => clk,
 			rst => rst,
 			IRwrite => IR_write_c,
-			Ins	=> unsigned(mem_out),
+			Ins	=> IO_mux_out,
 			ins_out => instruction
 		);
 		
@@ -376,7 +403,7 @@ architecture RTL of unpipelined_RISC is
 		ALU1 : ALU
 		port map(
 			clk => clk,
-			rst => rst,
+			rst => rst_external,
 			A => ALU_in_A,
 			B => ALU_in_B,
 			Op	=> ALU_control_out,
@@ -409,4 +436,5 @@ architecture RTL of unpipelined_RISC is
 		
 
 end architecture RTL;
+
 

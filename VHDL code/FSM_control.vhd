@@ -34,11 +34,11 @@ end entity FSM_control;
 
 architecture RTL of FSM_control is
 	
-	type state_type is (A, B, C, D, E, F, G, H, I, J, K, INIT, FIN, Addi, Andi, Ori, Xori, Slti, Lui, Icomp,JAL,JALCMP,SB,LB);
+	type state_type is (A, A_WAIT, B, C, D, E, F, G, H, I, J, K, INIT, FIN, Addi, Andi, Ori, Xori, Slti, Lui, Icomp,JAL,JALCMP,SB,LB);
 	signal current_state, next_state : state_type;
 	signal temp_out : std_ulogic_vector(18 downto 0);
 	
-begin
+begin 
 
 process (op, current_state, MemReadReady, MemWriteDone)
 
@@ -49,7 +49,16 @@ begin
 			when A =>
 			  if (memReadReady='1') then
 				  next_state  <=  B;
+				else 
+				  next_state <= A_WAIT;      
 				end if;
+				
+			when A_WAIT =>
+			  
+			   if (memReadReady='1') then
+				    next_state  <=  B;
+				 end if;
+				
 			when B =>
 				case Op is 
 					when "000000" => 		-- R-type
@@ -189,6 +198,7 @@ end process;
 
 with current_state select
 	MemRead <= 	'1' when A,
+	    '1' when A_WAIT,
 			'0' when B,
 			'1' when D,
 			'1' when LB,
@@ -211,6 +221,7 @@ with current_state select
 
 with current_state select
 	IRWrite <= 	'1' when A,
+	    '1' when A_WAIT,
 			'0' when B,
 			'0' when others;					
 
@@ -266,7 +277,7 @@ with current_state select
 
 with current_state select
 	PCWrite <= 	'1' when A,
-			'1' when B,
+	--		'1' when B,
 			'1' when J,
 			'0' when others;
 
