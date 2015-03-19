@@ -13,7 +13,6 @@
 -- Control:
 -- 	- clk		clock
 -- 
---
 ----------------------------------------------------------------------------------------
 
 library ieee;
@@ -44,4 +43,5 @@ begin
   stall <= (RdRs_equal or RdRt_equal) and ID_EX_MemRead;
 
 end architecture RTL;
+
 
