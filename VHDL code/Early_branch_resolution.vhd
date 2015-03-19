@@ -2,10 +2,19 @@
 -- This module is used to handle Early_branch_resolution
 -- 
 -- Inputs:
---	- 
+--	- branchD 1 bit control, is 1 when we get a branch instr
+-- - isBNE 1 bit control, is 1 when the branch instr is BNE, 0 when is BEQ
+-- - A, input to ALU (top part)
+-- - B, input to ALU (bottom part)
+-- - imm, signal through the sign extend (this or PC4 is used to compute target address)
+-- - PC4, see above
+-- - forward_A, forwarding logic (2 bit from the Forwarding_logic.vhd)
+-- - forward_B, same as forward_A
+-- - ALU_out
 --
 -- Outputs:						
--- - 
+-- - branch, signal to say if we are branching or not - the resolution
+-- - targetPC, the next PC we are going to take 
 --	
 -- Control:
 -- 	- clk		clock
@@ -22,6 +31,7 @@ entity Early_branch_resolution is
 		clk 				: in std_logic;
 		rst 				: in std_logic;
 		branchD : in std_logic;
+		isBNE   : in std_logic;
 		A       : in signed(31 downto 0);
 		B       : in signed(31 downto 0);
 		imm     : in signed(31 downto 0);
@@ -53,7 +63,7 @@ begin
   comp_B <= B when forwarding_B = '0' else
             ALU_out; 
             
-  branch <= '1' when (comp_A = comp_B and branchD = '1') else
+  branch <= '1' when (branchD = '1' and ((comp_A = comp_B and isBNE = '0')or (comp_A /= comp_B and isBNE = '1'))) else
             '0';           
 end architecture RTL;
 

@@ -2,20 +2,52 @@
 -- This module is used hold values inbetween ID_EX (Buffer)
 -- 
 -- Inputs:
--- - A 32 bit operand
--- - B 32 bit operand
--- - Rs 5 bit operand
--- - Rt 5 bit operand
--- - Rd 5 bit operand
--- - RegWriteD 1 bit
--- - flush 1 bit control (stall)
+-- -	AD, top operand to ALU
+-- -	BD, bottom operand to ALU
+-- -	RsD, register name
+-- -	RtD
+-- -	RdD
+-- -	PCWriteCondD, our branch
+-- -	PCWriteCondND
+-- -	PCWriteD
+-- -	IorDD
+-- -	MemReadD
+-- -	MemWriteD
+-- -	MemtoRegD
+-- -	IRWriteD, MIGHT NOT NEED THIS LINE, controlled the IR  in unpipe, now this reg is our (IF_ID reg)
+-- -	ALUSrcAD
+-- -	RegWriteD
+-- -	DumpD, for Main mem
+-- -	ResetD, for Main mem
+-- -	InitMemD, for Main mem
+-- -	WordByteD, for Main mem
+-- -	PCSourceD 
+-- -	ALUSrcBD
+-- -	RegDstD, will tie to Rt $ Rd
 --
 -- Outputs:						
--- - A_out 32 bit operand
--- - B_out 32 bit operand
--- - Rs_out 5 bit operand
--- - Rt_out 5 bit operand
--- - Rd_out 5 bit operand
+-- -	AE, top operand to ALU
+-- -	BE, bottom operand to ALU
+-- -	RsE, register name
+-- -	RtE
+-- -	RdE
+-- -	PCWriteCondE, our branch
+-- -	PCWriteCondNE
+-- -	PCWriteE
+-- -	IorDE
+-- -	MemReadE
+-- -	MemWriteE
+-- -	MemtoRegE
+-- -	IRWriteE, MIGHT NOT NEED THIS LINE, controlled the IR  in unpipe, now this reg is our (IF_ID reg)
+-- -	ALUSrcAE
+-- -	RegWriteE
+-- -	DumpE
+-- -	ResetE
+-- -	InitMemE
+-- -	WordByteE
+-- -	PCSourceE 
+-- -	ALUSrcBE
+-- -	RegDstE
 --	
 -- Control:
 -- 	- clk		clock
@@ -31,20 +63,20 @@ entity Reg_ID_EX is
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-    A      : in std_ulogic_vector(31 downto 0);
-	  B      : in std_ulogic_vector(31 downto 0);
-	  Rs     : in std_ulogic_vector(4 downto 0);
-	  Rt     : in std_ulogic_vector(4 downto 0);
-	  Rd     : in std_ulogic_vector(4 downto 0);
+    AD      : in std_ulogic_vector(31 downto 0);
+	  BD      : in std_ulogic_vector(31 downto 0);
+	  RsD     : in std_ulogic_vector(4 downto 0);
+	  RtD     : in std_ulogic_vector(4 downto 0);
+	  RdD     : in std_ulogic_vector(4 downto 0);
 	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD	: in std_logic;
 		PCSourceD, ALUSrcBD, RegDstD	: in std_ulogic_vector(1 downto 0);
 	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE	: out std_logic;
 		PCSourceE, ALUSrcBE, RegDstE	: out std_ulogic_vector(1 downto 0);
-	  Rs_out : out std_ulogic_vector(4 downto 0);
-	  Rt_out : out std_ulogic_vector(4 downto 0);
-	  Rd_out : out std_ulogic_vector(4 downto 0);	  
-	  A_out  : out std_ulogic_vector(31 downto 0);
-	  B_out  : out std_ulogic_vector(31 downto 0);
+	  RsE : out std_ulogic_vector(4 downto 0);
+	  RtE : out std_ulogic_vector(4 downto 0);
+	  RdE : out std_ulogic_vector(4 downto 0);	  
+	  AE  : out std_ulogic_vector(31 downto 0);
+	  BE  : out std_ulogic_vector(31 downto 0);
 	  flush  : in std_logic
 	);
 end entity Reg_ID_EX;
@@ -56,11 +88,11 @@ begin
   begin
     
 	 if(rising_edge(clk)  and flush = '0') then 
-	  A_out <= A;
-	  B_out <= B;
-	  Rs_out <= Rs;
-	  Rt_out <= Rt;
-	  Rd_out <= Rd;
+	  AE <= AD;
+	  BE <= BD;
+	  RsE <= RsD;
+	  RtE <= RtD;
+	  RdE <= RdD;
 	  PCWriteCondE <= PCWriteCondD;
 	  PCWriteCondNE <= PCWriteCondND;
 	  PCWriteE <= PCWriteD; 

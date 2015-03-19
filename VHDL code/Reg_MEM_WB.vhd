@@ -2,21 +2,19 @@
 -- This module is used hold values inbetween MEM_WB (Buffer)
 -- 
 -- Inputs:
--- - A 32 bit operand
--- - B 32 bit operand
--- - Rs 5 bit operand
--- - Rt 5 bit operand
--- - Rd 5 bit operand
--- - RegWriteD 1 bit
--- - flush 1 bit control (stall)
+-- - ALUM
+-- - MEMM
+-- - RdtM 5 bit operand
+-- - RegWriteM 1 bit, will be forced to 0 if stall signal detected (dirty WB)
+-- - MemtoRegM 1 bit, also must check if dirty or not
 --
--- Outputs:						
--- - A_out 32 bit operand
--- - B_out 32 bit operand
--- - Rs_out 5 bit operand
--- - Rt_out 5 bit operand
--- - Rd_out 5 bit operand
---	
+-- Outputs:		
+-- - ALUW	
+-- - MEMW			
+-- - RdtW 5 bit operand
+--	- RegWriteW 1 bit
+-- - MemtoRegW 1 bit
+--
 -- Control:
 -- 	- clk		clock
 -- 
@@ -33,6 +31,8 @@ entity Reg_MEM_WB is
 		rst 				: in std_logic;
 		ALUM, MEMM    : in signed(31 downto 0);
 		ALUW, MEMW    : out signed(31 downto 0);
+		RdtM    : in signed(4 downto 0);
+		RdtW    : out signed(4 downto 0);
 		MemtoRegM, RegWriteM	: in std_logic;
 	  MemtoRegW, RegWriteW	: out std_logic
 	);
@@ -48,7 +48,9 @@ begin
 	  ALUW <= ALUM;
 	  MEMW <= MEMM;
 	  MemtoRegW <= MemtoRegM;
-	  RegWriteW <= RegWriteM; 
+	  RegWriteW <= RegWriteM;
+	  RdtW <= RdtM;
+	   
 	 end if;
 	end process;   
 
