@@ -84,7 +84,7 @@ architecture RTL of unpipelined_RISC is
 	
 	signal write_pc			:std_logic;
 	signal pc_next :  unsigned (31 downto 0);
-	signal IO_mux_out  :unsigned(31 downto 0);
+	signal IO_mux_out  :std_logic_vector(31 downto 0);
 
 	
 	component ALU
@@ -99,10 +99,11 @@ architecture RTL of unpipelined_RISC is
 	end component;
 	
 	component IO_MUX
-	  port ( 
-	    dat  	: in signed(31 downto 0);
+	  port (
+	    rst   : in std_logic; 
+	    dat  	: in std_logic_vector(31 downto 0);
 		  sel   : in std_logic;
-		  inst  : out unsigned(31 downto 0);
+		  inst  : out std_logic_vector(31 downto 0);
 		  memIO : inout std_logic_vector(31 downto 0)
 	   );
 	end component;
@@ -272,7 +273,8 @@ architecture RTL of unpipelined_RISC is
 		
 		IO_mux1 : IO_MUX
 		port map(			
-			dat  	=> B,
+		  rst   => rst_external,
+			dat  	=> std_logic_vector(B),
 		  sel   => mem_write_c,
 		  inst  => IO_mux_out,
 		  memIO => mem_out
@@ -383,7 +385,7 @@ architecture RTL of unpipelined_RISC is
 			clk => clk,
 			rst => rst,
 			IRwrite => IR_write_c,
-			Ins	=> IO_mux_out,
+			Ins	=> unsigned(IO_mux_out),
 			ins_out => instruction
 		);
 		

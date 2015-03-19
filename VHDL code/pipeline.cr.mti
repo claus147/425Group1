@@ -194,6 +194,15 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity MUX_3to1
 -- Compiling architecture RTL of MUX_3to1
 
+} {} {}} {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity MUX
+-- Compiling architecture RTL of MUX
+
 } {} {}} {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
