@@ -223,6 +223,14 @@ component MUX_unsigned
 	);
 end component;
 
+component MUX_3to1_signed
+	port (
+		A,B,C	: in signed(31 downto 0);
+		Op		: in std_ulogic_vector(1 downto 0);
+		R		: out signed(31 downto 0)
+	);
+end component;
+
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
 -------------------------------- CONTROLLERS ------------------------------
@@ -245,7 +253,7 @@ component FSM_control
 		rst 				: in std_logic;
 		MemReadReady, MemWriteDone	: in std_logic;
 		op				: in std_ulogic_vector(5 downto 0);
-		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem,WordByte	: out std_logic;
+		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem,WordByte,IOMux	: out std_logic;
 		PCSource, ALUSrcB, RegDst	: out std_ulogic_vector(1 downto 0);
 		ALUOp				: out std_ulogic_vector(3 downto 0)
 	);
@@ -396,6 +404,7 @@ signal PC4D : unsigned (31 downto 0);
 signal PCBranchD, to_branchadd : signed(31 downto 0);
 signal dirtyD : std_logic;
 signal to_flush : std_logic;
+signal ALUOPD : std_ulogic_vector(3 downto 0);
 
 ----------------------------------- EX ------------------------------------
 --CONTROL
@@ -431,7 +440,8 @@ signal ResultW: signed(31 downto 0);
 signal WriteRegW : std_ulogic_vector(4 downto 0);
 
 ----------------------- HAZARD AND FORWARD CTRL ---------------------------
-signal StallF, StallD, ForwardAD, ForwardBD, FlushE, ForwardAE,ForawardBE : std_logic;
+signal StallF, StallD, ForwardAD, ForwardBD, FlushE: std_logic;
+signal ForwardAE,ForawardBE : std_ulogic_vector(1 downto 0);
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
@@ -543,6 +553,46 @@ MUX_ForwardBD : MUX
 			Op => forwardBD,
 			R => BD2
 		);
+		
+FSMCONTROL: FSM_control
+	port map (
+		clk => clk,
+		rst =>rst_external,		
+		MemReadReady => '0', --currently no signals or thing for it
+		MemWriteDone => '0', --currently no signals or thing for it
+		op	=> opD,
+		PCWriteCond => branchd, 
+		PCWriteCondN => open, 
+		PCWrite => jumpD, 
+		IorD => open, 
+		MemRead => MemReadD, 
+		MemWrite=> MemWriteD, 
+		MemtoReg=> MemtoRegD, 
+		IRWrite=> open, 
+		ALUSrcA=> open, 
+		RegWrite=> RegWriteD, 
+		Dump=> DumpD, 
+		Reset=> ResetD, 
+		InitMem=> InitMemD,
+		WordByte=> WordByteD,
+		IOMux => open,
+		PCSource=> open, 
+		ALUSrcB=> open,--ALUSrcBD, this has incorrect bits so it doesnt work 
+		RegDst=> RegDstD,
+		ALUOp=> ALUopD
+	);
+
+ALUCONTR : ALUControl 
+	port map(
+		clk => clk,
+		rst => rst_external,
+		ALUOp	=>ALUOPD,
+		Funct	=> instrD(5 downto 0),
+		Op	=>instrD(31 downto 26)
+	);
+
+
+
 
 
 ----------------------------------- EX ------------------------------------
@@ -599,6 +649,25 @@ REG_IDEX : Reg_ID_EX
 	  opD=> opD,
 	  opE=>opE
 	);
+	
+	MUX_regdstE : MUX_5bit
+		port map(
+			A => RtE,
+			B => RdE,
+			Op => regdste,
+			R => writeregE
+		);
+	
+	MUX_forwardAE : MUX_3to1_signed
+		port map(
+			A => AE1,
+			B => resultW,
+			C => ALUM,
+			Op => forwardAE,
+			R => AE2
+		);
+		
+
 
 ----------------------------------- MEM -----------------------------------
 

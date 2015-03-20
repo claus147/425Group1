@@ -19,15 +19,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 
-entity MUX_3to1 is
+entity MUX_3to1_signed is
 	port (
 		A,B,C	: in signed(31 downto 0);
 		Op		: in std_ulogic_vector(1 downto 0);
 		R		: out signed(31 downto 0)
 	);
-end entity MUX_3to1;
+end entity MUX_3to1_signed;
 
-architecture RTL of MUX_3to1 is
+architecture RTL of MUX_3to1_signed is
 
 begin 
   
@@ -39,3 +39,5 @@ with Op select
 
 
 end architecture RTL;
+
+
