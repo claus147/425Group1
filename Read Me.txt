@@ -1,0 +1,14 @@
+The "coaMipsAssembler" folder contains the MIPS assembler we have written for the first deliverable.
+The "unpipelined_RISC.vhd" contains all the components and test bench for deliverable 1.
+We are including this because we spend a lot of time fixing our deliverable 1 in order to proceed to deliverable 2.
+To properly simulate the vhdl code, it is required to set the rst_external signals to high first to initialize.
+After 1 cycle the rst_external can be set back to low again and the processor will work.
+
+
+
+New components for this deliverable:
+--- Early_branch_resolution.vhd
+--- Forwarding_logic.vhd
+--- Hazard_control.vhd
+
+
