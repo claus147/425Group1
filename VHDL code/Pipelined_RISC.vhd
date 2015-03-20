@@ -50,6 +50,8 @@ architecture RTL of Reg_IF_ID is
 -- -- INSTR
 -- -- SignExtender
 -- -- JumpShifter
+-- -- REG
+-- -- Main_Memory
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
@@ -69,32 +71,36 @@ component Reg_IF_ID
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-		stall, dirtyF   :in std_logic;
+		stall, dirtyF, flush   :in std_logic;
     dirtyD   :out std_logic;
     instr : in std_ulogic_vector(31 downto 0);
-	  instr_out : out std_ulogic_vector(31 downto 0)
+	  instr_out : out std_ulogic_vector(31 downto 0);
+	  PC4F : in unsigned(31 downto 0);
+	  PC4D : out unsigned(31 downto 0)
 	);
 end component;
 
-component Reg_ID_EX
+component Reg_ID_EX 
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-    AD      : in std_ulogic_vector(31 downto 0);
-	  BD      : in std_ulogic_vector(31 downto 0);
+    AD      : in signed(31 downto 0);
+	  BD      : in signed(31 downto 0);
 	  RsD     : in std_ulogic_vector(4 downto 0);
 	  RtD     : in std_ulogic_vector(4 downto 0);
 	  RdD     : in std_ulogic_vector(4 downto 0);
-	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD	: in std_logic;
-		PCSourceD, ALUSrcBD, RegDstD	: in std_ulogic_vector(1 downto 0);
-	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE	: out std_logic;
-		PCSourceE, ALUSrcBE, RegDstE	: out std_ulogic_vector(1 downto 0);
+	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD, ALUSrcBD	: in std_logic;
+		PCSourceD, RegDstD	: in std_ulogic_vector(1 downto 0);
+	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE, ALUSrcBE	: out std_logic;
+		PCSourceE, RegDstE	: out std_ulogic_vector(1 downto 0);
 	  RsE : out std_ulogic_vector(4 downto 0);
 	  RtE : out std_ulogic_vector(4 downto 0);
 	  RdE : out std_ulogic_vector(4 downto 0);	  
-	  AE  : out std_ulogic_vector(31 downto 0);
-	  BE  : out std_ulogic_vector(31 downto 0);
-	  flush  : in std_logic
+	  AE  : out signed(31 downto 0);
+	  BE  : out signed(31 downto 0);
+	  flush  : in std_logic;
+	  opD : in std_ulogic_vector(5 downto 0);
+	  opE: out std_ulogic_vector(5 downto 0)
 	);
 end component;
 
@@ -273,14 +279,13 @@ end component;
 component BranchAdder
 	port (
 		PC	      	: in signed(31 downto 0);
-        Offset    	: in signed(31 downto 0);
+    Offset    	: in signed(31 downto 0);
 		NPC       	: out signed(31 downto 0)
 	);
 end component;
 
 component PC_add
 	port (
-		clk : in std_logic;
 		rst : in std_logic;
 		PC	: in unsigned(31 downto 0);
 		NPC : out unsigned(31 downto 0)
@@ -316,9 +321,288 @@ component JumpShifter
 	);
 end component;
 
+component REG
+	port (
+		clk 				: in std_logic;
+		rst 				: in std_logic;
+		Rs, Rt, Rd			: in std_ulogic_vector(4 downto 0);
+		WB_data				: in signed(31 downto 0);
+		WB				: in std_logic;
+		A,B				: out signed(31 downto 0)
+	);
+end component;
+
+component Main_Memory
+	  	generic (
+			File_Address_Read : string :="Init.dat";
+			File_Address_Write : string :="MemCon.dat";
+			Mem_Size_in_Word : integer:=256;	
+			Num_Bytes_in_Word: integer:=4;
+			Num_Bits_in_Byte: integer := 8; 
+			Read_Delay: integer:=0; 
+			Write_Delay:integer:=0
+		 );
+		port (
+			clk 		: in std_logic;
+			address 	: in integer;
+			Word_Byte	: in std_logic; -- when '1' you are interacting with the memory in word otherwise in byte
+			we 			: in std_logic;
+			wr_done		: out std_logic; --indicates that the write operation has been done.
+			re 			: in std_logic;
+			rd_ready	: out std_logic; --indicates that the read data is ready at the output.
+			data 		: inout std_logic_vector((Num_Bytes_in_Word*Num_Bits_in_Byte)-1 downto 0);        
+			initialize	: in std_logic;
+			dump		: in std_logic
+		);
+	end component;
 
 ---------------------------------------------------------------------------  
+---------------------------------------------------------------------------  
+---------------------------------------------------------------------------  
+---------------------------------------------------------------------------  
+-- not sure if we need: PCWriteCondN, IRWrite (assume not)
+-- NO LONGER NEEDED: ALUSrcA,IorD
+-- CHANGES: ALUSrcB from a 2 bit to a single signal
+--          PCSource will be wired differently from before
+-- PCWriteCond is now branch (the control)
+-- PCWrite is not jump (the control)
+-- RegDst seems to be different!!!!!!!!!!!!!!!!!!! (i dont know what it actually does in unpiped)
+-- MemRead & MemWrite are sent through the pipeline (for store and loads , both 0 if not store and not load), basically does IorD job now (if either are 1)
+
+--------------------------------------------------------------------------- 
+---------------------------------SIGNALS-----------------------------------
+
+----------------------------------- IF ------------------------------------
+signal PC, PCF, PC4F: unsigned(31 downto 0);
+signal instrF : std_ulogic_vector(31 downto 0);
+signal to_jump_28: unsigned (27 downto 0); -- last 28 bits of the jump
+signal to_jump : unsigned (31 downto 0); -- full for jump
+
+----------------------------------- ID ------------------------------------
+-- CONTROL
+signal RegWriteD, MemtoRegD, MemWriteD, ALUSrcBD, jumpD, branchD, MemReadD,  
+       DumpD, ResetD, InitMemD, WordByteD,	equalD: std_logic;
+signal PCSourceD, RegDstD	: std_ulogic_vector(1 downto 0);
+signal opD : std_ulogic_vector(5 downto 0);
+-- DATA
+signal AD1, BD1 :signed(31 downto 0);
+signal AD2, BD2: signed(31 downto 0);
+signal SignImmD : signed (31 downto 0);
+-- REGISTER ADDRESS
+signal InstrD : std_ulogic_vector(31 downto 0);
+signal RsD, RtD, RdD : std_ulogic_vector(4 downto 0);
+-- OTHER
+signal PC4D : unsigned (31 downto 0); 
+signal PCBranchD, to_branchadd : signed(31 downto 0);
+signal dirtyD : std_logic;
+signal to_flush : std_logic;
+
+----------------------------------- EX ------------------------------------
+--CONTROL
+-- -- branch, jump, PCsource are no longer here
+signal RegWriteE, MemtoRegE, MemWriteE, ALUSrcBE, MemReadE,  
+       DumpE, ResetE, InitMemE, WordByteE	: std_logic;
+signal RegDstE	: std_ulogic_vector(1 downto 0);
+signal opE : std_ulogic_vector(5 downto 0);
+-- DATA
+signal AE1, AE2, BE1, BE2, BE3, ALUE: signed(31 downto 0); -- BE2 is the one taken if address is given AKA WriteDataE
+signal SignImmE : signed (31 downto 0);
+-- REGISTER ADDRESS
+signal RsE, RtE, RdE, WriteRegE : std_ulogic_vector(4 downto 0);
+
+----------------------------------- MEM -----------------------------------
+--CONTROL
+-- -- Op, ALUsrc, RegDst no longer here
+signal RegWriteM, MemtoRegM, MemWriteM, MemReadM,  
+       DumpM, ResetM, InitMemM, WordByteM	: std_logic;
+-- DATA
+signal ALUM, WriteDataM, ReadDataM: signed(31 downto 0);
+-- REGISTER ADDRESS   
+signal WriteRegM : std_ulogic_vector(4 downto 0);
+    
+----------------------------------- WB -----------------------------------
+--CONTROL
+-- -- MemWrite, MemRead, Dump, Reset, InitMem, WordByte no longer here
+signal RegWriteW, MemtoRegW: std_logic;
+-- DATA
+signal ALUW, ReadDataW: signed(31 downto 0);
+signal ResultW: signed(31 downto 0);
+-- REGISTER ADDRESS
+signal WriteRegW : std_ulogic_vector(4 downto 0);
+
+----------------------- HAZARD AND FORWARD CTRL ---------------------------
+signal StallF, StallD, ForwardAD, ForwardBD, FlushE, ForwardAE,ForawardBE : std_logic;
+
+---------------------------------------------------------------------------
+---------------------------------------------------------------------------
+------------------------------- End SIGNALS -------------------------------
+---------------------------------------------------------------------------
+
 begin
+----------------------------------- IF ------------------------------------ 
+-- actual instruction fetch handled in MEM
+to_jump <= ((PC4D(31 downto 28)) & to_jump_28);
+
+   MUX_PCsourceD : MUX_3to1
+		port map(
+			A => PC4F,
+			B => unsigned(PCBranchD),
+			C => to_jump,
+			Op => PCsourceD,
+			R => PC
+	  );
+		
+	JS_jump : JumpShifter
+		port map (
+			Unshifted => unsigned(instrD (25 downto 0)),
+			Shifted => to_jump_28
+		);
+		
+	PC1 : SingleREG
+		port map(
+			clk => clk,
+			rst =>rst_external,
+			write_pc => stallF,
+			reg_in	=> PC,
+			reg_out	=>PCF
+		);
+		
+	PC_adder : PC_add
+		port map(			
+			rst 	=> rst_external,
+			PC		=> PCF,
+			NPC 	=> 	pc4F
+		);
+		
+		
+----------------------------------- ID ------------------------------------ 
+PCsourceD <= jumpD & (branchD and equalD);
+
+RsD <= instrD(25 downto 21);
+RtD <= instrD(20 downto 16);
+RdD <= instrD(15 downto 11);
+
+EqualD <= '1' when AD2 = BD2 else '0';
+
+to_flush <= PCSourceD(1) or PCSourceD(0);
+to_branchADD <= shift_left(signimmD,2);
+
+REG_IFID : Reg_IF_ID
+	port map(
+		clk => clk,
+		rst => rst_external,
+		stall => stallD, 
+		dirtyF => stallD, 
+		flush => to_flush,
+    dirtyD => dirtyD,
+    PC4F => PC4F,
+    PC4D=> PC4D,
+    instr => instrF,
+	  instr_out => instrD
+	);
+
+regist :reg
+		port map (clk => clk, 
+			rst => rst_external, 
+			Rs => instrD(25 downto 21), 
+			Rt => instrD(20 downto 16),
+			Rd => WriteRegW,
+			WB_data => ResultW,
+			WB => RegWriteW,
+			A => AD1,
+			B => BD1
+				
+		);
+		
+sign : SignExtender
+		port map (
+			Immediate => signed(instrD(15 downto 0)),
+			Extended => signImmD
+		);
+		
+		
+BA :BranchAdder
+	port map(
+		PC	=> to_branchADD,
+    Offset => signed(PC4D),
+		NPC  => PCBranchD
+	);
+	
+MUX_ForwardAD : MUX
+		port map(
+			A => signed(AD1),
+			B => ALUM,
+			Op => forwardAD,
+			R => AD2
+		);
+		
+MUX_ForwardBD : MUX
+		port map(
+			A => signed(BD1),
+			B => ALUM,
+			Op => forwardBD,
+			R => BD2
+		);
 
 
+----------------------------------- EX ------------------------------------
+
+REG_IDEX : Reg_ID_EX
+	port map(
+		clk => clk,
+		rst =>rst_external,
+    AD =>AD1,
+	  BD => BD1,
+	  RsD => RsD,
+	  RtD => RtD,
+	  RdD => RdD,
+	  PCWriteCondD=>'0', 
+	  PCWriteCondND=>'0', 
+	  PCWriteD=>'0', 
+	  IorDD=>'0', 
+	  MemReadD=>MemReadD, 
+	  MemWriteD=>MemWriteD, 
+	  MemtoRegD=>MemtoRegD, 
+	  IRWriteD=>'0', 
+	  ALUSrcAD=>'0', 
+	  RegWriteD=>RegWriteD, 
+	  DumpD=>DumpD, 
+	  ResetD=>ResetD, 
+	  InitMemD=>InitMemD,
+	  WordByteD=>WordByteD,
+		PCSourceD=>"00", 
+		ALUSrcBD=>ALUSrcBD, 
+		RegDstD	=> RegDstD,
+	  PCWriteCondE=>open, 
+	  PCWriteCondNE=>open, 
+	  PCWriteE=>open, 
+	  IorDE=>open, 
+	  MemReadE=>MemReadE, 
+	  MemWriteE=>MemWriteE, 
+	  MemtoRegE=>MemtoRegE, 
+	  IRWriteE=>open, 
+	  ALUSrcAE=>open, 
+	  RegWriteE=>RegWriteE, 
+	  DumpE=>DumpE, 
+	  ResetE=>ResetE, 
+	  InitMemE=>InitMemE,
+	  WordByteE=>WordByteE,
+		PCSourceE=>open, 
+		ALUSrcBE=>ALUSrcBE, 
+		RegDstE=>	RegDstE,
+	  RsE=> RsE,
+	  RtE=> RtE,
+	  RdE=> RdE,	  
+	  AE=>  AE1,
+	  BE=>  BE1,
+	  flush=> flushE,
+	  opD=> opD,
+	  opE=>opE
+	);
+
+----------------------------------- MEM -----------------------------------
+
+
+       
+----------------------------------- WB -----------------------------------
 end architecture RTL;

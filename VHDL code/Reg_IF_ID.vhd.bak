@@ -28,9 +28,7 @@ entity Reg_IF_ID is
 		stall, dirtyF, flush   :in std_logic;
     dirtyD   :out std_logic;
     instr : in std_ulogic_vector(31 downto 0);
-	  instr_out : out std_ulogic_vector(31 downto 0);
-	  PC4F : in unsigned(31 downto 0);
-	  PC4D : out unsigned(31 downto 0)
+	  instr_out : out std_ulogic_vector(31 downto 0)
 	);
 end entity Reg_IF_ID;
 --------------------------------------------------------------
@@ -43,7 +41,6 @@ begin
 	 if(rising_edge(clk) and stall = '0' and flush = '0') then 
 	   instr_out <= instr;
 	   dirtyD<=dirtyF;
-	   PC4D <= PC4F;
 	 end if;
 	end process;   
 

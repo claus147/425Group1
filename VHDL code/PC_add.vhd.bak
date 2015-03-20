@@ -30,9 +30,11 @@ end entity PC_add;
 
 architecture RTL of PC_add is
   
-  NPC <= PC + 4;
+  
 
 begin 
+  
+  NPC <= PC + 4;
 
 --process(clk)
 	

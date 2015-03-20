@@ -70,10 +70,10 @@ entity Reg_ID_EX is
 	  RsD     : in std_ulogic_vector(4 downto 0);
 	  RtD     : in std_ulogic_vector(4 downto 0);
 	  RdD     : in std_ulogic_vector(4 downto 0);
-	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD, ALUSrcBD	: in std_logic;
-		PCSourceD, RegDstD	: in std_ulogic_vector(1 downto 0);
-	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE, ALUSrcBE	: out std_logic;
-		PCSourceE, RegDstE	: out std_ulogic_vector(1 downto 0);
+	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD	: in std_logic;
+		PCSourceD, ALUSrcBD, RegDstD	: in std_ulogic_vector(1 downto 0);
+	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE	: out std_logic;
+		PCSourceE, ALUSrcBE, RegDstE	: out std_ulogic_vector(1 downto 0);
 	  RsE : out std_ulogic_vector(4 downto 0);
 	  RtE : out std_ulogic_vector(4 downto 0);
 	  RdE : out std_ulogic_vector(4 downto 0);	  
