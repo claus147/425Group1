@@ -64,7 +64,7 @@ begin
 				
 			when "011000" => 			-- MULT
 				MD_temp <= A*B;
-				lo <= MD_temp(31 downto 0);
+			  lo <= MD_temp(31 downto 0);
 				hi <= MD_temp(63 downto 32);
 				
 			when "011010" =>			-- DIV

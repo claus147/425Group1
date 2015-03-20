@@ -53,7 +53,7 @@ begin
       
       R <= "00000000000000000000000000000000";
       zero <= '1';
-  elsif falling_edge(clk) then
+  elsif rising_edge(clk) then
 		case Op is
 			when "100000" => 			-- ADD, ADDI,
 				R  <= A+B;
@@ -64,8 +64,8 @@ begin
 				
 			when "011000" => 			-- MULT
 				MD_temp <= A*B;
-				lo <= MD_temp(31 downto 0);
-				hi <= MD_temp(63 downto 32);
+			  hi <= MD_temp(31 downto 0);
+				lo <= MD_temp(63 downto 32);
 				
 			when "011010" =>			-- DIV
 				lo <= A / B;

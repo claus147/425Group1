@@ -30,39 +30,11 @@ entity IO_MUX is
 end entity IO_MUX;
 
 architecture RTL of IO_MUX is
---signal temp : unsigned(31 downto 0);
 begin 
---  with sel select 
---  inst <= dat when '1',
---       memIO when others;
-
---process(sel,rst)
---  begin
---    
---    if rst = '1' then
---      
---      inst <= "00000000000000000000000000000000";
---      
---    else
---    
---      if sel = '1' then
---      
---        --memIO <= dat;
---        inst <= "00000000000000000000000000000000";
---      
---      elsif sel = '0' then 
---      
---        inst <= memIO;
---      
---      end if;
---      
---    end if;
---    
---  end process;
-
---temp <= unsigned(memIO);
-memIO <= std_logic_vector(dat) when sel = '1' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
-inst <= memIO when sel = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+  --set the data to the memory input/ouput line when select is high, else set it to high impedance
+  memIO <= std_logic_vector(dat) when sel = '1'else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
+  --set the memory input/ouput line to the insruction reister when select line is low, else set it to high impedance 
+  inst <= memIO when sel = '0' else "ZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZZ";
 
 
 end architecture RTL;

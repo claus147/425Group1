@@ -47,7 +47,6 @@ architecture RTL of unpipelined_RISC is
 	signal B				: signed (31 downto 0);
 	signal ALU_in_A			: signed(31 downto 0);
 	signal ALU_in_B			: signed(31 downto 0);
-	signal reg_out_B		: std_ulogic_vector (31 downto 0);
 	signal MUX_reg_addr_out	: std_ulogic_vector (4 downto 0);
 	signal MUX_reg_data_out	: signed (31 downto 0);
 	signal ALU_control_out	: std_ulogic_vector (5 downto 0);
@@ -85,6 +84,7 @@ architecture RTL of unpipelined_RISC is
 	signal write_pc			:std_logic;
 	signal pc_next :  unsigned (31 downto 0);
 	signal IO_mux_out  :std_logic_vector(31 downto 0);
+	signal IO_mux_c  :std_logic;
 
 	
 	component ALU
@@ -132,7 +132,7 @@ architecture RTL of unpipelined_RISC is
 		rst 				: in std_logic;
 		MemReadReady, MemWriteDone	: in std_logic;
 		op					: in std_ulogic_vector(5 downto 0);
-		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem,WordByte	: out std_logic;
+		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem,WordByte, IOMux	: out std_logic;
 		PCSource, ALUSrcB, RegDst	: out std_ulogic_vector(1 downto 0);
 		ALUOp				: out std_ulogic_vector(3 downto 0)
 	);
@@ -275,7 +275,7 @@ architecture RTL of unpipelined_RISC is
 		port map(			
 		  rst   => rst_external,
 			dat  	=> std_logic_vector(B),
-		  sel   => mem_write_c,
+		  sel   => IO_mux_c,
 		  inst  => IO_mux_out,
 		  memIO => mem_out
 		);
@@ -377,7 +377,8 @@ architecture RTL of unpipelined_RISC is
 			PCSource => PC_source_c, 
 			ALUSrcB => ALU_src_B_c, 
 			RegDst	=> reg_dst_c,
-			ALUOp =>ALU_op_c
+			ALUOp =>ALU_op_c,
+			IOMux => IO_mux_c
 		);
 		
 		instruct :INSTR

@@ -26,7 +26,7 @@ entity FSM_control is
 		rst 				: in std_logic;
 		MemReadReady, MemWriteDone	: in std_logic;
 		op				: in std_ulogic_vector(5 downto 0);
-		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem,WordByte	: out std_logic;
+		PCWriteCond, PCWriteCondN, PCWrite, IorD, MemRead, MemWrite, MemtoReg, IRWrite, ALUSrcA, RegWrite, Dump, Reset, InitMem,WordByte,IOMux	: out std_logic;
 		PCSource, ALUSrcB, RegDst	: out std_ulogic_vector(1 downto 0);
 		ALUOp				: out std_ulogic_vector(3 downto 0)
 	);
@@ -47,14 +47,14 @@ begin
 	case current_state is
 		
 			when A =>
-			  if (memReadReady='1') then
-				  next_state  <=  B;
-				else 
+--			  if (memReadReady='1') then
+--				  next_state  <=  B;
+--				else 
 				  next_state <= A_WAIT;      
-				end if;
+--				end if;
 				
 			when A_WAIT =>
-			  
+			  -- wait for memory to complete read and increment PC
 			   if (memReadReady='1') then
 				    next_state  <=  B;
 				 end if;
@@ -218,6 +218,13 @@ with current_state select
 			'1' when F,
 			'1' when SB,
 			'0' when others;
+			
+with current_state select
+	IOMux <= 	'0' when A,
+			'1' when C,
+			'1' when F,
+			'1' when SB,
+			'0' when others;			
 
 with current_state select
 	IRWrite <= 	'1' when A,
@@ -276,7 +283,7 @@ with current_state select
 			"0000" when others;
 
 with current_state select
-	PCWrite <= 	'1' when A,
+	PCWrite <= 	'1' when A_WAIT,
 	--		'1' when B,
 			'1' when J,
 			'0' when others;
