@@ -1,11 +1,11 @@
-{P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd}
+{P:/Downloads/425Group1/VHDL code/FSM_control.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/FSM_control.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
--- Compiling entity unpipelined_RISC
--- Compiling architecture RTL of unpipelined_RISC
+-- Compiling entity FSM_control
+-- Compiling architecture RTL of FSM_control
 
 } {} {}} {P:/Downloads/425Group1/VHDL code/REG.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/REG.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
@@ -184,6 +184,15 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package NUMERIC_STD
 -- Compiling entity INSTR
 -- Compiling architecture RTL of INSTR
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity IO_MUX
+-- Compiling architecture RTL of IO_MUX
 
 } {} {}} {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012

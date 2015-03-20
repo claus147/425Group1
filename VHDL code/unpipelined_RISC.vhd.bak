@@ -47,7 +47,6 @@ architecture RTL of unpipelined_RISC is
 	signal B				: signed (31 downto 0);
 	signal ALU_in_A			: signed(31 downto 0);
 	signal ALU_in_B			: signed(31 downto 0);
-	signal reg_out_B		: std_ulogic_vector (31 downto 0);
 	signal MUX_reg_addr_out	: std_ulogic_vector (4 downto 0);
 	signal MUX_reg_data_out	: signed (31 downto 0);
 	signal ALU_control_out	: std_ulogic_vector (5 downto 0);

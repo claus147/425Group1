@@ -16,7 +16,7 @@ L25
 V>HJWml2LXQXCa]4AFP3Z;1
 Z7 OV;C;10.1d;51
 32
-Z8 !s108 1426818295.528000
+Z8 !s108 1426818697.145000
 Z9 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/ALU.vhd|
 Z10 !s107 P:/Downloads/425Group1/VHDL code/ALU.vhd|
 Z11 o-work work -2002 -explicit -O0
@@ -53,7 +53,7 @@ L27
 VBbXi8CI[18ZO6Y6zKLV532
 R7
 32
-Z16 !s108 1426818295.974000
+Z16 !s108 1426818697.742000
 Z17 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/ALUControl.vhd|
 Z18 !s107 P:/Downloads/425Group1/VHDL code/ALUControl.vhd|
 R11
@@ -90,7 +90,7 @@ L22
 V7PPPm0BQN4O=;jBGTJPLP3
 R7
 32
-Z21 !s108 1426818296.431000
+Z21 !s108 1426818698.325000
 Z22 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/BranchAdder.vhd|
 Z23 !s107 P:/Downloads/425Group1/VHDL code/BranchAdder.vhd|
 R11
@@ -127,7 +127,7 @@ L31
 VFk9NdD9ZK;l52S[80cHmO1
 R7
 32
-Z26 !s108 1426818296.920000
+Z26 !s108 1426818698.906000
 Z27 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Early_branch_resolution.vhd|
 Z28 !s107 P:/Downloads/425Group1/VHDL code/Early_branch_resolution.vhd|
 R11
@@ -164,7 +164,7 @@ L24
 V?1dQV1jLLOBF0K_AALhT51
 R7
 32
-Z31 !s108 1426818297.464000
+Z31 !s108 1426818699.536000
 Z32 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Forwarding_logic.vhd|
 Z33 !s107 P:/Downloads/425Group1/VHDL code/Forwarding_logic.vhd|
 R11
@@ -201,7 +201,7 @@ L23
 VR`Nh5@Lz[;5Mk[a>O<I2`0
 R7
 32
-Z37 !s108 1426818297.942000
+Z37 !s108 1426818700.091000
 Z38 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/FSM_control.vhd|
 Z39 !s107 P:/Downloads/425Group1/VHDL code/FSM_control.vhd|
 R11
@@ -238,7 +238,7 @@ L22
 VID7Pi[[DK5AhId9OoUiMj1
 R7
 32
-Z42 !s108 1426818298.681000
+Z42 !s108 1426818700.663000
 Z43 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Hazard_control.vhd|
 Z44 !s107 P:/Downloads/425Group1/VHDL code/Hazard_control.vhd|
 R11
@@ -275,7 +275,7 @@ L29
 V[9Y1E61GbH;cIJJXgS]0f2
 R7
 32
-Z47 !s108 1426818299.137000
+Z47 !s108 1426818701.214000
 Z48 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/INSTR.vhd|
 Z49 !s107 P:/Downloads/425Group1/VHDL code/INSTR.vhd|
 R11
@@ -312,7 +312,7 @@ L22
 V:IB;zbhOekEIR=m>7gJ`>1
 R7
 32
-Z53 !s108 1426818299.578000
+Z53 !s108 1426818701.825000
 Z54 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/IO_MUX.vhd|
 Z55 !s107 P:/Downloads/425Group1/VHDL code/IO_MUX.vhd|
 R11
@@ -349,7 +349,7 @@ L21
 V8jD_1RE[9HdWXJa`z>YZ>3
 R7
 32
-Z58 !s108 1426818300.018000
+Z58 !s108 1426818702.400000
 Z59 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/JumpShifter.vhd|
 Z60 !s107 P:/Downloads/425Group1/VHDL code/JumpShifter.vhd|
 R11
@@ -385,7 +385,7 @@ L5
 VeTd[z;iP5HO?J0:E@>Z;L2
 R7
 32
-Z63 !s108 1426818307.977000
+Z63 !s108 1426818711.328000
 Z64 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Memory/Main_Memory.vhd|
 Z65 !s107 P:/Downloads/425Group1/VHDL code/Memory/Main_Memory.vhd|
 R11
@@ -420,7 +420,7 @@ L5
 V:IXeBO9[f>hYBIA0^h[=K0
 R7
 32
-Z68 !s108 1426818308.415000
+Z68 !s108 1426818711.866000
 Z69 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Memory/Memory_in_Byte.vhd|
 Z70 !s107 P:/Downloads/425Group1/VHDL code/Memory/Memory_in_Byte.vhd|
 R11
@@ -456,7 +456,7 @@ L21
 V8g5MRFO[W_6HTh4dT8zN32
 R7
 32
-Z73 !s108 1426818300.495000
+Z73 !s108 1426818703.038000
 Z74 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/MUX.vhd|
 Z75 !s107 P:/Downloads/425Group1/VHDL code/MUX.vhd|
 R11
@@ -493,7 +493,7 @@ L22
 VViil[eC1OB72UYz;59^U10
 R7
 32
-Z78 !s108 1426818301.003000
+Z78 !s108 1426818703.642000
 Z79 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/MUX_3to1.vhd|
 Z80 !s107 P:/Downloads/425Group1/VHDL code/MUX_3to1.vhd|
 R11
@@ -530,7 +530,7 @@ L23
 V4n@CiQ2IaS1JBH5KofnaV2
 R7
 32
-Z83 !s108 1426818301.580000
+Z83 !s108 1426818704.209000
 Z84 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/MUX_4to1.vhd|
 Z85 !s107 P:/Downloads/425Group1/VHDL code/MUX_4to1.vhd|
 R11
@@ -567,7 +567,7 @@ L21
 VOYPS251jc0O3ed0do67?B2
 R7
 32
-Z88 !s108 1426818302.048000
+Z88 !s108 1426818704.772000
 Z89 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/MUX_5bit.vhd|
 Z90 !s107 P:/Downloads/425Group1/VHDL code/MUX_5bit.vhd|
 R11
@@ -604,7 +604,7 @@ L21
 V?4WBYLl0>FLMe76iV7`jk0
 R7
 32
-Z94 !s108 1426818302.549000
+Z94 !s108 1426818705.428000
 Z95 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd|
 Z96 !s107 P:/Downloads/425Group1/VHDL code/mux_unsigned.vhd|
 R11
@@ -641,7 +641,7 @@ L26
 V:lEnmEe2ghVRMXTz288Lc0
 R7
 32
-Z99 !s108 1426818303.007000
+Z99 !s108 1426818705.981000
 Z100 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/OPCODE.vhd|
 Z101 !s107 P:/Downloads/425Group1/VHDL code/OPCODE.vhd|
 R11
@@ -678,7 +678,7 @@ L22
 V5FoDjM:[418WVeB5LEoKC2
 R7
 32
-Z104 !s108 1426818303.536000
+Z104 !s108 1426818706.526000
 Z105 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/PC_add.vhd|
 Z106 !s107 P:/Downloads/425Group1/VHDL code/PC_add.vhd|
 R11
@@ -715,7 +715,7 @@ L33
 V0W>o2W9bG<U6bQ3Jjem4A0
 R7
 32
-Z109 !s108 1426818303.997000
+Z109 !s108 1426818707.085000
 Z110 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/REG.vhd|
 Z111 !s107 P:/Downloads/425Group1/VHDL code/REG.vhd|
 R11
@@ -752,7 +752,7 @@ L38
 VmoZeZO6UJSdb100P^AWTP1
 R7
 32
-Z114 !s108 1426818304.437000
+Z114 !s108 1426818707.625000
 Z115 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Reg_EX_MEM.vhd|
 Z116 !s107 P:/Downloads/425Group1/VHDL code/Reg_EX_MEM.vhd|
 R11
@@ -789,7 +789,7 @@ L62
 V7acfT:6leFhGJ;APQ:gfL1
 R7
 32
-Z119 !s108 1426818304.969000
+Z119 !s108 1426818708.144000
 Z120 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Reg_ID_EX.vhd|
 Z121 !s107 P:/Downloads/425Group1/VHDL code/Reg_ID_EX.vhd|
 R11
@@ -826,7 +826,7 @@ L24
 VHQnkn3TJEiXcMl>c<:3aX0
 R7
 32
-Z124 !s108 1426818305.511000
+Z124 !s108 1426818708.648000
 Z125 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Reg_IF_ID.vhd|
 Z126 !s107 P:/Downloads/425Group1/VHDL code/Reg_IF_ID.vhd|
 R11
@@ -863,7 +863,7 @@ L28
 VfzC]b>fljCK1LAESO[7A21
 R7
 32
-Z129 !s108 1426818306.022000
+Z129 !s108 1426818709.208000
 Z130 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Reg_MEM_WB.vhd|
 Z131 !s107 P:/Downloads/425Group1/VHDL code/Reg_MEM_WB.vhd|
 R11
@@ -900,7 +900,7 @@ L16
 V?_C3EMjJo1B5<[cchFX]]3
 R7
 32
-Z134 !s108 1426818306.559000
+Z134 !s108 1426818709.780000
 Z135 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/SignExtender.vhd|
 Z136 !s107 P:/Downloads/425Group1/VHDL code/SignExtender.vhd|
 R11
@@ -937,7 +937,7 @@ L23
 Vh@;UhncAoE;k_P^al_k153
 R7
 32
-Z139 !s108 1426818307.013000
+Z139 !s108 1426818710.342000
 Z140 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/SingleREG.vhd|
 Z141 !s107 P:/Downloads/425Group1/VHDL code/SingleREG.vhd|
 R11
@@ -975,7 +975,7 @@ VD:>MBXoQUSAM8jJHb`cVz0
 R7
 32
 !i10b 1
-Z144 !s108 1426818308.909000
+Z144 !s108 1426818712.532000
 Z145 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd|
 Z146 !s107 P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd|
 R11
@@ -997,7 +997,7 @@ R146
 R11
 R12
 Eunpipelined_risc
-Z150 w1426804332
+Z150 w1426818581
 R1
 R2
 R3
@@ -1005,24 +1005,24 @@ R4
 Z151 8P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd
 Z152 FP:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd
 l0
-L33
+L34
 V9>Kl0X>ai`@cXOlZ?j`2Q3
 R7
 32
-Z153 !s108 1426818307.508000
+Z153 !s108 1426818710.825000
 Z154 !s90 -reportprogress|300|-work|work|-2002|-explicit|P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd|
 Z155 !s107 P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd|
 R11
 R12
-!s100 Xo@=aY036]:<KPNFUaDl00
+!s100 @NEbf@C[K17=m@[zo]5BJ1
 !i10b 1
 Artl
 R1
 R2
 R3
 DEx4 work 16 unpipelined_risc 0 22 9>Kl0X>ai`@cXOlZ?j`2Q3
-l260
-L40
+l261
+L41
 VY:mE>A`0Jk3AZKl6=cSSF1
 R7
 32
@@ -1031,5 +1031,5 @@ R154
 R155
 R11
 R12
-!s100 4BR3MOCoPU>HFC9lhL4j@2
+!s100 XXKmN0_GFZFDCZNRTg78]3
 !i10b 1
