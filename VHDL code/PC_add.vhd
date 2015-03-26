@@ -9,8 +9,9 @@
 -- 
 -- Control:
 -- 	- clk		clock
--- 
--- The results of this module is stored in Data Memory
+-- 	- rst		reset
+--
+-- The results of this module points to the next instruction to be executed
 --
 ----------------------------------------------------------------------------------------
 
@@ -20,24 +21,29 @@ use ieee.numeric_std.all;
 
 entity PC_add is
 	port (
-		clk : in std_logic;
 		rst : in std_logic;
-		PC	: in unsigned(25 downto 0);
-		NPC : out unsigned(25 downto 0)
+		PC	: in unsigned(31 downto 0);
+		NPC : out unsigned(31 downto 0)
 	);
 end entity PC_add;
 
 architecture RTL of PC_add is
+  
+  
 
-begin process(clk)
+begin 
+  
+  NPC <= PC + 4;
+
+--process(clk)
 	
-begin
+--begin
 
-	if(rising_edge(clk)) then
+	--if(rising_edge(clk)) then
 		
-		NPC <= PC +4;
+	--	NPC <= PC +4;
 		
-	end if;
+	--end if;
 
-end process;
+--end process;
 end architecture RTL;

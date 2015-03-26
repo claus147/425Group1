@@ -30,28 +30,33 @@ entity INSTR is
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
+		IRwrite				: in std_logic;
 		Ins					: in unsigned(31 downto 0);
-		Op_code, Funct		: out unsigned(5 downto 0);
-		Rs, Rt, Rd, Shamt	: out unsigned(4 downto 0);
-		Imm					: out unsigned(15 downto 0);
-		Addr				: out unsigned(25 downto 0)
+		--Op_code, Funct	: out unsigned(5 downto 0);
+		--Rs, Rt, Rd, Shamt	: out unsigned(4 downto 0);
+		--Imm				: out unsigned(15 downto 0);
+		--Addr				: out unsigned(25 downto 0)
+		ins_out				:out std_ulogic_vector(31 downto 0)
 	);
 end entity INSTR;
 
 architecture RTL of INSTR is
 
-begin process(clk)
+begin process(clk,IRwrite)
 
 begin
-	if(rising_edge(clk)) then
-		Op_code <= Ins(31 downto 26);
-		Rs <= Ins(25 downto 21);
-		Rt <= Ins(20 downto 16);
-		Rd <= Ins(15 downto 11);
-		Shamt <= Ins(10 downto 6);
-		Funct <= Ins(5 downto 0);
-		Imm <= Ins(15 downto 0);
-		Addr <= Ins(25 downto 0); 
+	-- if the clock is on the rising edge and the IRwrite (instruction register write) control line is high, we output the instruction
+	if(rising_edge(clk) and IRwrite = '1') then
+	
+		ins_out <= std_ulogic_vector(ins);
+		--Op_code <= Ins(31 downto 26);
+		--Rs <= Ins(25 downto 21);
+		--Rt <= Ins(20 downto 16);
+		--Rd <= Ins(15 downto 11);
+		--Shamt <= Ins(10 downto 6);
+		--Funct <= Ins(5 downto 0);
+		--Imm <= Ins(15 downto 0);
+		--Addr <= Ins(25 downto 0); 
 
 	end if;
 	
