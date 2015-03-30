@@ -41,8 +41,8 @@ entity Reg_EX_MEM is
 		rst 				: in std_logic;
 		ALUE    : in signed(31 downto 0);
 		ALUM    : out signed(31 downto 0);
-	  RdtE    : in std_ulogic_vector(4 downto 0);
-		RdtM    : out std_ulogic_vector(4 downto 0);
+	  RdtE    : in signed(4 downto 0);
+		RdtM    : out signed(4 downto 0);
     MemReadE, MemWriteE, MemtoRegE,RegWriteE, DumpE, ResetE, InitMemE,WordByteE	: in std_logic;
 	  MemReadM, MemWriteM, MemtoRegM,RegWriteM, DumpM, ResetM, InitMemM,WordByteM	: out std_logic
 	);

@@ -110,8 +110,8 @@ component Reg_EX_MEM
 		rst 				: in std_logic;
 		ALUE    : in signed(31 downto 0);
 		ALUM    : out signed(31 downto 0);
-	  RdtE    : in signed(4 downto 0);
-		RdtM    : out signed(4 downto 0);
+	  RdtE    : in std_ulogic_vector(4 downto 0);
+		RdtM    : out std_ulogic_vector(4 downto 0);
     MemReadE, MemWriteE, MemtoRegE,RegWriteE, DumpE, ResetE, InitMemE,WordByteE	: in std_logic;
 	  MemReadM, MemWriteM, MemtoRegM,RegWriteM, DumpM, ResetM, InitMemM,WordByteM	: out std_logic
 	);
@@ -123,8 +123,8 @@ component Reg_MEM_WB
 		rst 				: in std_logic;
 		ALUM, MEMM    : in signed(31 downto 0);
 		ALUW, MEMW    : out signed(31 downto 0);
-		RdtM    : in signed(4 downto 0);
-		RdtW    : out signed(4 downto 0);
+		RdtM    : in std_ulogic_vector(4 downto 0);
+		RdtW    : out std_ulogic_vector(4 downto 0);
 		MemtoRegM, RegWriteM	: in std_logic;
 	  MemtoRegW, RegWriteW	: out std_logic
 	);
@@ -516,7 +516,7 @@ regist :reg
 			rst => rst_external, 
 			Rs => instrD(25 downto 21), 
 			Rt => instrD(20 downto 16),
-			Rd => WriteRegW,
+			Rd => WriteRegW,             --double checl
 			WB_data => ResultW,
 			WB => RegWriteW,
 			A => AD1,
@@ -665,13 +665,71 @@ REG_IDEX : Reg_ID_EX
 			C => ALUM,
 			Op => forwardAE,
 			R => AE2
-		);
-		
+		);  
+	
+	myALU:ALU  
+    port map (
+		  clk =>clk,
+		  rst =>rst_external,
+		  A => AE2, B => BE3,
+		  Op	=>opE,
+		  R		=> ALUE,
+		  zero	=>open
+	 );		
 
 
 ----------------------------------- MEM -----------------------------------
 
-
+  REG_EXMEM: Reg_EX_MEM
+  port map (
+		clk => clk,
+		rst => rst_external,
+		ALUE =>ALUE,
+		ALUM =>ALUM,
+	  RdtE => WriteRegE,
+		RdtM => WriteRegM,
+    MemReadE =>MemReadE, MemWriteE =>MemWriteE, MemtoRegE=>MemtoRegE,RegWriteE=>RegWriteE, DumpE=>DumpE, ResetE=>ResetE, InitMemE =>InitMemE,WordByteE=>WordByteE,
+	  MemReadM =>MemReadM, MemWriteM=>MemWriteM, MemtoRegM=>MemtoRegM,RegWriteM=>RegWriteM, DumpM=>DumpM, ResetM=>ResetM, InitMemM=>InitMemM,WordByteM=>WordByteM
+	);
+  
+  Mainmemory: MAIN_Memory
+  port map (
+    clk => clk,
+	  address => integer(ALUM),
+	  Word_Byte=>WordByteM, -- when '1' you are interacting with the memory in word otherwise in byte
+	  we => memWriteM,
+	  wr_done => open, --indicates that the write operation has been done.
+	  re => '0',
+		rd_ready=> open, --indicates that the read data is ready at the output.
+		data => ReadDataM,       
+		initialize=>initMemM,
+		dump=>dumpM
+	);			     
        
 ----------------------------------- WB -----------------------------------
+
+  REG_MEMWB:Reg_MEM_WB
+  port map(
+		clk =>clk,
+		rst => rst_external,
+		ALUM => ALUM, 
+		MEMM => ReadDataM,
+		ALUW => ALUW, 
+		MEMW => ReadDataW,
+		RdtM => WriteRegM,
+		RdtW => WriteRegW,
+		MemtoRegM => MemtoRegM, 
+		RegWriteM	=> RegWriteM,
+	  MemtoRegW => MemtoRegW, 
+	  RegWriteW	=>RegWriteW
+	);
+	
+	MEMtoREGW_MUX: MUX
+	port map(
+		A => readDataW, 
+		B => ALUW,
+		Op	=>MemtoRegW,
+		R	=> ResultW
+	);
+
 end architecture RTL;
