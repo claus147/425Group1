@@ -434,7 +434,6 @@ DEx4 work 14 memory_in_byte 0 22 F8g^l<g8RN0a8o1MKWg=@2
 l33
 L29
 VIo7lkYiUcQPLfaVoIWoKH2
-!s100 RlML@EUjYJon5ZPe?leL[1
 R8
 32
 R67
@@ -442,6 +441,7 @@ R68
 R69
 R12
 R13
+!s100 RlML@EUjYJon5ZPe?leL[1
 !i10b 1
 Emux
 R1
@@ -971,65 +971,65 @@ Z142 FP:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd
 l0
 L6
 VPdXFLBWfb^gJ`cV`UMFR93
-!s100 09El8PaFzWKQ>i5oZN<P]2
 R8
 32
-!i10b 1
 Z143 !s108 1426777179.489000
 Z144 !s90 -reportprogress|300|-work|work2|-2002|-explicit|P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd|
 Z145 !s107 P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd|
 R12
 R13
+!s100 09El8PaFzWKQ>i5oZN<P]2
+!i10b 1
 Abehavior
 R3
 R4
-Z146 DEx4 work 14 tb_main_memory 0 22 PdXFLBWfb^gJ`cV`UMFR93
+DEx4 work 14 tb_main_memory 0 22 PdXFLBWfb^gJ`cV`UMFR93
 l67
 L9
-Z147 VdTXKYaU1Q2JdlGE70GdQb1
-Z148 !s100 <lh35k9[0Z5akBPe3eMK50
+VdTXKYaU1Q2JdlGE70GdQb1
+!s100 <lh35k9[0Z5akBPe3eMK50
 R8
 32
-!i10b 1
 R143
 R144
 R145
 R12
 R13
+!i10b 1
 Eunpipelined_risc
-Z149 w1426776346
+Z146 w1427750596
 R2
 R3
 R4
 R5
-Z150 8P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd
-Z151 FP:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd
+Z147 8P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd
+Z148 FP:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd
 l0
-L33
+L34
 VzcLM_]WgMmehz6W]U48m32
+!s100 @NEbf@C[K17=m@[zo]5BJ1
 R8
 32
-Z152 !s108 1426777177.997000
-Z153 !s90 -reportprogress|300|-work|work2|-2002|-explicit|P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd|
-Z154 !s107 P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd|
+!i10b 1
+Z149 !s108 1427756717.873000
+Z150 !s90 -reportprogress|300|-work|work2|-2002|-explicit|P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd|
+Z151 !s107 P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd|
 R12
 R13
-!s100 Xo@=aY036]:<KPNFUaDl00
-!i10b 1
 Artl
 R2
 R3
 R4
-DEx4 work 16 unpipelined_risc 0 22 zcLM_]WgMmehz6W]U48m32
-l260
-L40
-VjBTCS@_9P4QlmemmT0mPm1
+Z152 DEx4 work 16 unpipelined_risc 0 22 zcLM_]WgMmehz6W]U48m32
+l261
+L41
+V6_@DQ=@P?G_TEkY^DO7_V0
+!s100 XXKmN0_GFZFDCZNRTg78]3
 R8
 32
-R152
-R153
-R154
+!i10b 1
+R149
+R150
+R151
 R12
 R13
-!s100 5I?RNo>DV;WD>dYzXXkcM1
-!i10b 1

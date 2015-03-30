@@ -64,8 +64,8 @@ begin
 				
 			when "011000" => 			-- MULT
 				MD_temp <= A*B;
-			  lo <= MD_temp(31 downto 0);
-				hi <= MD_temp(63 downto 32);
+--			  lo <= MD_temp(31 downto 0);
+--				hi <= MD_temp(63 downto 32);
 				
 			when "011010" =>			-- DIV
 				lo <= A / B;
@@ -91,10 +91,10 @@ begin
 				R <= A xor B;
 			
 			when "010000" => 			-- MFHI
-				R <= hi;
+				R <= MD_temp(63 downto 32);
 			
 			when "010010" => 			-- MFLO
-				R <= lo;
+				R <= MD_temp(31 downto 0);
 			
 			when "000000" => 			-- SLL
 				

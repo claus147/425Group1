@@ -1,4 +1,4 @@
-{P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd}
+{P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd} {1 {vcom -work work2 -2002 -explicit {P:/Downloads/425Group1/VHDL code/unpipelined_RISC.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
 -- Loading package TEXTIO
@@ -6,15 +6,6 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package NUMERIC_STD
 -- Compiling entity unpipelined_RISC
 -- Compiling architecture RTL of unpipelined_RISC
-
-} {} {}} {P:/Downloads/425Group1/VHDL code/FSM_control.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/FSM_control.vhd}
-Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
--- Loading package STANDARD
--- Loading package TEXTIO
--- Loading package std_logic_1164
--- Loading package NUMERIC_STD
--- Compiling entity FSM_control
--- Compiling architecture RTL of FSM_control
 
 } {} {}} {P:/Downloads/425Group1/VHDL code/REG.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/REG.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
@@ -33,6 +24,15 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package NUMERIC_STD
 -- Compiling entity MUX_unsigned
 -- Compiling architecture RTL of MUX_unsigned
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/FSM_control.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/FSM_control.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity FSM_control
+-- Compiling architecture RTL of FSM_control
 
 } {} {}} {P:/Downloads/425Group1/VHDL code/BranchAdder.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/BranchAdder.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
@@ -87,6 +87,15 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity Hazard_control
 -- Compiling architecture RTL of Hazard_control
 
+} {} {}} {P:/Downloads/425Group1/VHDL code/PC_add.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/PC_add.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity PC_add
+-- Compiling architecture RTL of PC_add
+
 } {} {}} {P:/Downloads/425Group1/VHDL code/ALUControl.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/ALUControl.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
@@ -131,6 +140,15 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity Early_branch_resolution
 -- Compiling architecture RTL of Early_branch_resolution
 
+} {} {}} {P:/Downloads/425Group1/VHDL code/Reg_ID_EX.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/Reg_ID_EX.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity Reg_ID_EX
+-- Compiling architecture RTL of Reg_ID_EX
+
 } {} {}} {P:/Downloads/425Group1/VHDL code/SingleREG.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/SingleREG.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
@@ -139,6 +157,15 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package NUMERIC_STD
 -- Compiling entity SingleREG
 -- Compiling architecture arch of SingleREG
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/Reg_IF_ID.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/Reg_IF_ID.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity Reg_IF_ID
+-- Compiling architecture RTL of Reg_IF_ID
 
 } {} {}} {P:/Downloads/425Group1/VHDL code/Reg_EX_MEM.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/Reg_EX_MEM.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
@@ -167,15 +194,6 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity INSTR
 -- Compiling architecture RTL of INSTR
 
-} {} {}} {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd}
-Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
--- Loading package STANDARD
--- Loading package TEXTIO
--- Loading package std_logic_1164
--- Loading package NUMERIC_STD
--- Compiling entity IO_MUX
--- Compiling architecture RTL of IO_MUX
-
 } {} {}} {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/JumpShifter.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
@@ -185,14 +203,14 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Compiling entity JumpShifter
 -- Compiling architecture RTL of JumpShifter
 
-} {} {}} {P:/Downloads/425Group1/VHDL code/ALU.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/ALU.vhd}
+} {} {}} {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/IO_MUX.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package STANDARD
 -- Loading package TEXTIO
 -- Loading package std_logic_1164
 -- Loading package NUMERIC_STD
--- Compiling entity ALU
--- Compiling architecture RTL of ALU
+-- Compiling entity IO_MUX
+-- Compiling architecture RTL of IO_MUX
 
 } {} {}} {P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/Memory/tb_Main_Memory.vhd}
 Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
@@ -279,5 +297,14 @@ Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
 -- Loading package NUMERIC_STD
 -- Compiling entity MUX
 -- Compiling architecture RTL of MUX
+
+} {} {}} {P:/Downloads/425Group1/VHDL code/ALU.vhd} {1 {vcom -work work -2002 -explicit {P:/Downloads/425Group1/VHDL code/ALU.vhd}
+Model Technology ModelSim ALTERA vcom 10.1d Compiler 2012.11 Nov  2 2012
+-- Loading package STANDARD
+-- Loading package TEXTIO
+-- Loading package std_logic_1164
+-- Loading package NUMERIC_STD
+-- Compiling entity ALU
+-- Compiling architecture RTL of ALU
 
 } {} {}}
