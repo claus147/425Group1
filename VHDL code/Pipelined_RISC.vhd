@@ -121,8 +121,10 @@ component Reg_MEM_WB
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-		ALUM, MEMM    : in signed(31 downto 0);
-		ALUW, MEMW    : out signed(31 downto 0);
+		ALUM : in signed(31 downto 0);
+		ALUW : out signed(31 downto 0);
+		MEMM : in std_logic_vector(31 downto 0);
+		MEMW  : out std_logic_vector(31 downto 0);     
 		RdtM    : in std_ulogic_vector(4 downto 0);
 		RdtW    : out std_ulogic_vector(4 downto 0);
 		MemtoRegM, RegWriteM	: in std_logic;
@@ -385,6 +387,8 @@ signal PC, PCF, PC4F: unsigned(31 downto 0);
 signal instrF : std_ulogic_vector(31 downto 0);
 signal to_jump_28: unsigned (27 downto 0); -- last 28 bits of the jump
 signal to_jump : unsigned (31 downto 0); -- full for jump
+signal choose_IorD :std_logic;
+signal toMem : signed(31 downto 0);
 
 ----------------------------------- ID ------------------------------------
 -- CONTROL
@@ -406,6 +410,7 @@ signal dirtyD : std_logic;
 signal to_flush : std_logic;
 signal ALUOPD : std_ulogic_vector(3 downto 0);
 
+
 ----------------------------------- EX ------------------------------------
 --CONTROL
 -- -- branch, jump, PCsource are no longer here
@@ -423,9 +428,10 @@ signal RsE, RtE, RdE, WriteRegE : std_ulogic_vector(4 downto 0);
 --CONTROL
 -- -- Op, ALUsrc, RegDst no longer here
 signal RegWriteM, MemtoRegM, MemWriteM, MemReadM,  
-       DumpM, ResetM, InitMemM, WordByteM	: std_logic;
+       DumpM, ResetM, InitMemM, WordByteM,	MemWriteMComp : std_logic;
 -- DATA
-signal ALUM, WriteDataM, ReadDataM: signed(31 downto 0);
+signal ALUM, WriteDataM: signed(31 downto 0);
+signal ReadDataM: std_logic_vector(31 downto 0);
 -- REGISTER ADDRESS   
 signal WriteRegM : std_ulogic_vector(4 downto 0);
     
@@ -434,7 +440,8 @@ signal WriteRegM : std_ulogic_vector(4 downto 0);
 -- -- MemWrite, MemRead, Dump, Reset, InitMem, WordByte no longer here
 signal RegWriteW, MemtoRegW: std_logic;
 -- DATA
-signal ALUW, ReadDataW: signed(31 downto 0);
+signal ALUW: signed(31 downto 0);
+signal ReadDataW : std_logic_vector(31 downto 0);
 signal ResultW: signed(31 downto 0);
 -- REGISTER ADDRESS
 signal WriteRegW : std_ulogic_vector(4 downto 0);
@@ -452,6 +459,7 @@ begin
 ----------------------------------- IF ------------------------------------ 
 -- actual instruction fetch handled in MEM
 to_jump <= ((PC4D(31 downto 28)) & to_jump_28);
+choose_IorD <= MemtoRegM or MemWriteM;
 
    MUX_PCsourceD : MUX_3to1
 		port map(
@@ -483,7 +491,15 @@ to_jump <= ((PC4D(31 downto 28)) & to_jump_28);
 			PC		=> PCF,
 			NPC 	=> 	pc4F
 		);
-		
+	
+	INSTR_OR_DATA_TO_ADDR: MUX
+	port map(
+		A => signed(PCF), 
+		B => ALUM,
+		Op	=> choose_IorD, --load or store, then dont read
+		R	=> toMEM
+	);
+	
 		
 ----------------------------------- ID ------------------------------------ 
 PCsourceD <= jumpD & (branchD and equalD);
@@ -679,7 +695,7 @@ REG_IDEX : Reg_ID_EX
 
 
 ----------------------------------- MEM -----------------------------------
-
+  memWriteMComp <= not memWriteM;
   REG_EXMEM: Reg_EX_MEM
   port map (
 		clk => clk,
@@ -695,13 +711,13 @@ REG_IDEX : Reg_ID_EX
   Mainmemory: MAIN_Memory
   port map (
     clk => clk,
-	  address => integer(ALUM),
+	  address => to_integer(toMEM),
 	  Word_Byte=>WordByteM, -- when '1' you are interacting with the memory in word otherwise in byte
 	  we => memWriteM,
 	  wr_done => open, --indicates that the write operation has been done.
-	  re => '0',
+	  re => memWriteMComp,
 		rd_ready=> open, --indicates that the read data is ready at the output.
-		data => ReadDataM,       
+		data =>ReadDataM,       
 		initialize=>initMemM,
 		dump=>dumpM
 	);			     
@@ -726,8 +742,8 @@ REG_IDEX : Reg_ID_EX
 	
 	MEMtoREGW_MUX: MUX
 	port map(
-		A => readDataW, 
-		B => ALUW,
+		A => ALUW, 
+		B => signed(readDataW),
 		Op	=>MemtoRegW,
 		R	=> ResultW
 	);
