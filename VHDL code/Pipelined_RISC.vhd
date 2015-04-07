@@ -6,15 +6,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 ---------------------------------------------------------------------------
-entity Reg_IF_ID is
+entity Pipelined_RISC is
 	port (
 		clk 			: in std_logic;
 		rst_external 	: in std_logic
 	);
-end entity Reg_IF_ID;
+end entity Pipelined_RISC;
 
 ---------------------------------------------------------------------------
-architecture RTL of Reg_IF_ID is
+architecture RTL of Pipelined_RISC is
 
 
 ---------------------------------------------------------------------------
@@ -747,5 +747,32 @@ REG_IDEX : Reg_ID_EX
 		Op	=>MemtoRegW,
 		R	=> ResultW
 	);
+--------------------------------------Forwarding Unit----------------------------------------
+Forward:  Forwarding_logic 
+	port map (
+		clk => clk,
+		rst => rst_external,
+    IF_ID_Rs => RsD,
+    IF_ID_Rt => RtD,
+    EX_MEM_Rd => writeRegE,
+    MEM_WB_Rd => WriteRegM,
+    stall => stallD, -- we are missing a stall signal that propagates through the pipeline registers
+    forward_A => forwardAD,
+	  forward_B  => forwardBD
+	);
+
+------------------------------ Hazard_control--------------------------------
+Hazard: Hazard_control
+	port map (
+		clk => clk,
+		rst => rst_external,
+		ID_EX_Rd => RdE,
+    IF_ID_Rs => RsD,
+    IF_ID_Rt => RtD,
+    ID_EX_MemRead =>MemtoRegE,
+    stall => stallD
+	);
+
+
 
 end architecture RTL;
