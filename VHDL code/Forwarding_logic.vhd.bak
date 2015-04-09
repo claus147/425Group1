@@ -41,12 +41,12 @@ architecture RTL of Forwarding_logic is
 
 begin
     
-  forward_A <= "01" when (IF_ID_Rs = MEM_WB_Rd and stall = '1') else
-             "10" when (IF_ID_Rs = EX_MEM_Rd and stall = '0') else
+  forward_A <= "01" when (IF_ID_Rs = MEM_WB_Rd and stall = '0') else
+             "10" when (IF_ID_Rs = EX_MEM_Rd and stall = '1') else
              "00";
             
-  forward_B <= "01" when (IF_ID_Rt = MEM_WB_Rd and stall = '1') else
-             "10" when (IF_ID_Rt = EX_MEM_Rd and stall = '0') else
+  forward_B <= "01" when (IF_ID_Rt = MEM_WB_Rd and stall = '0') else
+             "10" when (IF_ID_Rt = EX_MEM_Rd and stall = '1') else
              "00";    
              
   forward_AD  <= '1' when (IF_ID_Rs = EX_MEM_Rd and stall = '0') else

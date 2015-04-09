@@ -6,15 +6,15 @@ library ieee;
 use ieee.std_logic_1164.all;
 use ieee.numeric_std.all;
 ---------------------------------------------------------------------------
-entity Reg_IF_ID is
+entity Pipelined_RISC is
 	port (
 		clk 			: in std_logic;
 		rst_external 	: in std_logic
 	);
-end entity Reg_IF_ID;
+end entity Pipelined_RISC;
 
 ---------------------------------------------------------------------------
-architecture RTL of Reg_IF_ID is
+architecture RTL of Pipelined_RISC is
 
 
 ---------------------------------------------------------------------------
@@ -158,7 +158,9 @@ component Forwarding_logic
     MEM_WB_Rd : in std_ulogic_vector(4 downto 0);
     stall : in std_logic;
     forward_A : out std_ulogic_vector(1 downto 0);
-	  forward_B : out std_ulogic_vector(1 downto 0)
+	  forward_B : out std_ulogic_vector(1 downto 0);
+	  forward_AD : out std_logic;
+	  forward_BD : out std_logic
 	);
 end component;
 
@@ -428,7 +430,7 @@ signal RsE, RtE, RdE, WriteRegE : std_ulogic_vector(4 downto 0);
 --CONTROL
 -- -- Op, ALUsrc, RegDst no longer here
 signal RegWriteM, MemtoRegM, MemWriteM, MemReadM,  
-       DumpM, ResetM, InitMemM, WordByteM	: std_logic;
+       DumpM, ResetM, InitMemM, WordByteM,	MemWriteMComp : std_logic;
 -- DATA
 signal ALUM, WriteDataM: signed(31 downto 0);
 signal ReadDataM: std_logic_vector(31 downto 0);
@@ -448,7 +450,7 @@ signal WriteRegW : std_ulogic_vector(4 downto 0);
 
 ----------------------- HAZARD AND FORWARD CTRL ---------------------------
 signal StallF, StallD, ForwardAD, ForwardBD, FlushE: std_logic;
-signal ForwardAE,ForawardBE : std_ulogic_vector(1 downto 0);
+signal ForwardAE,ForwardBE : std_ulogic_vector(1 downto 0);
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
@@ -459,7 +461,7 @@ begin
 ----------------------------------- IF ------------------------------------ 
 -- actual instruction fetch handled in MEM
 to_jump <= ((PC4D(31 downto 28)) & to_jump_28);
-choose_IorD <= MemtoRegM or MemWriteM;
+choose_IorD <= MemtoReadM or MemWriteM;
 
    MUX_PCsourceD : MUX_3to1
 		port map(
@@ -480,7 +482,7 @@ choose_IorD <= MemtoRegM or MemWriteM;
 		port map(
 			clk => clk,
 			rst =>rst_external,
-			write_pc => stallF,
+			write_pc => choose_IorD,
 			reg_in	=> PC,
 			reg_out	=>PCF
 		);
@@ -682,6 +684,23 @@ REG_IDEX : Reg_ID_EX
 			Op => forwardAE,
 			R => AE2
 		);  
+		
+		MUX_forwardBE : MUX_3to1_signed
+		port map(
+			A => BE1,
+			B => resultW,
+			C => ALUM,
+			Op => forwardBE,
+			R => BE2
+		); 
+		
+	AUSrcE_MUX: MUX
+	port map(
+		A => BE2, 
+		B => SignImmE,
+		Op	=>ALUSrcBE,
+		R	=> BE3
+	);
 	
 	myALU:ALU  
     port map (
@@ -695,7 +714,7 @@ REG_IDEX : Reg_ID_EX
 
 
 ----------------------------------- MEM -----------------------------------
-
+  memWriteMComp <= not memWriteM;
   REG_EXMEM: Reg_EX_MEM
   port map (
 		clk => clk,
@@ -715,7 +734,7 @@ REG_IDEX : Reg_ID_EX
 	  Word_Byte=>WordByteM, -- when '1' you are interacting with the memory in word otherwise in byte
 	  we => memWriteM,
 	  wr_done => open, --indicates that the write operation has been done.
-	  re => not memWriteM,
+	  re => memWriteMComp,
 		rd_ready=> open, --indicates that the read data is ready at the output.
 		data =>ReadDataM,       
 		initialize=>initMemM,
@@ -747,5 +766,34 @@ REG_IDEX : Reg_ID_EX
 		Op	=>MemtoRegW,
 		R	=> ResultW
 	);
+--------------------------------------Forwarding Unit----------------------------------------
+Forward:  Forwarding_logic 
+	port map (
+		clk => clk,
+		rst => rst_external,
+    IF_ID_Rs => RsD,
+    IF_ID_Rt => RtD,
+    EX_MEM_Rd => writeRegE,
+    MEM_WB_Rd => WriteRegM,
+    stall => stallD, -- we are missing a stall signal that propagates through the pipeline registers
+    forward_A => forwardAE,
+	  forward_B  => forwardBE,
+	  forward_AD => forwardAD,
+	  forward_BD => forwardBD
+	);
+
+------------------------------ Hazard_control--------------------------------
+Hazard: Hazard_control
+	port map (
+		clk => clk,
+		rst => rst_external,
+		ID_EX_Rd => RdE,
+    IF_ID_Rs => RsD,
+    IF_ID_Rt => RtD,
+    ID_EX_MemRead =>MemtoRegE,
+    stall => stallD
+	);
+
+
 
 end architecture RTL;

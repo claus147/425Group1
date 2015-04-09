@@ -37,7 +37,7 @@ begin
 	begin
 	  if(rst = '1') then
 	   reg_out <= (OTHERS => '0');
-		elsif(falling_edge(clk) and write_pc = '1') then
+		elsif(falling_edge(clk) and write_pc = '0') then
 				reg_out <= reg_in;	-- present the input at the output of the register on the clock edge and when write_pc is high
 		end if;	
 	end process;

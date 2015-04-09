@@ -158,7 +158,9 @@ component Forwarding_logic
     MEM_WB_Rd : in std_ulogic_vector(4 downto 0);
     stall : in std_logic;
     forward_A : out std_ulogic_vector(1 downto 0);
-	  forward_B : out std_ulogic_vector(1 downto 0)
+	  forward_B : out std_ulogic_vector(1 downto 0);
+	  forward_AD : out std_logic;
+	  forward_BD : out std_logic
 	);
 end component;
 
@@ -448,7 +450,7 @@ signal WriteRegW : std_ulogic_vector(4 downto 0);
 
 ----------------------- HAZARD AND FORWARD CTRL ---------------------------
 signal StallF, StallD, ForwardAD, ForwardBD, FlushE: std_logic;
-signal ForwardAE,ForawardBE : std_ulogic_vector(1 downto 0);
+signal ForwardAE,ForwardBE : std_ulogic_vector(1 downto 0);
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
@@ -459,7 +461,7 @@ begin
 ----------------------------------- IF ------------------------------------ 
 -- actual instruction fetch handled in MEM
 to_jump <= ((PC4D(31 downto 28)) & to_jump_28);
-choose_IorD <= MemtoRegM or MemWriteM;
+choose_IorD <= MemReadM or MemWriteM;
 
    MUX_PCsourceD : MUX_3to1
 		port map(
@@ -480,7 +482,7 @@ choose_IorD <= MemtoRegM or MemWriteM;
 		port map(
 			clk => clk,
 			rst =>rst_external,
-			write_pc => stallF,
+			write_pc => choose_IorD,
 			reg_in	=> PC,
 			reg_out	=>PCF
 		);
@@ -682,6 +684,23 @@ REG_IDEX : Reg_ID_EX
 			Op => forwardAE,
 			R => AE2
 		);  
+		
+		MUX_forwardBE : MUX_3to1_signed
+		port map(
+			A => BE1,
+			B => resultW,
+			C => ALUM,
+			Op => forwardBE,
+			R => BE2
+		); 
+		
+	AUSrcE_MUX: MUX
+	port map(
+		A => BE2, 
+		B => SignImmE,
+		Op	=>ALUSrcBE,
+		R	=> BE3
+	);
 	
 	myALU:ALU  
     port map (
@@ -757,8 +776,10 @@ Forward:  Forwarding_logic
     EX_MEM_Rd => writeRegE,
     MEM_WB_Rd => WriteRegM,
     stall => stallD, -- we are missing a stall signal that propagates through the pipeline registers
-    forward_A => forwardAD,
-	  forward_B  => forwardBD
+    forward_A => forwardAE,
+	  forward_B  => forwardBE,
+	  forward_AD => forwardAD,
+	  forward_BD => forwardBD
 	);
 
 ------------------------------ Hazard_control--------------------------------

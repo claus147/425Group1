@@ -30,7 +30,8 @@ entity SingleREG is
 	);
 end entity SingleREG;
 
-architecture arch of SingleREG is
+architecture arch of SingleREG is  
+
 begin 
 	process(clk,rst,write_pc)
 	begin
