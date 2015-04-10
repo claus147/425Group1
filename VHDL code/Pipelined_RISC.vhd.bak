@@ -396,14 +396,14 @@ signal PC, PCF, PC4F: unsigned(31 downto 0);
 signal instrF : std_ulogic_vector(31 downto 0);
 signal to_jump_28: unsigned (27 downto 0); -- last 28 bits of the jump
 signal to_jump : unsigned (31 downto 0); -- full for jump
-signal choose_IorD :std_logic;
+signal choose_IorD :std_logic:= '0' ;
 signal toMem : signed(31 downto 0);
 
 ----------------------------------- ID ------------------------------------
 -- CONTROL
 signal RegWriteD, MemtoRegD, MemWriteD, ALUSrcBD, jumpD, branchD, MemReadD,  
        DumpD, ResetD, InitMemD, WordByteD,	equalD, IOMuxD: std_logic;
-signal PCSourceD, RegDstD	: std_ulogic_vector(1 downto 0);
+signal PCSourceD, RegDstD, jumpAndBranchD	: std_ulogic_vector(1 downto 0);
 signal opD : std_ulogic_vector(5 downto 0);
 -- DATA
 signal AD1, BD1 :signed(31 downto 0);
@@ -513,7 +513,10 @@ choose_IorD <= MemReadM or MemWriteM;
 	
 		
 ----------------------------------- ID ------------------------------------ 
+jumpD <= jumpAndBranchD(1);
+branchD <= jumpAndBranchD (0);
 PCsourceD <= jumpD & (branchD and equalD);
+
 
 RsD <= instrD(25 downto 21);
 RtD <= instrD(20 downto 16);
@@ -588,9 +591,9 @@ FSMCONTROL: FSM_control
 		MemReadReady => rd_ready, --currently no signals or thing for it
 		MemWriteDone => wr_done, --currently no signals or thing for it
 		op	=> opD,
-		PCWriteCond => branchd, 
+		PCWriteCond => open, 
 		PCWriteCondN => open, 
-		PCWrite => jumpD, 
+		PCWrite => open, 
 		IorD => open, 
 		MemRead => MemReadD, 
 		MemWrite=> MemWriteD, 
@@ -662,7 +665,7 @@ REG_IDEX : Reg_ID_EX
 	  ResetE=>ResetE, 
 	  InitMemE=>InitMemE,
 	  WordByteE=>WordByteE,
-		PCSourceE=>open, 
+		PCSourceE=>jumpAndBranchD, 
 		ALUSrcBE=>ALUSrcBE, 
 		RegDstE=>	RegDstE,
 	  RsE=> RsE,
@@ -743,7 +746,7 @@ REG_IDEX : Reg_ID_EX
 	  Word_Byte=>WordByteM, -- when '1' you are interacting with the memory in word otherwise in byte
 	  we => memWriteM,
 	  wr_done => wr_done, --indicates that the write operation has been done.
-	  re => memWriteMComp,
+	  re => '0',--memWriteMComp,
 		rd_ready=> rd_ready, --indicates that the read data is ready at the output.
 		data =>memIO,       
 		initialize=>initMemM,
