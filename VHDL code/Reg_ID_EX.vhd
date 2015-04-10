@@ -70,9 +70,9 @@ entity Reg_ID_EX is
 	  RsD     : in std_ulogic_vector(4 downto 0);
 	  RtD     : in std_ulogic_vector(4 downto 0);
 	  RdD     : in std_ulogic_vector(4 downto 0);
-	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD, ALUSrcBD	: in std_logic;
+	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD, ALUSrcBD, IOMuxD	: in std_logic;
 		PCSourceD, RegDstD	: in std_ulogic_vector(1 downto 0);
-	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE, ALUSrcBE	: out std_logic;
+	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE, ALUSrcBE, IOMuxE	: out std_logic;
 		PCSourceE, RegDstE	: out std_ulogic_vector(1 downto 0);
 	  RsE : out std_ulogic_vector(4 downto 0);
 	  RtE : out std_ulogic_vector(4 downto 0);
@@ -88,10 +88,35 @@ end entity Reg_ID_EX;
 architecture RTL of Reg_ID_EX is
   
 begin
-  process(clk)
+  process(clk, rst)
   begin
+   if (rst = '1') then
+    AE <= (OTHERS => '0');
+	  BE <= (OTHERS => '0');
+	  RsE <= (OTHERS => '0');
+	  RtE <= (OTHERS => '0');
+	  RdE <= (OTHERS => '0');
+	  PCWriteCondE <= '0';
+	  PCWriteCondNE <= '0';
+	  PCWriteE <= '0';
+	  IorDE <= '0';
+	  MemReadE <= '0'; 
+	  MemWriteE <= '0';
+	  MemtoRegE <= '0';
+	  IRWriteE <= '0';
+	  ALUSrcAE <= '0';
+	  RegWriteE <= '0';
+	  DumpE <= '0';
+	  ResetE <= '0';
+	  InitMemE <= '0'; 
+	  WordByteE <= '1';
+		PCSourceE <= (OTHERS => '0');
+		ALUSrcBE <= '0';
+		RegDstE <= (OTHERS => '0');
+		opE <= (OTHERS => '0');
+		IOMuxE <= '0';
     
-	 if(rising_edge(clk)  and flush = '0') then 
+	 elsif(rising_edge(clk)  and flush = '0') then 
 	  AE <= AD;
 	  BE <= BD;
 	  RsE <= RsD;
@@ -115,6 +140,7 @@ begin
 		ALUSrcBE <= ALUSrcBD; 
 		RegDstE <= RegDstD;
 		opE <= opD;
+		IOMuxE <= IOMuxD;
 	 end if;
 	end process;   
 

@@ -130,6 +130,7 @@ BEGIN
 				data <= (others =>'Z'); --if write and read enables get activated simultaneously!
 				wr_done <= '0';
 				rd_ready <='0';
+				delay_cnt :=0;
 			end if;
 			
 		end if;

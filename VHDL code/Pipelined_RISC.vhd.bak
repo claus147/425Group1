@@ -90,9 +90,9 @@ component Reg_ID_EX
 	  RsD     : in std_ulogic_vector(4 downto 0);
 	  RtD     : in std_ulogic_vector(4 downto 0);
 	  RdD     : in std_ulogic_vector(4 downto 0);
-	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD, ALUSrcBD	: in std_logic;
+	  PCWriteCondD, PCWriteCondND, PCWriteD, IorDD, MemReadD, MemWriteD, MemtoRegD, IRWriteD, ALUSrcAD, RegWriteD, DumpD, ResetD, InitMemD,WordByteD, ALUSrcBD, IOMuxD	: in std_logic;
 		PCSourceD, RegDstD	: in std_ulogic_vector(1 downto 0);
-	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE, ALUSrcBE	: out std_logic;
+	  PCWriteCondE, PCWriteCondNE, PCWriteE, IorDE, MemReadE, MemWriteE, MemtoRegE, IRWriteE, ALUSrcAE, RegWriteE, DumpE, ResetE, InitMemE,WordByteE, ALUSrcBE, IOMuxE	: out std_logic;
 		PCSourceE, RegDstE	: out std_ulogic_vector(1 downto 0);
 	  RsE : out std_ulogic_vector(4 downto 0);
 	  RtE : out std_ulogic_vector(4 downto 0);
@@ -113,8 +113,8 @@ component Reg_EX_MEM
 		ALUM    : out signed(31 downto 0);
 	  RdtE    : in std_ulogic_vector(4 downto 0);
 		RdtM    : out std_ulogic_vector(4 downto 0);
-    MemReadE, MemWriteE, MemtoRegE,RegWriteE, DumpE, ResetE, InitMemE,WordByteE	: in std_logic;
-	  MemReadM, MemWriteM, MemtoRegM,RegWriteM, DumpM, ResetM, InitMemM,WordByteM	: out std_logic
+    MemReadE, MemWriteE, MemtoRegE,RegWriteE, DumpE, ResetE, InitMemE,WordByteE, IOMuxE	: in std_logic;
+	  MemReadM, MemWriteM, MemtoRegM,RegWriteM, DumpM, ResetM, InitMemM,WordByteM, IOMuxM	: out std_logic
 	);
 end component;
 
@@ -231,6 +231,16 @@ component MUX_3to1_signed
 		A,B,C	: in signed(31 downto 0);
 		Op		: in std_ulogic_vector(1 downto 0);
 		R		: out signed(31 downto 0)
+	);
+end component;
+
+component IO_MUX is
+	port (
+	  rst   : in std_logic;
+		dat  	: in std_logic_vector(31 downto 0);
+		sel   : in std_logic;
+		inst  : out std_logic_vector(31 downto 0);
+		memIO : inout std_logic_vector(31 downto 0)
 	);
 end component;
 
@@ -392,7 +402,7 @@ signal toMem : signed(31 downto 0);
 ----------------------------------- ID ------------------------------------
 -- CONTROL
 signal RegWriteD, MemtoRegD, MemWriteD, ALUSrcBD, jumpD, branchD, MemReadD,  
-       DumpD, ResetD, InitMemD, WordByteD,	equalD: std_logic;
+       DumpD, ResetD, InitMemD, WordByteD,	equalD, IOMuxD: std_logic;
 signal PCSourceD, RegDstD	: std_ulogic_vector(1 downto 0);
 signal opD : std_ulogic_vector(5 downto 0);
 -- DATA
@@ -414,7 +424,7 @@ signal ALUOPD : std_ulogic_vector(3 downto 0);
 --CONTROL
 -- -- branch, jump, PCsource are no longer here
 signal RegWriteE, MemtoRegE, MemWriteE, ALUSrcBE, MemReadE,  
-       DumpE, ResetE, InitMemE, WordByteE	: std_logic;
+       DumpE, ResetE, InitMemE, WordByteE, IOMuxE	: std_logic;
 signal RegDstE	: std_ulogic_vector(1 downto 0);
 signal opE : std_ulogic_vector(5 downto 0);
 -- DATA
@@ -427,12 +437,14 @@ signal RsE, RtE, RdE, WriteRegE : std_ulogic_vector(4 downto 0);
 --CONTROL
 -- -- Op, ALUsrc, RegDst no longer here
 signal RegWriteM, MemtoRegM, MemWriteM, MemReadM,  
-       DumpM, ResetM, InitMemM, WordByteM,	MemWriteMComp : std_logic;
+       DumpM, ResetM, InitMemM, WordByteM,	MemWriteMComp, IOMuxM : std_logic;
 -- DATA
 signal ALUM, WriteDataM: signed(31 downto 0);
 signal ReadDataM: std_logic_vector(31 downto 0);
 -- REGISTER ADDRESS   
 signal WriteRegM : std_ulogic_vector(4 downto 0);
+signal memIO : std_logic_vector(31 downto 0);
+signal wr_done, rd_ready : std_logic;
     
 ----------------------------------- WB -----------------------------------
 --CONTROL
@@ -522,7 +534,7 @@ REG_IFID : Reg_IF_ID
     dirtyD => dirtyD,
     PC4F => PC4F,
     PC4D=> PC4D,
-    instr => instrF,
+    instr => std_ulogic_vector(ReadDataM),
 	  instr_out => instrD
 	);
 
@@ -573,8 +585,8 @@ FSMCONTROL: FSM_control
 	port map (
 		clk => clk,
 		rst =>rst_external,		
-		MemReadReady => '0', --currently no signals or thing for it
-		MemWriteDone => '0', --currently no signals or thing for it
+		MemReadReady => rd_ready, --currently no signals or thing for it
+		MemWriteDone => wr_done, --currently no signals or thing for it
 		op	=> opD,
 		PCWriteCond => branchd, 
 		PCWriteCondN => open, 
@@ -588,7 +600,7 @@ FSMCONTROL: FSM_control
 		RegWrite=> RegWriteD, 
 		Dump=> DumpD, 
 		Reset=> ResetD, 
-		InitMem=> InitMemD,
+		InitMem=> open,
 		WordByte=> WordByteD,
 		IOMux => open,
 		PCSource=> open, 
@@ -603,7 +615,7 @@ ALUCONTR : ALUControl
 		rst => rst_external,
 		ALUOp	=>ALUOPD,
 		Funct	=> instrD(5 downto 0),
-		Op	=>OpE
+		Op	=>OpD
 	);
 
 
@@ -631,7 +643,7 @@ REG_IDEX : Reg_ID_EX
 	  RegWriteD=>RegWriteD, 
 	  DumpD=>DumpD, 
 	  ResetD=>ResetD, 
-	  InitMemD=>InitMemD,
+	  InitMemD=>'0',
 	  WordByteD=>WordByteD,
 		PCSourceD=>"00", 
 		ALUSrcBD=>ALUSrcBD, 
@@ -660,7 +672,9 @@ REG_IDEX : Reg_ID_EX
 	  BE=>  BE1,
 	  flush=> flushE,
 	  opD=> opD,
-	  opE=>opE
+	  opE=>opE,
+	  IOMuxD => IOMuxD,
+	  IOMuxE => IOMuxE
 	);
 	
 	MUX_regdstE : MUX_5bit
@@ -718,8 +732,8 @@ REG_IDEX : Reg_ID_EX
 		ALUM =>ALUM,
 	  RdtE => WriteRegE,
 		RdtM => WriteRegM,
-    MemReadE =>MemReadE, MemWriteE =>MemWriteE, MemtoRegE=>MemtoRegE,RegWriteE=>RegWriteE, DumpE=>DumpE, ResetE=>ResetE, InitMemE =>InitMemE,WordByteE=>WordByteE,
-	  MemReadM =>MemReadM, MemWriteM=>MemWriteM, MemtoRegM=>MemtoRegM,RegWriteM=>RegWriteM, DumpM=>DumpM, ResetM=>ResetM, InitMemM=>InitMemM,WordByteM=>WordByteM
+    MemReadE =>MemReadE, MemWriteE =>MemWriteE, MemtoRegE=>MemtoRegE,RegWriteE=>RegWriteE, DumpE=>DumpE, ResetE=>ResetE, InitMemE =>InitMemE,WordByteE=>WordByteE,IOMuxE=>IOMuxE,
+	  MemReadM =>MemReadM, MemWriteM=>MemWriteM, MemtoRegM=>MemtoRegM,RegWriteM=>RegWriteM, DumpM=>DumpM, ResetM=>ResetM, InitMemM=>InitMemM,WordByteM=>WordByteM, IOMuxM=>IOMuxM
 	);
   
   Mainmemory: MAIN_Memory
@@ -728,13 +742,23 @@ REG_IDEX : Reg_ID_EX
 	  address => to_integer(toMEM),
 	  Word_Byte=>WordByteM, -- when '1' you are interacting with the memory in word otherwise in byte
 	  we => memWriteM,
-	  wr_done => open, --indicates that the write operation has been done.
+	  wr_done => wr_done, --indicates that the write operation has been done.
 	  re => memWriteMComp,
-		rd_ready=> open, --indicates that the read data is ready at the output.
-		data =>ReadDataM,       
+		rd_ready=> rd_ready, --indicates that the read data is ready at the output.
+		data =>memIO,       
 		initialize=>initMemM,
 		dump=>dumpM
 	);			     
+	
+	
+	IOMUX: IO_MUX
+	port map(
+	  rst => rst_external,
+		dat => std_logic_vector(writeDataM),
+		sel => IOMuxM,
+		inst =>readDataM,
+		memIO => memIO
+	);
        
 ----------------------------------- WB -----------------------------------
 

@@ -45,8 +45,13 @@ architecture RTL of Reg_MEM_WB is
 begin
   process(clk)
   begin
-    
-	 if(rising_edge(clk)) then 
+   if (rst = '1') then
+    ALUW <= (OTHERS => '0');
+	  MEMW <= (OTHERS => '0');
+	  MemtoRegW <= '0';
+	  RegWriteW <= '0';
+	  RdtW <= (OTHERS => '0');
+	 elsif(rising_edge(clk)) then 
 	  ALUW <= ALUM;
 	  MEMW <= MEMM;
 	  MemtoRegW <= MemtoRegM;

@@ -39,8 +39,11 @@ architecture RTL of Reg_IF_ID is
 begin
   process(clk)
   begin
-    
-	 if(rising_edge(clk) and stall = '0' and flush = '0') then 
+   if (rst = '1') then
+     instr_out <= (OTHERS => '0');
+	   dirtyD<='0';
+	   PC4D <= (OTHERS => '0');
+	 elsif(rising_edge(clk) and stall = '0' and flush = '0') then 
 	   instr_out <= instr;
 	   dirtyD<=dirtyF;
 	   PC4D <= PC4F;

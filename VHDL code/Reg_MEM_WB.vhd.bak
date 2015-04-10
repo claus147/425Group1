@@ -29,8 +29,10 @@ entity Reg_MEM_WB is
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-		ALUM, MEMM    : in signed(31 downto 0);
-		ALUW, MEMW    : out signed(31 downto 0);
+		ALUM : in signed(31 downto 0);
+		ALUW : out signed(31 downto 0);
+		MEMM : in std_logic_vector(31 downto 0);
+		MEMW  : out std_logic_vector(31 downto 0);     
 		RdtM    : in std_ulogic_vector(4 downto 0);
 		RdtW    : out std_ulogic_vector(4 downto 0);
 		MemtoRegM, RegWriteM	: in std_logic;
