@@ -57,7 +57,7 @@ architecture RTL of Pipelined_RISC is
 ---------------------------------------------------------------------------
 ---------------------------- PIPELINE REGISTERS ---------------------------
 
-component SingleREG -- Reg_IF
+component SingleREG
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
@@ -66,6 +66,7 @@ component SingleREG -- Reg_IF
 		reg_out				: out unsigned(31 downto 0)
 	);
 end component;
+
 
 component Reg_IF_ID
 	port (
@@ -175,11 +176,9 @@ component Early_branch_resolution
 		imm     : in signed(31 downto 0);
 		PC4     : in signed(31 downto 0);
 		forward_A, forward_B : in std_ulogic_vector(1 downto 0);
-		
 		ALU_out : in signed(31 downto 0);
 		branch : out std_logic;
 		targetPC : out signed(31 downto 0)
-		
 	);
 end component;
 
@@ -247,7 +246,6 @@ component OPCODE
 		funct					: in STD_LOGIC_VECTOR(5 downto 0); --and funct (6 LSBs) from instr to determine what we are actually executing
 		ALU_op					: out unsigned(4 downto 0);
 		R_type, I_type, J_type	: out std_logic 
-		
 	);
 end component;
 
@@ -320,8 +318,7 @@ end component;
 
 component SignExtender
   port (
-
-		Immediate   : in signed(15 downto 0);
+    Immediate   : in signed(15 downto 0);
 		Extended    : out signed(31 downto 0)
 	);
 end component;
@@ -354,17 +351,17 @@ component Main_Memory
 			Read_Delay: integer:=0; 
 			Write_Delay:integer:=0
 		 );
-		port (
-			clk 		: in std_logic;
-			address 	: in integer;
-			Word_Byte	: in std_logic; -- when '1' you are interacting with the memory in word otherwise in byte
-			we 			: in std_logic;
-			wr_done		: out std_logic; --indicates that the write operation has been done.
-			re 			: in std_logic;
-			rd_ready	: out std_logic; --indicates that the read data is ready at the output.
-			data 		: inout std_logic_vector((Num_Bytes_in_Word*Num_Bits_in_Byte)-1 downto 0);        
-			initialize	: in std_logic;
-			dump		: in std_logic
+	port (
+			clk : in std_logic;
+			address : in integer;
+			Word_Byte: in std_logic; -- when '1' you are interacting with the memory in word otherwise in byte
+			we : in std_logic;
+			wr_done:out std_logic; --indicates that the write operation has been done.
+			re :in std_logic;
+			rd_ready: out std_logic; --indicates that the read data is ready at the output.
+			data : inout std_logic_vector((Num_Bytes_in_Word*Num_Bits_in_Byte)-1 downto 0);        
+			initialize: in std_logic;
+			dump: in std_logic
 		);
 	end component;
 
@@ -606,10 +603,8 @@ ALUCONTR : ALUControl
 		rst => rst_external,
 		ALUOp	=>ALUOPD,
 		Funct	=> instrD(5 downto 0),
-		Op	=>instrD(31 downto 26)
+		Op	=>OpD
 	);
-
-
 
 
 
