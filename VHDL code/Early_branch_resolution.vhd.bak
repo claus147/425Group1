@@ -32,7 +32,7 @@ entity Early_branch_resolution is
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-		branchD,flush : in std_logic;
+		branchD, flush : in std_logic;
 		isBNE   : in std_logic;
 		A       : in signed(31 downto 0);
 		B       : in signed(31 downto 0);

@@ -21,6 +21,7 @@
 --		- SignExtender			extends the value from 16 bit to 32 bit with the sign
 --		- Main_Memory			Main memory module that stores the 
 --		- SingleREG				register to hold a single value
+--  - IO_MUX    2 to 1 mux for he in and out bus of main memory
 --
 -- The results of this module is stored in Data Memory
 --

@@ -198,7 +198,6 @@ architecture RTL of unpipelined_RISC is
 	
 	component PC_add 
 		port (
-			clk 	: in std_logic;
 			rst 	: in std_logic;
 			PC		: in unsigned(31 downto 0);
 			NPC 	: out unsigned(31 downto 0)
@@ -291,7 +290,6 @@ architecture RTL of unpipelined_RISC is
 		
 		PC_adder : PC_add
 		port map(			
-			clk 	=> clk,
 			rst 	=> rst,
 			PC		=> PC_out,
 			NPC 	=> 	pc_next

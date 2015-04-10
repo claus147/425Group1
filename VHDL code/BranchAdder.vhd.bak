@@ -24,7 +24,7 @@ entity BranchAdder is
 		--clk       : in std_logic;
 		--rst		: in std_logic;
 		PC	      	: in signed(31 downto 0);
-    Offset    	: in signed(31 downto 0);
+        Offset    	: in signed(31 downto 0);
 		NPC       	: out signed(31 downto 0)
 	);
 end entity BranchAdder;

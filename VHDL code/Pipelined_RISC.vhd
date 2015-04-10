@@ -168,7 +168,7 @@ component Early_branch_resolution
 	port (
 		clk 				: in std_logic;
 		rst 				: in std_logic;
-		branchD : in std_logic;
+		branchD,flush : in std_logic;
 		isBNE   : in std_logic;
 		A       : in signed(31 downto 0);
 		B       : in signed(31 downto 0);
@@ -488,7 +488,7 @@ choose_IorD <= MemReadM or MemWriteM;
 		);
 		
 	PC_adder : PC_add
-		port map(			
+		port map(
 			rst 	=> rst_external,
 			PC		=> PCF,
 			NPC 	=> 	pc4F

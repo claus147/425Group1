@@ -164,24 +164,7 @@ component Forwarding_logic
 	);
 end component;
 
-component Early_branch_resolution
-	port (
-		clk 				: in std_logic;
-		rst 				: in std_logic;
-		branchD : in std_logic;
-		isBNE   : in std_logic;
-		A       : in signed(31 downto 0);
-		B       : in signed(31 downto 0);
-		imm     : in signed(31 downto 0);
-		PC4     : in signed(31 downto 0);
-		forward_A, forward_B : in std_ulogic_vector(1 downto 0);
-		
-		ALU_out : in signed(31 downto 0);
-		branch : out std_logic;
-		targetPC : out signed(31 downto 0)
-		
-	);
-end component;
+
 
 ---------------------------------------------------------------------------
 ---------------------------------------------------------------------------
@@ -461,7 +444,7 @@ begin
 ----------------------------------- IF ------------------------------------ 
 -- actual instruction fetch handled in MEM
 to_jump <= ((PC4D(31 downto 28)) & to_jump_28);
-choose_IorD <= MemtoReadM or MemWriteM;
+choose_IorD <= MemReadM or MemWriteM;
 
    MUX_PCsourceD : MUX_3to1
 		port map(
@@ -488,7 +471,7 @@ choose_IorD <= MemtoReadM or MemWriteM;
 		);
 		
 	PC_adder : PC_add
-		port map(			
+		port map(
 			rst 	=> rst_external,
 			PC		=> PCF,
 			NPC 	=> 	pc4F
