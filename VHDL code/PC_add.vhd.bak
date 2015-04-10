@@ -21,7 +21,6 @@ use ieee.numeric_std.all;
 
 entity PC_add is
 	port (
-		clk : in std_logic;
 		rst : in std_logic;
 		PC	: in unsigned(31 downto 0);
 		NPC : out unsigned(31 downto 0)
