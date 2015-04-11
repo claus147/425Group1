@@ -81,7 +81,9 @@ entity Reg_ID_EX is
 	  BE  : out signed(31 downto 0);
 	  flush  : in std_logic;
 	  opD : in std_ulogic_vector(5 downto 0);
-	  opE: out std_ulogic_vector(5 downto 0)
+	  opE: out std_ulogic_vector(5 downto 0);
+	  signImmD : in signed(31 downto 0);
+	  signImmE : out signed(31 downto 0)
 	);
 end entity Reg_ID_EX;
 --------------------------------------------------------------
@@ -115,6 +117,7 @@ begin
 		RegDstE <= (OTHERS => '0');
 		opE <= (OTHERS => '0');
 		IOMuxE <= '0';
+		signImmE <= (OTHERS => '0');
     
 	 elsif(rising_edge(clk)  and flush = '0') then 
 	  AE <= AD;
@@ -141,6 +144,7 @@ begin
 		RegDstE <= RegDstD;
 		opE <= opD;
 		IOMuxE <= IOMuxD;
+		signImmE <= signImmD;
 	 end if;
 	end process;   
 

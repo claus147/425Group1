@@ -22,7 +22,6 @@ use ieee.numeric_std.all;
 
 entity FSM_control is
 	port (
-		clk 				: in std_logic;
 		rst 				: in std_logic;
 		MemReadReady, MemWriteDone	: in std_logic;
 		op				: in std_ulogic_vector(5 downto 0);
@@ -54,7 +53,7 @@ begin
 --				end if;
 				
 			when A_WAIT =>
-			  
+			  -- wait for memory to complete read and increment PC
 			   if (memReadReady='1') then
 				    next_state  <=  B;
 				 end if;
@@ -186,11 +185,11 @@ begin
 	
 end process;
 
-process (rst, clk)
+process (rst)
 begin
 	if (rst='1')then
 		current_state <= INIT;
-	elsif (rising_edge(clk)) then
+	else
 		current_state <= next_state;
 	end if;
 	

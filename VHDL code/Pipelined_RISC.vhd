@@ -101,7 +101,9 @@ component Reg_ID_EX
 	  BE  : out signed(31 downto 0);
 	  flush  : in std_logic;
 	  opD : in std_ulogic_vector(5 downto 0);
-	  opE: out std_ulogic_vector(5 downto 0)
+	  opE: out std_ulogic_vector(5 downto 0);
+	  signImmD : in signed(31 downto 0);
+	  signImmE : out signed(31 downto 0)
 	);
 end component;
 
@@ -403,7 +405,7 @@ signal toMem : signed(31 downto 0);
 -- CONTROL
 signal RegWriteD, MemtoRegD, MemWriteD, ALUSrcBD, jumpD, branchD, MemReadD,  
        DumpD, ResetD, InitMemD, WordByteD,	equalD, IOMuxD: std_logic;
-signal PCSourceD, RegDstD, jumpAndBranchD	: std_ulogic_vector(1 downto 0);
+signal PCSourceD, RegDstD, jumpAndBranchD, ALUSrcBOLD	: std_ulogic_vector(1 downto 0);
 signal opD : std_ulogic_vector(5 downto 0);
 -- DATA
 signal AD1, BD1 :signed(31 downto 0);
@@ -458,7 +460,7 @@ signal ResultW: signed(31 downto 0);
 signal WriteRegW : std_ulogic_vector(4 downto 0);
 
 ----------------------- HAZARD AND FORWARD CTRL ---------------------------
-signal StallF, StallD, ForwardAD, ForwardBD, FlushE: std_logic;
+signal StallF, StallD, ForwardAD, ForwardBD : std_logic; --FlushE
 signal ForwardAE,ForwardBE : std_ulogic_vector(1 downto 0);
 
 ---------------------------------------------------------------------------
@@ -516,6 +518,7 @@ choose_IorD <= MemReadM or MemWriteM;
 jumpD <= jumpAndBranchD(1);
 branchD <= jumpAndBranchD (0);
 PCsourceD <= jumpD & (branchD and equalD);
+ALUSrcBD <= ALUSrcBOLD(1);
 
 
 RsD <= instrD(25 downto 21);
@@ -607,7 +610,7 @@ FSMCONTROL: FSM_control
 		WordByte=> WordByteD,
 		IOMux => open,
 		PCSource=> open, 
-		ALUSrcB=> open,--ALUSrcBD, this has incorrect bits so it doesnt work 
+		ALUSrcB=> ALUSrcBOLD,--ALUSrcBD, this has incorrect bits so it doesnt work 
 		RegDst=> RegDstD,
 		ALUOp=> ALUopD
 	);
@@ -673,11 +676,13 @@ REG_IDEX : Reg_ID_EX
 	  RdE=> RdE,	  
 	  AE=>  AE1,
 	  BE=>  BE1,
-	  flush=> flushE,
+	  flush=> '0',--flushE,--add this to hazard unit TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 	  opD=> opD,
 	  opE=>opE,
 	  IOMuxD => IOMuxD,
-	  IOMuxE => IOMuxE
+	  IOMuxE => IOMuxE,
+	  signImmD => signImmD,
+	  signImmE => signImmE
 	);
 	
 	MUX_regdstE : MUX_5bit
