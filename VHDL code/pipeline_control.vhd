@@ -1,0 +1,166 @@
+---Controler for pipelined, basically decoder
+---ALUControlD is 4 bits because we thought there was an extra state before. but there wasnt
+
+library ieee;
+use ieee.std_logic_1164.all;
+use ieee.numeric_std.all;
+
+entity pipeline_control is
+	port (
+		rst 				 : in std_logic;
+		op			   : in std_ulogic_vector(5 downto 0); -- instrD (31 downto 26)
+		Ins				 : in unsigned(31 downto 0);
+    RegWriteD, MemtoRegD, MemWriteD, ALUSrcD, RegDstD, JumpD, BranchD : out std_logic;
+    ALUControlD : out std_ulogic_vector(3 downto 0)
+	);
+end entity pipeline_control;
+
+architecture RTL of pipeline_control is
+
+begin process(Op)
+
+begin
+        case Op is 
+					when "000000" => 		-- R-type
+					 	RegWriteD <='1';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='0';
+					 	RegDstD <='1';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0000";
+					 
+					when "001000" => 		-- addi
+            RegWriteD <='1';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0001";
+					when "001100" => 		-- andi
+						RegWriteD <='1';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0100";
+					when "001101" => 		-- ori
+						RegWriteD <='1';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0101";
+					when "001110" =>  		-- xori
+						RegWriteD <='1';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0110";
+					when "001010" => 		-- slti
+						RegWriteD <='1';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0011";
+					when "001111" => 		-- lui
+						RegWriteD <='1';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0111";
+					when "100000" => 		-- lb
+						RegWriteD <='1';
+					 	MemtoRegD <='1';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0001";
+					when "100011" =>  		-- lw
+						RegWriteD <='1';
+					 	MemtoRegD <='1';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0001";
+					when "101000" => 		-- sb
+						RegWriteD <='0';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='1';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0001";
+					when "101011" => 		-- sw
+						RegWriteD <='0';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='1';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0001";
+					when "000100" => 		-- beq
+						RegWriteD <='0';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0010";
+					when "000101" => 		-- bne
+						RegWriteD <='0';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0010";
+					when "000010" => 		-- j
+						RegWriteD <='0';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0000"; --unsure if needed
+					when "000011" => 		-- jal
+						RegWriteD <='0';
+					 	MemtoRegD <='0';
+					 	MemWriteD <='0';
+					 	ALUSrcD <='0';
+					 	RegDstD <='0';
+					 	JumpD<='0';
+					 	BranchD<='0';
+					 	ALUControlD <= "0000"; --unsure if needed yet
+					 
+					when others => 			-- invalid
+						null;
+				end case;
+	
+end process;
+end architecture RTL;
