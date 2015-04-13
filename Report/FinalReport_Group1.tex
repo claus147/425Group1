@@ -98,7 +98,7 @@
 
 
 
-
+\usepackage{booktabs}
 
 
 % *** CITATION PACKAGES ***
@@ -455,6 +455,37 @@ The abstract goes here.
 The system constitutes of two components: an assembler and a processor. The assembler translates the MIPS assembly code into binary instructions. The instructions are store in the main memory along with the data. The processor accesses the memory to fetch instruction, load data and store data. The processor is pipelined into five stages and uses hazard detection, forwarding unit and early branch detection to reduce stalling time.
 
 \subsection{Assembler}
+
+\begin{table}[h]
+\caption{Instruction table result of parsing fib.asm}
+\label{instructTable}
+\begin{tabular}{@{}llllllll@{}}
+\toprule
+Mnemonic & Type & Arg 1 & Arg 2 & Arg 3 & Block 1 & ... & Block N \\ \midrule
+addi     & I    & \$10  & \$0   & 4     &         &     &         \\
+addi     & I    & \$1   & \$0   & 1     &         &     &         \\
+addi     & I    & \$2   & \$0   & 1     &         &     &         \\
+addi     & I    & \$11  & \$0   & 2000  &         &     &         \\
+addi     & I    & \$15  & \$0   & 4     &         &     &         \\
+addi     & I    & \$3   & \$2   & 0     & loop    &     &         \\
+add      & R    & \$2   & \$2   & \$1   & loop    &     &         \\
+addi     & I    & \$1   & \$3   & 0     & loop    &     &         \\
+mult     & R    & \$10  & \$15  &       & loop    &     &         \\
+mflo     & R    & \$12  &       &       & loop    &     &         \\
+add      & R    & \$13  & \$11  & \$12  & loop    &     &         \\
+sw       & I    & \$2   & \$13  & 0     & loop    &     &         \\
+addi     & I    & \$10  & \$10  & -1    & loop    &     &         \\
+bne      & I    & \$10  & \$0   & -9    & loop    &     &         \\
+beq      & I    & \$11  & \$11  & -1    &         &     &         \\ \bottomrule
+\end{tabular}
+\end{table}
+
+\begin{figure}[!h]
+\centering
+\includegraphics[width=2.5in]{Figures/coaAssemblerUML}
+\caption{Class Hierarchy of Assembler Instruction Objects}
+\label{classDiagream}
+\end{figure}
 
 \subsection{Instruction Fetch (IF) Stage}
 
