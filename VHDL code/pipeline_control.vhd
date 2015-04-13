@@ -1,5 +1,18 @@
----Controler for pipelined, basically decoder
----ALUControlD is 4 bits because we thought there was an extra state before. but there wasnt
+----------------------------------------------------------------------------------------
+-- This module is used to implement a controller for the pipelined processor
+-- 
+-- Inputs:
+--	- op		6-bit operand used to control states
+-- 
+-- Output:
+-- 	- Series of control signals used for different modules
+--
+-- Control:
+--	- rst		reset
+--
+--
+-- ALUControlD is 4 bits because we thought there was an extra state before. but there wasnt
+----------------------------------------------------------------------------------------
 
 library ieee;
 use ieee.std_logic_1164.all;
@@ -18,7 +31,7 @@ end entity pipeline_control;
 architecture RTL of pipeline_control is
 
 begin process(Op, rst)
-
+-- no clock was needed since everything is pipelined.
 begin
       if (rst = '1') then
           RegWriteD <='0';
