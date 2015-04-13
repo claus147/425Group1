@@ -8,8 +8,9 @@ use ieee.numeric_std.all;
 ---------------------------------------------------------------------------
 entity Pipelined_RISC is
 	port (
-		clk 			: in std_logic;
+		clk,dump 			: in std_logic;
 		rst_external 	: in std_logic
+		
 	);
 end entity Pipelined_RISC;
 
@@ -250,6 +251,17 @@ end component;
 ---------------------------------------------------------------------------
 -------------------------------- CONTROLLERS ------------------------------
 
+component pipeline_control
+	port (
+		rst 				 : in std_logic;
+		op			   : in std_ulogic_vector(5 downto 0); -- instrD (31 downto 26)
+    RegWriteD, MemtoRegD, MemWriteD, ALUSrcD, JumpD, BranchD, WordByteD : out std_logic;
+    RegDstD :out std_ulogic_vector(1 downto 0);
+    ALUControlD : out std_ulogic_vector(3 downto 0)
+	);
+end component;
+
+
 component OPCODE 
 	port (
 		clk 					: in std_logic;
@@ -275,7 +287,6 @@ end component;
 
 component ALUControl 
 	port (
-		clk 					: in std_logic;
 		rst 					: in std_logic;
 		ALUOp					: in std_ulogic_vector(3 downto 0);
 		Funct					: in std_ulogic_vector(5 downto 0);
@@ -289,7 +300,6 @@ end component;
 
 component ALU
 	port (
-		clk 		: in std_logic;
 		rst 		: in std_logic;
 		A, B		: in signed(31 downto 0);
 		Op		: in std_ulogic_vector(5 downto 0);
@@ -395,7 +405,7 @@ component Main_Memory
 
 ----------------------------------- IF ------------------------------------
 signal PC, PCF, PC4F: unsigned(31 downto 0);
-signal instrF : std_ulogic_vector(31 downto 0);
+--signal instrF : std_ulogic_vector(31 downto 0);
 signal to_jump_28: unsigned (27 downto 0); -- last 28 bits of the jump
 signal to_jump : unsigned (31 downto 0); -- full for jump
 signal choose_IorD :std_logic:= '0' ;
@@ -403,8 +413,9 @@ signal toMem : signed(31 downto 0);
 
 ----------------------------------- ID ------------------------------------
 -- CONTROL
-signal RegWriteD, MemtoRegD, MemWriteD, ALUSrcBD, jumpD, branchD, MemReadD,  
-       DumpD, ResetD, InitMemD, WordByteD,	equalD, IOMuxD: std_logic;
+signal RegWriteD, MemtoRegD, MemWriteD, ALUSrcBD, jumpD, branchD, --MemReadD,  
+       --DumpD, ResetD, InitMemD, 
+       WordByteD,	equalD: std_logic;
 signal PCSourceD, RegDstD, jumpAndBranchD, ALUSrcBOLD	: std_ulogic_vector(1 downto 0);
 signal opD : std_ulogic_vector(5 downto 0);
 -- DATA
@@ -425,8 +436,9 @@ signal ALUOPD : std_ulogic_vector(3 downto 0);
 ----------------------------------- EX ------------------------------------
 --CONTROL
 -- -- branch, jump, PCsource are no longer here
-signal RegWriteE, MemtoRegE, MemWriteE, ALUSrcBE, MemReadE,  
-       DumpE, ResetE, InitMemE, WordByteE, IOMuxE	: std_logic;
+signal RegWriteE, MemtoRegE, MemWriteE, ALUSrcBE, --MemReadE,  
+       --DumpE, ResetE, InitMemE, 
+       WordByteE: std_logic;
 signal RegDstE	: std_ulogic_vector(1 downto 0);
 signal opE : std_ulogic_vector(5 downto 0);
 -- DATA
@@ -438,8 +450,9 @@ signal RsE, RtE, RdE, WriteRegE : std_ulogic_vector(4 downto 0);
 ----------------------------------- MEM -----------------------------------
 --CONTROL
 -- -- Op, ALUsrc, RegDst no longer here
-signal RegWriteM, MemtoRegM, MemWriteM, MemReadM,  
-       DumpM, ResetM, InitMemM, WordByteM,	MemWriteMComp, IOMuxM : std_logic;
+signal RegWriteM, MemtoRegM, MemWriteM, --MemReadM,  
+       --DumpM, ResetM, InitMemM, 
+       WordByteM,	MemWriteMComp: std_logic;
 -- DATA
 signal ALUM, WriteDataM: signed(31 downto 0);
 signal ReadDataM: std_logic_vector(31 downto 0);
@@ -460,7 +473,7 @@ signal ResultW: signed(31 downto 0);
 signal WriteRegW : std_ulogic_vector(4 downto 0);
 
 ----------------------- HAZARD AND FORWARD CTRL ---------------------------
-signal StallF, StallD, ForwardAD, ForwardBD, FlushE: std_logic;
+signal StallF, StallD, ForwardAD, ForwardBD : std_logic; --FlushE
 signal ForwardAE,ForwardBE : std_ulogic_vector(1 downto 0);
 
 ---------------------------------------------------------------------------
@@ -472,7 +485,7 @@ begin
 ----------------------------------- IF ------------------------------------ 
 -- actual instruction fetch handled in MEM
 to_jump <= ((PC4D(31 downto 28)) & to_jump_28);
-choose_IorD <= MemReadM or MemWriteM;
+choose_IorD <= MemtoRegM or MemWriteM;
 
    MUX_PCsourceD : MUX_3to1
 		port map(
@@ -518,7 +531,7 @@ choose_IorD <= MemReadM or MemWriteM;
 jumpD <= jumpAndBranchD(1);
 branchD <= jumpAndBranchD (0);
 PCsourceD <= jumpD & (branchD and equalD);
-ALUSrcBD <= ALUSrcBOLD(1);
+--ALUSrcBD <= ALUSrcBOLD(1);
 
 
 RsD <= instrD(25 downto 21);
@@ -587,37 +600,45 @@ MUX_ForwardBD : MUX
 			R => BD2
 		);
 		
-FSMCONTROL: FSM_control
-	port map (
-		clk => clk,
-		rst =>rst_external,		
-		MemReadReady => rd_ready, --currently no signals or thing for it
-		MemWriteDone => wr_done, --currently no signals or thing for it
-		op	=> opD,
-		PCWriteCond => open, 
-		PCWriteCondN => open, 
-		PCWrite => open, 
-		IorD => open, 
-		MemRead => MemReadD, 
-		MemWrite=> MemWriteD, 
-		MemtoReg=> MemtoRegD, 
-		IRWrite=> open, 
-		ALUSrcA=> open, 
-		RegWrite=> RegWriteD, 
-		Dump=> DumpD, 
-		Reset=> ResetD, 
-		InitMem=> open,
-		WordByte=> WordByteD,
-		IOMux => open,
-		PCSource=> open, 
-		ALUSrcB=> ALUSrcBOLD,--ALUSrcBD, this has incorrect bits so it doesnt work 
-		RegDst=> RegDstD,
-		ALUOp=> ALUopD
+--FSMCONTROL: FSM_control
+--	port map (
+--		clk => clk,
+--		rst =>rst_external,		
+--		MemReadReady => rd_ready, --currently no signals or thing for it
+--		MemWriteDone => wr_done, --currently no signals or thing for it
+--		op	=> InstrD(31 downto 26),
+--		PCWriteCond => open, 
+--		PCWriteCondN => open, 
+--		PCWrite => open, 
+--		IorD => open, 
+--		MemRead => MemReadD, 
+--		MemWrite=> MemWriteD, 
+--		MemtoReg=> MemtoRegD, 
+--		IRWrite=> open, 
+--		ALUSrcA=> open, 
+--		RegWrite=> RegWriteD, 
+--		Dump=> DumpD, 
+--		Reset=> ResetD, 
+--		InitMem=> open,
+--		WordByte=> WordByteD,
+--		IOMux => open,
+--		PCSource=> open, 
+--		ALUSrcB=> ALUSrcBOLD,--ALUSrcBD, this has incorrect bits so it doesnt work 
+--		RegDst=> RegDstD,
+--		ALUOp=> ALUopD
+--	);
+	
+control: pipeline_control
+	port map(
+		rst => rst_external,
+		op		=> instrD(31 downto 26),
+    RegWriteD => RegWriteD, MemtoRegD => MemtoRegD, MemWriteD => MemWriteD, ALUSrcD => ALUSrcBD, JumpD => JumpD, BranchD => BranchD, WordByteD => WordByteD,
+    RegDstD =>regDstD, 
+    ALUControlD =>ALUOPD
 	);
 
 ALUCONTR : ALUControl 
 	port map(
-		clk => clk,
 		rst => rst_external,
 		ALUOp	=>ALUOPD,
 		Funct	=> instrD(5 downto 0),
@@ -641,14 +662,14 @@ REG_IDEX : Reg_ID_EX
 	  PCWriteCondND=>'0', 
 	  PCWriteD=>'0', 
 	  IorDD=>'0', 
-	  MemReadD=>MemReadD, 
+	  MemReadD=>'0',--MemReadD, 
 	  MemWriteD=>MemWriteD, 
 	  MemtoRegD=>MemtoRegD, 
 	  IRWriteD=>'0', 
 	  ALUSrcAD=>'0', 
 	  RegWriteD=>RegWriteD, 
-	  DumpD=>DumpD, 
-	  ResetD=>ResetD, 
+	  DumpD=>'0', 
+	  ResetD=>'0', 
 	  InitMemD=>'0',
 	  WordByteD=>WordByteD,
 		PCSourceD=>"00", 
@@ -658,15 +679,15 @@ REG_IDEX : Reg_ID_EX
 	  PCWriteCondNE=>open, 
 	  PCWriteE=>open, 
 	  IorDE=>open, 
-	  MemReadE=>MemReadE, 
+	  MemReadE=>open,--MemReadE, 
 	  MemWriteE=>MemWriteE, 
 	  MemtoRegE=>MemtoRegE, 
 	  IRWriteE=>open, 
 	  ALUSrcAE=>open, 
 	  RegWriteE=>RegWriteE, 
-	  DumpE=>DumpE, 
-	  ResetE=>ResetE, 
-	  InitMemE=>InitMemE,
+	  DumpE=>open, 
+	  ResetE=>open, 
+	  InitMemE=>open,
 	  WordByteE=>WordByteE,
 		PCSourceE=>jumpAndBranchD, 
 		ALUSrcBE=>ALUSrcBE, 
@@ -679,8 +700,8 @@ REG_IDEX : Reg_ID_EX
 	  flush=> '0',--flushE,--add this to hazard unit TODOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOOO
 	  opD=> opD,
 	  opE=>opE,
-	  IOMuxD => IOMuxD,
-	  IOMuxE => IOMuxE,
+	  IOMuxD => '0',
+	  IOMuxE => open,
 	  signImmD => signImmD,
 	  signImmE => signImmE
 	);
@@ -721,7 +742,6 @@ REG_IDEX : Reg_ID_EX
 	
 	myALU:ALU  
     port map (
-		  clk =>clk,
 		  rst =>rst_external,
 		  A => AE2, B => BE3,
 		  Op	=>opE,
@@ -740,8 +760,10 @@ REG_IDEX : Reg_ID_EX
 		ALUM =>ALUM,
 	  RdtE => WriteRegE,
 		RdtM => WriteRegM,
-    MemReadE =>MemReadE, MemWriteE =>MemWriteE, MemtoRegE=>MemtoRegE,RegWriteE=>RegWriteE, DumpE=>DumpE, ResetE=>ResetE, InitMemE =>InitMemE,WordByteE=>WordByteE,IOMuxE=>IOMuxE,
-	  MemReadM =>MemReadM, MemWriteM=>MemWriteM, MemtoRegM=>MemtoRegM,RegWriteM=>RegWriteM, DumpM=>DumpM, ResetM=>ResetM, InitMemM=>InitMemM,WordByteM=>WordByteM, IOMuxM=>IOMuxM
+    MemReadE =>'0',--MemReadE, 
+    MemWriteE =>MemWriteE, MemtoRegE=>MemtoRegE,RegWriteE=>RegWriteE, DumpE=>'0', ResetE=>'0', InitMemE =>'0',WordByteE=>WordByteE,IOMuxE=>IOMuxE,
+	  MemReadM =>open,--MemReadM, 
+	  MemWriteM=>MemWriteM, MemtoRegM=>MemtoRegM,RegWriteM=>RegWriteM, DumpM=>open, ResetM=>open, InitMemM=>open,WordByteM=>WordByteM, IOMuxM=>IOMuxM
 	);
   
   Mainmemory: MAIN_Memory
@@ -754,8 +776,8 @@ REG_IDEX : Reg_ID_EX
 	  re => memWriteMComp,
 		rd_ready=> rd_ready, --indicates that the read data is ready at the output.
 		data =>memIO,       
-		initialize=>initMemM,
-		dump=>dumpM
+		initialize=>rst_external,
+		dump=>dump
 	);			     
 	
 	
@@ -763,7 +785,7 @@ REG_IDEX : Reg_ID_EX
 	port map(
 	  rst => rst_external,
 		dat => std_logic_vector(writeDataM),
-		sel => IOMuxM,
+		sel =>memwriteM,--IOMuxM,
 		inst =>readDataM,
 		memIO => memIO
 	);

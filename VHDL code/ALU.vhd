@@ -24,7 +24,6 @@ use ieee.numeric_std.all;
 
 entity ALU is
 	port (
-		clk 		: in std_logic;
 		rst 		: in std_logic;
 		A, B		: in signed(31 downto 0);
 		Op		: in std_ulogic_vector(5 downto 0);
@@ -45,7 +44,7 @@ begin
 
 zero_int <= 0;
 	
-process(clk,rst)
+process(op,a,b,rst)
 	
 begin
   
@@ -53,12 +52,12 @@ begin
       
       R <= "00000000000000000000000000000000";
       zero <= '1';
-  elsif rising_edge(clk) then
+  else
 		case Op is
-			when "100000" => 			-- ADD, ADDI,
+			when "100000" => 			-- ADD, ADD, 
 				R  <= A+B;
 			
-			when "100010" => 			-- SUB
+	    when "100010" => 			-- SUB
 				R <= A-B;
 				internal_R <=to_integer(A-B);
 				
@@ -85,10 +84,10 @@ begin
 				R <= A or B;
 			
 			when "100111" =>			-- NOR
-				R <= A nor B;
-			
-			when "100110" =>			-- XOR
-				R <= A xor B;
+		R <= A nor B;
+	
+	when "100110" =>			-- XOR
+		R <= A xor B;
 			
 			when "010000" => 			-- MFHI
 				R <= MD_temp(63 downto 32);
@@ -107,10 +106,10 @@ begin
 				R <= A srl B_int;
 			
 			when "000011" =>  			-- SRA
-				B_int <= to_integer(B);
+		B_int <= to_integer(B);
 				R <= A +Shift_right(A, B_int);
-				
-			when "111111" => 			-- LUI
+		
+	when "111111" => 			-- LUI
 			
 				R <= resize(B(31 downto 16),32);
 				
@@ -123,7 +122,27 @@ begin
 			
 		end case;
 		
-	
+	--with op select R <=
+--   	  A+B when "100000",
+--   	  A-B when "100010",
+--   	  ALessB when "101010",
+--     	A and B when "100100",
+--     	A or B when "100101",
+--     	A nor B when "100111",
+--     	A xor B when "100110",
+--     	MD_temp(63 downto 32)	when "010000",
+--     	MD_temp(31 downto 0) when "010010",
+--     	A sll B_int when "000000",
+--   	  A srl B_int when "000010",
+--   	  A +Shift_right(A, B_int) when "000011",
+--		  resize(B(31 downto 16),32) when "111111",
+--			A when "001000",
+--    	 "00000000000000000000000000000000" when others;
+--    	 
+--    with op select MD_temp <= 
+--      A*B when "011000",
+--      hold when others;
+      
 	
 	if  (internal_R = zero_int) then
 		zero <= '1';

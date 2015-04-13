@@ -9,124 +9,146 @@ entity pipeline_control is
 	port (
 		rst 				 : in std_logic;
 		op			   : in std_ulogic_vector(5 downto 0); -- instrD (31 downto 26)
-		Ins				 : in unsigned(31 downto 0);
-    RegWriteD, MemtoRegD, MemWriteD, ALUSrcD, RegDstD, JumpD, BranchD : out std_logic;
+    RegWriteD, MemtoRegD, MemWriteD, ALUSrcD,  JumpD, BranchD, WordByteD : out std_logic;
+    RegDstD :out std_ulogic_vector(1 downto 0);
     ALUControlD : out std_ulogic_vector(3 downto 0)
 	);
 end entity pipeline_control;
 
 architecture RTL of pipeline_control is
 
-begin process(Op)
+begin process(Op, rst)
 
 begin
+      if (rst = '1') then
+          RegWriteD <='0';
+					MemtoRegD <='0';
+					MemWriteD <='0';
+					ALUSrcD <='0';
+					RegDstD <="01";
+					JumpD<='0';
+					BranchD<='0';
+					WordByteD <= '1';
+					ALUControlD <= "0000";
+      else
         case Op is 
 					when "000000" => 		-- R-type
 					 	RegWriteD <='1';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
 					 	ALUSrcD <='0';
-					 	RegDstD <='1';
+					 	RegDstD <="01";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0000";
 					 
 					when "001000" => 		-- addi
             RegWriteD <='1';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
-					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0001";
 					when "001100" => 		-- andi
 						RegWriteD <='1';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
-					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0100";
 					when "001101" => 		-- ori
 						RegWriteD <='1';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
-					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0101";
 					when "001110" =>  		-- xori
 						RegWriteD <='1';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
-					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0110";
 					when "001010" => 		-- slti
 						RegWriteD <='1';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
-					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0011";
 					when "001111" => 		-- lui
 						RegWriteD <='1';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
-					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	ALUSrcD <='1';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0111";
 					when "100000" => 		-- lb
 						RegWriteD <='1';
 					 	MemtoRegD <='1';
 					 	MemWriteD <='0';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0001";
 					when "100011" =>  		-- lw
 						RegWriteD <='1';
 					 	MemtoRegD <='1';
 					 	MemWriteD <='0';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '0';
 					 	ALUControlD <= "0001";
 					when "101000" => 		-- sb
 						RegWriteD <='0';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='1';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '0';
 					 	ALUControlD <= "0001";
 					when "101011" => 		-- sw
 						RegWriteD <='0';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='1';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0001";
 					when "000100" => 		-- beq
 						RegWriteD <='0';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
 					 	ALUControlD <= "0010";
@@ -135,32 +157,35 @@ begin
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0010";
 					when "000010" => 		-- j
 						RegWriteD <='0';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0000"; --unsure if needed
 					when "000011" => 		-- jal
 						RegWriteD <='0';
 					 	MemtoRegD <='0';
 					 	MemWriteD <='0';
 					 	ALUSrcD <='0';
-					 	RegDstD <='0';
+					 	RegDstD <="00";
 					 	JumpD<='0';
 					 	BranchD<='0';
+					 	WordByteD <= '1';
 					 	ALUControlD <= "0000"; --unsure if needed yet
 					 
 					when others => 			-- invalid
 						null;
 				end case;
-	
+	end if;
 end process;
 end architecture RTL;
