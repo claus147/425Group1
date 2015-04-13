@@ -98,7 +98,7 @@
 
 
 
-\usepackage{booktabs}
+\usepackage{booktabs,tabularx}
 
 
 % *** CITATION PACKAGES ***
@@ -456,6 +456,11 @@ The system constitutes of two components: an assembler and a processor. The asse
 
 \subsection{Assembler}
 
+The assembler functions by first parsing the assembly code into a structured instruction table and then converting each row of the table into binary machine language. We have implemented the assembler in MATLAB.
+
+\subsubsection{Parsing Assembly Language}
+To parse the assembly language the input file is first opened and read line by line. For each line comments are removed and labels are checked for. If the line is still not empty the mnemonic of the instruction and arguments are parsed and stored. After this first iteration the assembler then searches for labels in the argument fields and calculates their offset to the label position. The resulting instruction table for fib.asm is shown in Table \ref{instructTable}. Aside from the arguments and names of each instruction, an array is stored identifying the basic block that the argument belongs to. Inner blocks are stored after Arg 3 and more general blocks are stored proceeding from left to right. 
+
 \begin{table}[h]
 \caption{Instruction table result of parsing fib.asm}
 \label{instructTable}
@@ -484,31 +489,34 @@ beq      & I    & \$11  & \$11  & -1    &         &     &         \\ \bottomrule
 \centering
 \includegraphics[width=2.5in]{Figures/coaAssemblerUML}
 \caption{Class Hierarchy of Assembler Instruction Objects}
-\label{classDiagream}
+\label{classDiagram}
 \end{figure}
+
+\subsubsection{Converting Instruction Table to Binary Machine Language}
+For this procedure we take an object oriented approach. This design decision was made to support easy extension of instructions not included in the specification. The class hierarchy of the instruction API is shown in Figure \ref{classDiagram}. The public class constructors take the form of coa<mnemonic>Instruction(args) and return an Instruction object, I. The args for each type of instruction are taken from the above described instruction table. The public I.GetOutput() method returns the line of binary machine language corresponding to the type of instruction and arguments passed. The public I.GetGraph() method returns a structured array of the position of the instruction within the program, the register it writes to, the registers it reads from, and minimum and maximum indices of the basic block it belongs to. This method has been designed to facilitate instruction rescheduling. Table \ref{depGraph} represents the graph that would correspond to fib.asm after the initializing a static rescheduling routine with the graphs from each instruction. The routine would then maximize the distance between the true data dependencies with constraints determined by the minimum and maximum positions, along with the anti and output dependencies.
 
 \begin{table}[h]
 \caption{First Iteration Dependencies Graph for Fib.asm}
 \label{depGraph}
-\begin{tabular}{@{}lcccccccc@{}}
+\begin{tabularx}{\columnwidth}{@{}lcccccccc@{}}
 \toprule
-Pos. & Write & Read 1 & Read 2 & Min Pos. & Max Pos. & True & Anti & \multicolumn{1}{l}{Name} \\ \midrule
-1 & 10 & 0 &  & 1 & 5 &  &  &  \\
-2 & 1 & 0 &  & 1 & 5 &  &  &  \\
-3 & 2 & 0 &  & 1 & 5 &  &  &  \\
-4 & 11 & 0 &  & 1 & 5 &  &  &  \\
-5 & 15 & 0 &  & 1 & 5 &  &  &  \\
-6 & 3 & 2 &  & 6 & 13 & 3 &  &  \\
-7 & 2 & 2 & 1 & 6 & 13 & 3 & 6 &  \\
-8 & 1 & 3 &  & 6 & 13 & 6 &  &  \\
-9 &  & 10 & 15 & 6 & 12 & 1,5 &  &  \\
-10 & 12 &  &  & 7 & 13 &  &  & 9 \\
-11 & 13 & 11 & 12 & 6 & 13 & 4,10 &  &  \\
-12 &  & 13 & 2 & 6 & 13 & 11,7 &  &  \\
-13 & 10 & 10 &  & 6 & 13 & 1 & 9 &  \\
-14 &  & 10 & 0 & 14 & 14 & 13 &  &  \\
-15 &  & 11 & 11 & 15 & 15 &  &  &  \\ \bottomrule
-\end{tabular}
+Pos. & Write & Read 1 & Read 2 & Min Pos. & Max Pos. & True & Anti \\ \midrule
+1 & 10 & 0 &  & 1 & 5 &  &  \\
+2 & 1 & 0 &  & 1 & 5 &  &  \\
+3 & 2 & 0 &  & 1 & 5 &  &  \\
+4 & 11 & 0 &  & 1 & 5 &  &  \\
+5 & 15 & 0 &  & 1 & 5 &  &  \\
+6 & 3 & 2 &  & 6 & 13 & 3 &  \\
+7 & 2 & 2 & 1 & 6 & 13 & 3 & 6  \\
+8 & 1 & 3 &  & 6 & 13 & 6 &  \\
+9 &  & 10 & 15 & 6 & 12 & 1,5 &   \\
+10 & 12 &  &  & 7 & 13 &   & 9\\
+11 & 13 & 11 & 12 & 6 & 13 & 4,10 &  \\ 
+12 &  & 13 & 2 & 6 & 13 & 11,7 &  \\
+13 & 10 & 10 &  & 6 & 13 & 1 &  9\\
+14 &  & 10 & 0 & 14 & 14 & 13 &  \\
+15 &  & 11 & 11 & 15 & 15 &  &  \\ \bottomrule
+\end{tabularx}
 \end{table}
 
 \subsection{Instruction Fetch (IF) Stage}
