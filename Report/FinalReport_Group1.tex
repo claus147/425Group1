@@ -414,7 +414,7 @@
 
 \begin{abstract}
 %\boldmath
-The abstract goes here.
+The project implements a 5-stage pipelined processor and an assembler. The assembler turns the MIPS assembly code into 32-bit binary machine code instructions. The instructions propagate through the pipeline. Hazards are detected along the pipeline and dependent data are forwarded when possible.
 \end{abstract}
 % IEEEtran.cls defaults to using nonbold math in the Abstract.
 % This preserves the distinction between vectors and scalars. However,
@@ -440,19 +440,21 @@ The abstract goes here.
 
 
 
-\section{Solution}
+\section{Problem Statement}
+
+The processor implemented in this project translates MIPS assembly code into binary machine code. The instructions are executed using a 5-stage pipeline as shown in Figure \ref{pipelineBD}. Control signals (in green), data lines (in blue) and register information (in yellow) propagate through the pipeline. Stall signals (in red) are used to prevent instructions (in purple) from entering the pipeline when hazards are detected.
 
 \begin{figure}[!h]
 \centering
 \includegraphics[width=2.5in]{Figures/pipeline}
 \caption{Pipeline Processor Block Diagram}
-\label{pipeline BD}
+\label{pipelineBD}
 \end{figure}
 
 
 \section{Components}
 
-The system constitutes of two components: an assembler and a processor. The assembler translates the MIPS assembly code into binary instructions. The instructions are store in the main memory along with the data. The processor accesses the memory to fetch instruction, load data and store data. The processor is pipelined into five stages and uses hazard detection, forwarding unit and early branch detection to reduce stalling time.
+The system consists of two components: an assembler and a processor. The assembler translates the MIPS assembly code into binary instructions. The instructions are stored in the main memory along with the data. The processor accesses the main memory to fetch instructions, load data and store data. The processor is pipelined into five stages and uses hazard detection, a forwarding unit and early branch detection to reduce stalls.
 
 \subsection{Assembler}
 
@@ -521,31 +523,74 @@ Pos. & Write & Read 1 & Read 2 & Min Pos. & Max Pos. & True & Anti \\ \midrule
 
 \subsection{Instruction Fetch (IF) Stage}
 
-The first stage of the pipeline consists of fetching the instruction from memory and update the program counter (PC). 
-MORE TO ADD...
+The first stage of the pipeline consists of fetching an instruction from memory and updating the program counter (PC). By convention, instructions are stored sequentially and the first instruction starts at memory address 0x00. Every instruction is 32 bits long and memory is address by byte; therefore, instructions are separated by a 4 memory address offset.
+
+\subsubsection{PC} 
+The PC is programmed to increment by 0x04 at every clock cycle and used as a pointer to the next instruction . When a control flow instruction is detected, such as a branch or a jump, the target address is computed. A select signal is set high to take the target address and the PC is updated to use the new address for its next computation.
 
 \subsection{Instruction Decode (ID) Stage}
 
-Once the instruction is fetched from memory, it is decoded in the ID stage, where the OPCODE is sent to the Finite-State Machine (FSM) controller. Depending on the current OPCODE and the historical state, the FSM controller will issue a series of control signals.  Depending on the type of the MIPS instruction (R-type, I-type or J-type), the register file puts the corresponding data onto the register data line. To reduce stalling after a branch instruction, we implemented an early branch resolution unit. 
+Once the instruction is fetched from memory, it is decoded in the ID stage, where the OPCODE is sent to the Finite-State Machine (FSM) controller. Depending on the current OPCODE and the last state, the FSM controller will issue a series of control signals.  Depending on the type of MIPS instruction (R-type, I-type or J-type), the register file puts the corresponding data onto the register data line. To reduce stalling after a branch instruction, we implemented an early branch resolution unit. When a branch instruction is detected during the ID stage, the PC counter will first be instructed to update its value to the target address, then the IF/ID pipeline register will be warned that a branch instruction was detected, and finally the last instruction fetched will be flushed. The decoded instruction information and data are passed to the next stage through the ID/EX pipeline register.
 
--- FSM Controller should probably belong here
+\subsubsection{FSM Controller}
+The FSM controller is the most crucial component in the processor as it turns the OPCODE into control signals that oversees the execution of the pipeline. All control signals are updated during a single clock cycle and then fed to the IF/ID pipeline register. Control signals propagate through the pipeline and may be changed if a hazard is detected. 
 
-\subsection{EX Stage}
+\subsubsection{Register File}
+This processor implementation uses 32-bit data registers. The register file stores the register values and is accessed depending on the instruction type. The first register (R0) is hardwired to 0x00. The register file reads its inputs on every rising clock edge and updates the corresponding registers. On the falling edge, the register file outputs the data requested. Therefore, during a single clock cycle, data can be written to and read from the register file. This implementation avoids stalling the pipeline when two instructions (one read and one write) need to access the registers.
 
-\subsection{MEM Stage}
+\subsubsection{Early Branch Resolution Unit}
+Branch hazards may cause the pipeline to fetch the wrong instruction when a branch prediction is wrong. In the current implementation, branches are predicted as not taken and the instruction stored immediately after the branch instruction is fetched while the branch instruction is in the ID stage. As the branch instruction propagates down the pipeline, more instructions are fetched until the branch is resolved. To avoid fetching extra instructions whose execution depends on the branch condition, an early branch resolution is implemented. It uses a comparator and resolves the branch condition in the IF stage. By doing so, it saves one clock cycle in the case when the branch prediction is wrong (branch is taken) and does not affect performance when the branch prediction is correct
 
-\subsection{WB Stage}
+\subsection{Execution (EX) Stage}
+
+After the instruction is decoded, the operands are written to their respective data lines. The arithmetic logic unit (ALU) can now perform computation when needed. The inputs of the ALU depend both on the type of instruction and also when data is forwarded and are selected accordingly. The result of the ALU is passed on to the next stage through the EX/MEM pipeline register.
+
+\subsubsection{ALU}
+All computations are performed by the ALU. The ALU takes two 32-bit inputs and returns a 32-bit result.  The selection of input is managed by the FSM controller and the forwarding unit. With the exception of MULT and DIV instructions, the result of the ALU computation is available after a single clock cycle. MULT and DIV instructions are expected to be followed by MFLO or MFHI instructions. 
+
+\subsection{Memory Access (MEM) Stage}
+
+Other than fetching an instruction, memory can be access only during a LOAD or STORE instruction. When an instruction arrives at this stage, the control signals will be used to determine if memory access is needed. The data loaded from the memory, is passed on to the next stage through the MEM/WB pipeline register. 
+
+\subsubsection{Main Memory}
+The main memory module used here was provided by the course TA. Unlike the register file, data cannot be written to and read from the main memory at the same time. This causes the pipeline to stall (disable data fetching) when a LOAD or a STORE instruction in its MEM stage. Due to the slow access time, main memory requires several clock cycles before returning the requested information.
+
+\subsection{Write-Back (WB) Stage}
+
+The final stage of the pipeline updates the register file with the computed value or the data loaded from memory. When an instruction arrives at this stage, the control signals will be used to determine if register access is needed. As previously mentioned, data can be written to and read from the register file in the same clock cycle, so no stall will be introduced­.
 
 \subsection{Pipeline}
 
-\noindent
--- Pipeline Registers\\
--- Hazard Detection Unit\\
--- Forwarding Unit\\
--- Early Branch Resolution
+In order for the pipeline to function properly, the information of each stage is stored in the pipeline registers. With the intermediate values stored, it becomes possible to implement additional components to reduce the stall time between instructions such as, hazard detection and data forwarding.
+
+\subsubsection{Pipeline Registers}
+Registers are essential to the functioning of the pipeline. A pipeline register couples each stage and stores the information of an instruction. For instance, when an instruction moves from the ID stage to the EX stage, its control signals, data and register information are written to a pipeline register. These values kept in the register until the next clock cycle, where the instruction exits the EX stage. This register sits between the ID and the EX stage, therefore is called the ID/EX pipeline register. There are a total of five pipeline registers in this implementation: IF, IF/ID, ID/EX, EX/MEM and MEM/WB pipeline registers and so there are five instructions in the pipeline when the pipeline is fully loaded without stalls. All registers hold their values for one clock cycle and are updated at every rising edge of the clock. 
+
+\subsubsection{Hazard Detection Unit}
+As mentioned earlier, data cannot be written to or read from memory at the same time. This represents a structural hazard that requires the pipeline to stall until memory access is completed. A structural hazard detection unit is used to verify the control lines in the EX stage. If the instruction in the EX stage need to access memory (either read or write) in the next cycle, the structural hazard detection unit will issue a stall signal to disable instruction fetch at the next clock cycle. 
+
+Data dependencies can also affect the performance of the processor in the case of a read-after-write (RAW) dependency. A data hazard detection unit is used to compare the input of one instruction against the output of the previous two instructions. When the instruction in the EX stage requires the ALU output of the instruction one cycle ahead of it, then a EX-to-EX forwarding is required. When the instruction in the EX stage requires the ALU output or the memory output of an instruction two cycles ahead of it, then a MEM-to-EX forwarding is required.
+
+For both structural hazard detection unit and data hazard detection unit, all instructions following the instruction causing the stall are paused and only resume execution once the hazard is resolved.
+
+Branch dependencies are not explicitly handled in the implementation. The early branch resolution unit is the only component that will reduce stall by one clock cycle  in the case of a wrong branch prediction as explained earlier.
+
+\subsubsection{Forwarding Unit}
+When data hazards are detected, the forwarding unit is signaled to forward data to the input of the ALU in the EX stage. Depending on the type of forwarding, the appropriate input is selected for the ALU.  A EX-to-EX forwarding will feed the ALU output directly back to its input. A MEM-to-EX forwarding will feed the output from the memory back to the input of the ALU. The forwarding unit avoids waiting for data to be written back to register before it becomes available to the following instructions. The forwarding unit also forwards to the early branch resolution unit, where the target address can be resolved earlier.
 
 \subsection{Optimization}
--- If we are optimizing the processor, we need to discuss the design choices
+
+\subsubsection{Branch Predictor}
+A simple branch predictor can be implemented to predict branch not taken. It will reduce the number of wrong predictions in the case of looping. This branch predictor will be added early in the pipeline to update PC to the target address before knowing the outcome of the branch instruction. More complex branch predictors can also be used.
+
+\subsubsection{Split Level-1 Cache}
+A main cause for stalling is the long memory access time. To reduce waiting time, caches can be implemented. A split cache would be best because it would allow instruction fetching at the same time of a LOAD or STORE instruction accessing memory.
+
+\subsubsection{Instruction Rescheduling}
+Optimization could also be done by the assembler. A better assembler could detect independent instructions and insert them between dependent instructions that require extra clock cycles between them. The assembler could also detect loops and perform loop unrolling to allow more rescheduling possibilities.
+
+\subsubsection{Branch Delay Slot}
+nstead of using branch prediction, the branch delay slot can be populated with an instruction which will not affect the branch instruction. Since in the current implementation the instruction following the branch instruction is fetched regardless of the branch resolution, it could be replaced by an instruction that was originally before the branch instruction. This rescheduling of instructions must be done by the assembler. The assembler must make sure that the instruction in the branch delay slot will not affect the branch instruction outcome. 
 
 \section{System Evaluation}
 
@@ -645,17 +690,13 @@ During the first deliverable, we found it challenging when attempting to verify 
 % command of the stfloats package.
 
 
-
-\section{Conclusion}
-The conclusion goes here.
-
-\begin{thebibliography}{1}
-
-\bibitem{IEEEhowto:kopka}
-H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
-  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
-
-\end{thebibliography}
+%\begin{thebibliography}{1}
+%
+%\bibitem{IEEEhowto:kopka}
+%H.~Kopka and P.~W. Daly, \emph{A Guide to \LaTeX}, 3rd~ed.\hskip 1em plus
+%  0.5em minus 0.4em\relax Harlow, England: Addison-Wesley, 1999.
+%
+%\end{thebibliography}
 
 
 
