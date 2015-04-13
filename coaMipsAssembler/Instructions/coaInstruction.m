@@ -10,6 +10,7 @@ classdef coaInstruction
         Output      % Machine Language Output
         Rs
         Rt
+        Graph
         
     end
     

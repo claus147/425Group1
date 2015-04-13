@@ -8,6 +8,8 @@ classdef coaBeqInstruction < coaIInstruction
             
             obj@coaIInstruction(location,opcode,rs,rt,immediate,label);
             
+            obj.Graph = {[],rs,rt};
+            
         end
         
     end
