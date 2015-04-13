@@ -116,8 +116,10 @@ component Reg_EX_MEM
 		ALUM    : out signed(31 downto 0);
 	  RdtE    : in std_ulogic_vector(4 downto 0);
 		RdtM    : out std_ulogic_vector(4 downto 0);
-    MemReadE, MemWriteE, MemtoRegE,RegWriteE, DumpE, ResetE, InitMemE,WordByteE, IOMuxE	: in std_logic;
-	  MemReadM, MemWriteM, MemtoRegM,RegWriteM, DumpM, ResetM, InitMemM,WordByteM, IOMuxM	: out std_logic
+    MemWriteE, MemtoRegE,RegWriteE,WordByteE : in std_logic;
+	  MemWriteM, MemtoRegM,RegWriteM,WordByteM : out std_logic;
+	  WriteDataE : in signed(31 downto 0);
+	  writeDataM	: out  signed(31 downto 0)
 	);
 end component;
 
@@ -142,7 +144,6 @@ end component;
 
 component Hazard_control
 	port (
-		clk 				: in std_logic;
 		rst 				: in std_logic;
 		ID_EX_Rd: in std_ulogic_vector(4 downto 0);
     IF_ID_Rs : in std_ulogic_vector(4 downto 0);
@@ -416,7 +417,7 @@ signal toMem : signed(31 downto 0);
 signal RegWriteD, MemtoRegD, MemWriteD, ALUSrcBD, jumpD, branchD, --MemReadD,  
        --DumpD, ResetD, InitMemD, 
        WordByteD,	equalD: std_logic;
-signal PCSourceD, RegDstD, jumpAndBranchD, ALUSrcBOLD	: std_ulogic_vector(1 downto 0);
+signal PCSourceD, RegDstD, jumpAndBranchD: std_ulogic_vector(1 downto 0);
 signal opD : std_ulogic_vector(5 downto 0);
 -- DATA
 signal AD1, BD1 :signed(31 downto 0);
@@ -473,7 +474,7 @@ signal ResultW: signed(31 downto 0);
 signal WriteRegW : std_ulogic_vector(4 downto 0);
 
 ----------------------- HAZARD AND FORWARD CTRL ---------------------------
-signal StallF, StallD, ForwardAD, ForwardBD : std_logic; --FlushE
+signal Stall, ForwardAD, ForwardBD : std_logic; --FlushE
 signal ForwardAE,ForwardBE : std_ulogic_vector(1 downto 0);
 
 ---------------------------------------------------------------------------
@@ -506,7 +507,7 @@ choose_IorD <= MemtoRegM or MemWriteM;
 		port map(
 			clk => clk,
 			rst =>rst_external,
-			write_pc => choose_IorD,
+			write_pc => stall,
 			reg_in	=> PC,
 			reg_out	=>PCF
 		);
@@ -547,8 +548,8 @@ REG_IFID : Reg_IF_ID
 	port map(
 		clk => clk,
 		rst => rst_external,
-		stall => stallD, 
-		dirtyF => stallD, 
+		stall => stall, 
+		dirtyF => stall, 
 		flush => to_flush,
     dirtyD => dirtyD,
     PC4F => PC4F,
@@ -760,10 +761,8 @@ REG_IDEX : Reg_ID_EX
 		ALUM =>ALUM,
 	  RdtE => WriteRegE,
 		RdtM => WriteRegM,
-    MemReadE =>'0',--MemReadE, 
-    MemWriteE =>MemWriteE, MemtoRegE=>MemtoRegE,RegWriteE=>RegWriteE, DumpE=>'0', ResetE=>'0', InitMemE =>'0',WordByteE=>WordByteE,IOMuxE=>'0',
-	  MemReadM =>open,--MemReadM, 
-	  MemWriteM=>MemWriteM, MemtoRegM=>MemtoRegM,RegWriteM=>RegWriteM, DumpM=>open, ResetM=>open, InitMemM=>open,WordByteM=>WordByteM, IOMuxM=>open
+    MemWriteE =>MemWriteE, MemtoRegE=>MemtoRegE,RegWriteE=>RegWriteE,WordByteE=>WordByteE,WriteDataE=>BE2,
+	  MemWriteM=>MemWriteM, MemtoRegM=>MemtoRegM,RegWriteM=>RegWriteM,WordByteM=>WordByteM, WriteDataM=>WriteDataM
 	);
   
   Mainmemory: MAIN_Memory
@@ -824,7 +823,7 @@ Forward:  Forwarding_logic
     IF_ID_Rt => RtD,
     EX_MEM_Rd => writeRegE,
     MEM_WB_Rd => WriteRegM,
-    stall => stallD, -- we are missing a stall signal that propagates through the pipeline registers
+    stall => stall,
     forward_A => forwardAE,
 	  forward_B  => forwardBE,
 	  forward_AD => forwardAD,
@@ -834,13 +833,12 @@ Forward:  Forwarding_logic
 ------------------------------ Hazard_control--------------------------------
 Hazard: Hazard_control
 	port map (
-		clk => clk,
 		rst => rst_external,
 		ID_EX_Rd => RdE,
     IF_ID_Rs => RsD,
     IF_ID_Rt => RtD,
-    ID_EX_MemRead =>MemtoRegE,
-    stall => stallD
+    ID_EX_MemRead =>choose_IorD,
+    stall => stall
 	);
 
 

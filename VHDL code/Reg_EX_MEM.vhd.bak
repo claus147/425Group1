@@ -43,8 +43,10 @@ entity Reg_EX_MEM is
 		ALUM    : out signed(31 downto 0);
 	  RdtE    : in std_ulogic_vector(4 downto 0);
 		RdtM    : out std_ulogic_vector(4 downto 0);
-    MemReadE, MemWriteE, MemtoRegE,RegWriteE, DumpE, ResetE, InitMemE,WordByteE, IOMuxE	: in std_logic;
-	  MemReadM, MemWriteM, MemtoRegM,RegWriteM, DumpM, ResetM, InitMemM,WordByteM, IOMuxM	: out std_logic
+    MemWriteE, MemtoRegE,RegWriteE,WordByteE : in std_logic;
+	  MemWriteM, MemtoRegM,RegWriteM,WordByteM : out std_logic;
+	  WriteDataE : in signed(31 downto 0);
+	  writeDataM	: out  signed(31 downto 0)
 	);
 end entity Reg_EX_MEM;
 --------------------------------------------------------------
@@ -55,28 +57,20 @@ begin
   begin
    if (rst = '1') then
  	  ALUM <= (OTHERS => '0');
-	  MemReadM <= '0';
 	  MemWriteM <= '0';
 	  MemtoRegM <= '0';
 	  RegWriteM <= '0';
-	  DumpM <= '0';
-	  ResetM <= '0';
-	  InitMemM <= '0'; 
 	  WordByteM <= '1';
 	  RdtM <= (OTHERS => '0');
-	  IOMuxM <= '0';
+	  WriteDataM <= '0';
 	 elsif(rising_edge(clk)) then 
 	  ALUM <= ALUE;
-	  MemReadM <= MemReadE; 
 	  MemWriteM <= MemWriteE;
 	  MemtoRegM <= MemtoRegE; 
 	  RegWriteM <= RegWriteE;
-	  DumpM <= DumpE; 
-	  ResetM <= ResetE;
-	  InitMemM <= InitMemE; 
 	  WordByteM <= WordByteE;
 	  RdtM <= RdtE;
-	  IOMuxM <= IOMuxE;
+	  WriteDataM <= WriteDataE;
 	 end if;
 	end process;   
 

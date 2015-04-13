@@ -39,7 +39,7 @@ begin
   RdRs_equal <= '1' when ID_EX_Rd = IF_ID_Rs else '0';
   RdRt_equal <= '1' when ID_EX_Rd = IF_ID_Rt else '0';
 
-  stall <= ID_EX_MemRead; --or (RdRs_equal or RdRt_equal) ;
+  stall <= (RdRs_equal or RdRt_equal) or ID_EX_MemRead;
 
 end architecture RTL;
 
