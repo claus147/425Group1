@@ -487,6 +487,30 @@ beq      & I    & \$11  & \$11  & -1    &         &     &         \\ \bottomrule
 \label{classDiagream}
 \end{figure}
 
+\begin{table}[h]
+\caption{First Iteration Dependencies Graph for Fib.asm}
+\label{depGraph}
+\begin{tabular}{@{}lcccccccc@{}}
+\toprule
+Pos. & Write & Read 1 & Read 2 & Min Pos. & Max Pos. & True & Anti & \multicolumn{1}{l}{Name} \\ \midrule
+1 & 10 & 0 &  & 1 & 5 &  &  &  \\
+2 & 1 & 0 &  & 1 & 5 &  &  &  \\
+3 & 2 & 0 &  & 1 & 5 &  &  &  \\
+4 & 11 & 0 &  & 1 & 5 &  &  &  \\
+5 & 15 & 0 &  & 1 & 5 &  &  &  \\
+6 & 3 & 2 &  & 6 & 13 & 3 &  &  \\
+7 & 2 & 2 & 1 & 6 & 13 & 3 & 6 &  \\
+8 & 1 & 3 &  & 6 & 13 & 6 &  &  \\
+9 &  & 10 & 15 & 6 & 12 & 1,5 &  &  \\
+10 & 12 &  &  & 7 & 13 &  &  & 9 \\
+11 & 13 & 11 & 12 & 6 & 13 & 4,10 &  &  \\
+12 &  & 13 & 2 & 6 & 13 & 11,7 &  &  \\
+13 & 10 & 10 &  & 6 & 13 & 1 & 9 &  \\
+14 &  & 10 & 0 & 14 & 14 & 13 &  &  \\
+15 &  & 11 & 11 & 15 & 15 &  &  &  \\ \bottomrule
+\end{tabular}
+\end{table}
+
 \subsection{Instruction Fetch (IF) Stage}
 
 The first stage of the pipeline consists of fetching the instruction from memory and update the program counter (PC). 
