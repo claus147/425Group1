@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  13 APR 2015 19:26
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  14 APR 2015 15:44
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -274,7 +274,46 @@ Overfull \hbox (6.02274pt too wide) in alignment at lines 521--521
 [2]
 Missing character: There is no Â in font ptmr7t!
 Missing character: There is no ­ in font ptmr7t!
- [3]
+ <Figures/PC_increment.png, id=17, 325.215pt x 76.78688pt>
+File: Figures/PC_increment.png Graphic file (type png)
+
+<use Figures/PC_increment.png>
+Package pdftex.def Info: Figures/PC_increment.png used on input line 603.
+(pdftex.def)             Requested size: 180.67499pt x 42.66057pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
+[3] <Figures/add.png, id=21, 329.73187pt x 41.4047pt>
+File: Figures/add.png Graphic file (type png)
+ <use Figures/add.png>
+Package pdftex.def Info: Figures/add.png used on input line 612.
+(pdftex.def)             Requested size: 180.67499pt x 22.68797pt.
+
+<Figures/stall.png, id=22, 459.96844pt x 51.19125pt>
+File: Figures/stall.png Graphic file (type png)
+ <use Figures/stall.png>
+Package pdftex.def Info: Figures/stall.png used on input line 621.
+(pdftex.def)             Requested size: 180.67499pt x 20.10822pt.
+
+<Figures/pipeline_prop.png, id=23, 603.75563pt x 67.75313pt>
+File: Figures/pipeline_prop.png Graphic file (type png)
+
+<use Figures/pipeline_prop.png>
+Package pdftex.def Info: Figures/pipeline_prop.png used on input line 630.
+(pdftex.def)             Requested size: 180.67499pt x 20.2744pt.
+
+<Figures/instr_decode_execute.png, id=24, 399.74344pt x 128.73094pt>
+File: Figures/instr_decode_execute.png Graphic file (type png)
+
+<use Figures/instr_decode_execute.png>
+Package pdftex.def Info: Figures/instr_decode_execute.png used on input line 63
+9.
+(pdftex.def)             Requested size: 180.67499pt x 58.18373pt.
+
+
+LaTeX Warning: `!h' float specifier changed to `!ht'.
+
 
 ** Conference Paper **
 Before submitting the final camera ready copy, remember to:
@@ -286,26 +325,26 @@ Before submitting the final camera ready copy, remember to:
  uses only Type 1 fonts and that every step in the generation
  process uses the appropriate paper size.
 
-[4
-
-] (./FinalReport_Group1.aux) ) 
+[4 <./Figures/PC_increment.png> <./Figures/add.png> <./Figures/stall.png> <./Fi
+gures/pipeline_prop.png> <./Figures/instr_decode_execute.png>]
+(./FinalReport_Group1.aux) ) 
 Here is how much of TeX's memory you used:
- 2438 strings out of 493315
- 38689 string characters out of 6137904
- 107734 words of memory out of 5000000
- 5872 multiletter control sequences out of 15000+600000
- 36554 words of font info for 70 fonts, out of 8000000 for 9000
+ 2470 strings out of 493315
+ 39366 string characters out of 6137904
+ 106777 words of memory out of 5000000
+ 5898 multiletter control sequences out of 15000+600000
+ 37690 words of font info for 71 fonts, out of 8000000 for 9000
  960 hyphenation exceptions out of 8191
- 37i,8n,23p,1295b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
-{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvi
-ps/base/8r.enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmb8a
-.pfb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></us
-r/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/te
-xlive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FinalReport_Group1.pdf (4 pages, 273497 bytes).
+ 37i,8n,23p,1826b,234s stack positions out of 5000i,500n,10000p,200000b,80000s
+{/usr/local/texlive/2013/texmf-dist/fonts/enc/dvips
+/base/8r.enc}</usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmb8a.p
+fb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/
+local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texl
+ive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
+Output written on FinalReport_Group1.pdf (4 pages, 291629 bytes).
 PDF statistics:
- 38 PDF objects out of 1000 (max. 8388607)
+ 43 PDF objects out of 1000 (max. 8388607)
  24 compressed objects within 1 object stream
  0 named destinations out of 1000 (max. 500000)
- 11 words of extra memory for PDF output out of 10000 (max. 10000000)
+ 36 words of extra memory for PDF output out of 10000 (max. 10000000)
 
