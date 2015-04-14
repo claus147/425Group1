@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  14 APR 2015 16:07
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  14 APR 2015 16:22
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -335,7 +335,7 @@ Here is how much of TeX's memory you used:
 fb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/
 local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texl
 ive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FinalReport_Group1.pdf (4 pages, 291611 bytes).
+Output written on FinalReport_Group1.pdf (4 pages, 291608 bytes).
 PDF statistics:
  43 PDF objects out of 1000 (max. 8388607)
  24 compressed objects within 1 object stream
