@@ -1,4 +1,4 @@
-This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  14 APR 2015 15:44
+This is pdfTeX, Version 3.1415926-2.5-1.40.14 (TeX Live 2013) (format=pdflatex 2013.5.30)  14 APR 2015 16:07
 entering extended mode
  restricted \write18 enabled.
  %&-line parsing enabled.
@@ -249,7 +249,7 @@ File: Figures/pipeline.png Graphic file (type png)
 
 <use Figures/pipeline.png>
 Package pdftex.def Info: Figures/pipeline.png used on input line 449.
-(pdftex.def)             Requested size: 180.67499pt x 124.55396pt.
+(pdftex.def)             Requested size: 231.26378pt x 159.42906pt.
 LaTeX Font Info:    External font `cmex10' loaded for size
 (Font)              <8> on input line 469.
 LaTeX Font Info:    External font `cmex10' loaded for size
@@ -262,7 +262,7 @@ File: Figures/coaAssemblerUML.png Graphic file (type png)
 
 <use Figures/coaAssemblerUML.png>
 Package pdftex.def Info: Figures/coaAssemblerUML.png used on input line 492.
-(pdftex.def)             Requested size: 180.67499pt x 104.42564pt.
+(pdftex.def)             Requested size: 231.26378pt x 133.66588pt.
  [1{/usr/local/texlive/2013/texmf-var/fonts/map/pdftex/updmap/pdftex.map}
 
 
@@ -274,17 +274,14 @@ Overfull \hbox (6.02274pt too wide) in alignment at lines 521--521
 [2]
 Missing character: There is no Â in font ptmr7t!
 Missing character: There is no ­ in font ptmr7t!
- <Figures/PC_increment.png, id=17, 325.215pt x 76.78688pt>
+ [3] <Figures/PC_increment.png, id=20, 325.215pt x 76.78688pt>
 File: Figures/PC_increment.png Graphic file (type png)
 
 <use Figures/PC_increment.png>
 Package pdftex.def Info: Figures/PC_increment.png used on input line 603.
 (pdftex.def)             Requested size: 180.67499pt x 42.66057pt.
 
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
-
-[3] <Figures/add.png, id=21, 329.73187pt x 41.4047pt>
+<Figures/add.png, id=21, 329.73187pt x 41.4047pt>
 File: Figures/add.png Graphic file (type png)
  <use Figures/add.png>
 Package pdftex.def Info: Figures/add.png used on input line 612.
@@ -310,9 +307,6 @@ File: Figures/instr_decode_execute.png Graphic file (type png)
 Package pdftex.def Info: Figures/instr_decode_execute.png used on input line 63
 9.
 (pdftex.def)             Requested size: 180.67499pt x 58.18373pt.
-
-
-LaTeX Warning: `!h' float specifier changed to `!ht'.
 
 
 ** Conference Paper **
@@ -341,7 +335,7 @@ Here is how much of TeX's memory you used:
 fb></usr/local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmbi8a.pfb></usr/
 local/texlive/2013/texmf-dist/fonts/type1/urw/times/utmr8a.pfb></usr/local/texl
 ive/2013/texmf-dist/fonts/type1/urw/times/utmri8a.pfb>
-Output written on FinalReport_Group1.pdf (4 pages, 291629 bytes).
+Output written on FinalReport_Group1.pdf (4 pages, 291611 bytes).
 PDF statistics:
  43 PDF objects out of 1000 (max. 8388607)
  24 compressed objects within 1 object stream
